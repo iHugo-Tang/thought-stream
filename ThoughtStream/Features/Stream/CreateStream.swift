@@ -6,7 +6,6 @@ struct CreateStream: View {
     @Environment(\.dismiss) private var dismiss
 
     @State private var thoughtText: String = ""
-    @State private var cancelButtonWidth: CGFloat = 0
     @State private var isEditorExpanded: Bool = false
     @Namespace private var editorNamespace
     @FocusState private var isTextEditorFocused: Bool
@@ -21,11 +20,8 @@ struct CreateStream: View {
                     VStack(alignment: .leading, spacing: 16) {
                         promptCard
                         editorCard
-                        
                     }
-                    .padding(.horizontal, 16)
-                    .padding(.top, 16)
-                    .padding(.bottom, tabBarHeight + 8)
+                    .padding(16)
                 }
             }
         }
@@ -34,7 +30,7 @@ struct CreateStream: View {
         .toolbarBackground(Color.thoughtStream.white, for: .navigationBar)
         .toolbarBackground(.visible, for: .navigationBar)
         .toolbar { navigationBar }
-        .animation(.spring(response: 0.35, dampingFraction: 0.85), value: isEditorExpanded)
+        .animation(.easeInOut, value: isEditorExpanded)
     }
 }
 
@@ -99,7 +95,7 @@ private extension CreateStream {
 
     var editorCard: some View {
         VStack(spacing: 0) {
-            VStack(alignment: .leading) {
+            VStack(alignment: .leading, spacing: 0) {
                 textEditor
                     .focused($isTextEditorFocused)
             }
@@ -123,13 +119,11 @@ private extension CreateStream {
 
     var expandedEditorCard: some View {
         VStack(spacing: 0) {
-            VStack(alignment: .leading) {
+            VStack(alignment: .leading, spacing: 0) {
                 textEditor
                     .focused($isExpandTextEditorFocused)
             }
             .padding(16)
-
-            Spacer(minLength: 0)
 
             Divider()
 
@@ -167,15 +161,15 @@ private extension CreateStream {
         .overlay(alignment: .topTrailing) {
             Button(action: {
                 if isEditorExpanded {
-                    isEditorExpanded.toggle()
-                    isTextEditorFocused.toggle()
-                    isExpandTextEditorFocused.toggle()
+                    isEditorExpanded = false
+                    isTextEditorFocused = false
+                    isExpandTextEditorFocused = false
                 } else {
                     // 如果键盘和展开动画一起, 动画不流畅
-                    isTextEditorFocused.toggle()
-                    isExpandTextEditorFocused.toggle()
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                        isEditorExpanded.toggle()
+                    isTextEditorFocused = true
+                    isExpandTextEditorFocused = true
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                        isEditorExpanded = true
                     }
                 }
             }) {
@@ -194,29 +188,6 @@ private extension CreateStream {
 
     var actionBar: some View {
         HStack(spacing: 12) {
-            Button(action: { dismiss() }) {
-                Text("Cancel")
-                    .appFont(size: .sm)
-                    .padding(.vertical, 10)
-                    .padding(.horizontal, 16)
-                    .background(Color.clear)
-                    .foregroundColor(.thoughtStream.neutral.gray600)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 8)
-                            .stroke(Color.thoughtStream.neutral.gray300, lineWidth: 1)
-                    )
-                    .cornerRadius(8)
-                    .overlay(
-                        GeometryReader { proxy in
-                            Color.clear
-                                .onAppear { cancelButtonWidth = proxy.size.width }
-                                .onChange(of: proxy.size.width) { newWidth in
-                                    cancelButtonWidth = newWidth
-                                }
-                        }
-                    )
-            }
-
             Button(action: {}) {
                 HStack(spacing: 8) {
                     Image(uiImage: Lucide.send)
@@ -225,8 +196,7 @@ private extension CreateStream {
                         .frame(width: 16, height: 16)
                 }
                 .padding(.vertical, 10)
-                .padding(.horizontal, 16)
-                .frame(width: cancelButtonWidth == 0 ? nil : cancelButtonWidth)
+                .padding(.horizontal, 18)
                 .background(Color.thoughtStream.theme.green600)
                 .foregroundColor(.thoughtStream.white)
                 .cornerRadius(8)
