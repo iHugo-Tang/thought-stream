@@ -2,6 +2,7 @@ import SwiftUI
 import LucideIcons
 
 struct HomeView: View {
+    @Environment(\.tabBarHeight) private var tabBarHeight
     var body: some View {
         ZStack(alignment: .bottomTrailing) {
             ScrollView {
@@ -13,11 +14,11 @@ struct HomeView: View {
                 }
                 .padding(.horizontal, 16)
                 .padding(.top, 16)
-                .padding(.bottom, 140) // 为底部 Tab 与悬浮按钮预留空间
+                .padding(.bottom, 56 + tabBarHeight + 8 * 2) // 为底部 Tab 与悬浮按钮预留空间
             }
             .background(Color.thoughtStream.neutral.gray50)
-
-            // 悬浮写作按钮
+            
+            // 悬浮写作按钮（位于自定义 TabBar 顶部 8pt）
             Button(action: {}) {
                 Image(systemName: "plus")
                     .font(.system(size: 20, weight: .bold))
@@ -28,7 +29,7 @@ struct HomeView: View {
                     .shadow(color: Color.black.opacity(0.1), radius: 10, x: 0, y: 6)
             }
             .padding(.trailing, 16)
-            .padding(.bottom, 80)
+            .padding(.bottom, tabBarHeight + 8)
         }
         .navigationBarTitleDisplayMode(.inline)
         .toolbarBackground(Color.thoughtStream.white, for: .navigationBar)

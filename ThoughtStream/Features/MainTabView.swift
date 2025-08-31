@@ -20,6 +20,7 @@ struct MainTabView: View {
     }
 
     @State private var selectedTab: Tab = .home
+    @State private var tabBarHeight: CGFloat = 0
     private let spring = Animation.spring(response: 0.3, dampingFraction: 0.7)
 
     struct TabItemData: Identifiable {
@@ -60,10 +61,22 @@ struct MainTabView: View {
                     .tag(Tab.profile)
             }
             .accentColor(.thoughtStream.theme.green600)
+            // 将测得的 TabBar 高度下发到子树（如 HomeView）以便内部定位浮动按钮
+            .environment(\.tabBarHeight, tabBarHeight)
 
+            // Custom TabBar
             CustomTabBar(items: items, selected: $selectedTab, spring: spring)
                 .padding(.horizontal, 16)
                 .padding(.bottom, 8)
+                // Measure the rendered height of the TabBar (including paddings)
+                .background(
+                    GeometryReader { proxy in
+                        Color.clear.preference(key: CustomTabBarHeightPreferenceKey.self, value: proxy.size.height)
+                    }
+                )
+                .onPreferenceChange(CustomTabBarHeightPreferenceKey.self) { value in
+                    tabBarHeight = value
+                }
         }
     }
 }
@@ -99,6 +112,26 @@ private struct CustomTabBar: View {
         .background(.ultraThinMaterial)
         .cornerRadius(16)
         .shadow(color: Color.black.opacity(0.06), radius: 8, x: 0, y: 4)
+    }
+}
+
+// MARK: - PreferenceKey for capturing TabBar height
+private struct CustomTabBarHeightPreferenceKey: PreferenceKey {
+    static var defaultValue: CGFloat = 0
+    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
+        value = max(value, nextValue())
+    }
+}
+
+// MARK: - Environment for propagating TabBar height to child views
+struct TabBarHeightEnvironmentKey: EnvironmentKey {
+    static let defaultValue: CGFloat = 0
+}
+
+extension EnvironmentValues {
+    var tabBarHeight: CGFloat {
+        get { self[TabBarHeightEnvironmentKey.self] }
+        set { self[TabBarHeightEnvironmentKey.self] = newValue }
     }
 }
 
