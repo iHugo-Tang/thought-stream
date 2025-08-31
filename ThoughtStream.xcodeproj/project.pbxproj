@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		9AF624542E640AC800910418 /* LucideIcons in Frameworks */ = {isa = PBXBuildFile; productRef = 9AF624532E640AC800910418 /* LucideIcons */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		9AF6242F2E64057D00910418 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -65,6 +69,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9AF624542E640AC800910418 /* LucideIcons in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -125,6 +130,7 @@
 			);
 			name = ThoughtStream;
 			packageProductDependencies = (
+				9AF624532E640AC800910418 /* LucideIcons */,
 			);
 			productName = ThoughtStream;
 			productReference = 9AF6241D2E64057C00910418 /* ThoughtStream.app */;
@@ -208,6 +214,9 @@
 			);
 			mainGroup = 9AF624142E64057C00910418;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				9AF624522E640AC700910418 /* XCRemoteSwiftPackageReference "lucide-icons-swift" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 9AF6241E2E64057C00910418 /* Products */;
 			projectDirPath = "";
@@ -575,6 +584,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		9AF624522E640AC700910418 /* XCRemoteSwiftPackageReference "lucide-icons-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/JakubMazur/lucide-icons-swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.542.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		9AF624532E640AC800910418 /* LucideIcons */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9AF624522E640AC700910418 /* XCRemoteSwiftPackageReference "lucide-icons-swift" */;
+			productName = LucideIcons;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 9AF624152E64057C00910418 /* Project object */;
 }
