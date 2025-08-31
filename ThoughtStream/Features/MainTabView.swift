@@ -74,6 +74,7 @@ struct MainTabView: View {
                 .opacity(viewModel.isTabBarHidden ? 0 : 1)
                 .animation(viewModel.spring, value: viewModel.isTabBarHidden)
         }
+        .ignoresSafeArea(.keyboard, edges: .bottom)
     }
 }
 

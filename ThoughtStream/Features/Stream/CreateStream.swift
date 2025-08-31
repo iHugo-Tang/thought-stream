@@ -80,9 +80,8 @@ private extension CreateStream {
             }
 
             HStack(alignment: .center, spacing: 8) {
-                (Text("Try using:")
-                    + Text("looking forward to, can't wait to, on the horizon")
-                ).appFont(size: .sm, weight: .medium)
+                Text("Try using: looking forward to, can't wait to, on the horizon")
+                .appFont(size: .sm, weight: .medium)
                 .foregroundColor(.thoughtStream.neutral.gray600)
             }
             .padding(12)
@@ -123,13 +122,13 @@ private extension CreateStream {
                 textEditor
                     .focused($isExpandTextEditorFocused)
             }
-            .padding(16)
+            .padding(.horizontal, 16)
 
             Divider()
 
             HStack(spacing: 12) {
                 CircleIconButton(image: Lucide.mic)
-                CircleIconButton(image: Lucide.slidersHorizontal)
+                CircleIconButton(image: Lucide.hash)
                 Spacer()
                 actionBar
             }
@@ -202,7 +201,6 @@ private extension CreateStream {
                 .cornerRadius(8)
             }
         }
-        .padding(.top, 4)
     }
 }
 
