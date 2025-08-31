@@ -19,7 +19,7 @@ struct MainTabView: View {
         UITabBar.appearance().isHidden = true
     }
 
-    @State private var selectedTab: Tab = .home
+    @State private var selectedTab: Tab = .stream
     @State private var tabBarHeight: CGFloat = 0
     private let spring = Animation.spring(response: 0.3, dampingFraction: 0.7)
 
@@ -48,8 +48,10 @@ struct MainTabView: View {
                 }
                 .tag(Tab.home)
 
-                StreamView()
-                    .tag(Tab.stream)
+                NavigationView {
+                    StreamView()
+                }
+                .tag(Tab.stream)
             
                 VacabularyView()
                     .tag(Tab.vocab)

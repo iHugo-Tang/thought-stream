@@ -14,7 +14,7 @@ struct HomeView: View {
                 }
                 .padding(.horizontal, 16)
                 .padding(.top, 16)
-                .padding(.bottom, 56 + tabBarHeight + 8 * 2) // 为底部 Tab 与悬浮按钮预留空间
+                .padding(.bottom, tabBarHeight + 8) // 为底部 Tab 与悬浮按钮预留空间
             }
             .background(Color.thoughtStream.neutral.gray50)
             
@@ -35,18 +35,18 @@ struct HomeView: View {
         .toolbarBackground(Color.thoughtStream.white, for: .navigationBar)
         .toolbarBackground(.visible, for: .navigationBar)
         .toolbar {
-            ToolbarItem(placement: .navigationBarLeading) {
+            ToolbarItem(placement: .principal) {
                 HStack(spacing: 8) {
                     Image(uiImage: Lucide.brain)
                         .renderingMode(.template)
                         .font(.system(size: 16, weight: .semibold))
-                        .foregroundColor(.thoughtStream.theme.green600)
+                        .foregroundColor(.thoughtStream.neutral.gray800)
                     Text("ThoughtStream")
                         .appFont(size: .lg, weight: .bold)
                         .foregroundColor(.thoughtStream.neutral.gray800)
                 }
             }
-            ToolbarItem(placement: .navigationBarTrailing) {
+            ToolbarItem(placement: .topBarTrailing) {
                 Text("Free")
                     .appFont(size: .xs, weight: .regular)
                     .appCapsuleTag(background: .thoughtStream.theme.green100, foreground: .thoughtStream.theme.green700)
