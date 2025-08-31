@@ -32,7 +32,7 @@ struct StreamView: View {
                 }
             }
             ToolbarItem(placement: .topBarTrailing) {
-                Button(action: {}) {
+                NavigationLink(destination: CreateStream()) {
                     Image(systemName: "plus")
                 }
             }
