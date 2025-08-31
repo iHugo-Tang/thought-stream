@@ -2,13 +2,6 @@ import SwiftUI
 import LucideIcons
 
 struct MainTabView: View {
-    enum Tab: Hashable {
-        case home
-        case stream
-        case vocab
-        case review
-        case profile
-    }
     
     // 使用 init() 来自定义 TabBar 的全局外观
     init() {
@@ -19,15 +12,13 @@ struct MainTabView: View {
         UITabBar.appearance().isHidden = true
     }
 
-    @State private var selectedTab: Tab = .stream
-    @State private var tabBarHeight: CGFloat = 0
-    private let spring = Animation.spring(response: 0.3, dampingFraction: 0.7)
+    @StateObject private var viewModel = MainTabViewModel()
 
     struct TabItemData: Identifiable {
-        let tab: Tab
+        let tab: MainTabViewModel.Tab
         let title: String
         let image: UIImage
-        var id: Tab { tab }
+        var id: MainTabViewModel.Tab { tab }
     }
 
     private var items: [TabItemData] {
@@ -42,32 +33,33 @@ struct MainTabView: View {
 
     var body: some View {
         ZStack(alignment: .bottom) {
-            TabView(selection: $selectedTab) {
+            TabView(selection: $viewModel.selectedTab) {
                 NavigationView {
                     HomeView()
                 }
-                .tag(Tab.home)
+                .tag(MainTabViewModel.Tab.home)
 
                 NavigationView {
                     StreamView()
                 }
-                .tag(Tab.stream)
+                .tag(MainTabViewModel.Tab.stream)
             
                 VacabularyView()
-                    .tag(Tab.vocab)
+                    .tag(MainTabViewModel.Tab.vocab)
             
                 ReviewView()
-                    .tag(Tab.review)
+                    .tag(MainTabViewModel.Tab.review)
             
                 ProfileView()
-                    .tag(Tab.profile)
+                    .tag(MainTabViewModel.Tab.profile)
             }
             .accentColor(.thoughtStream.theme.green600)
             // 将测得的 TabBar 高度下发到子树（如 HomeView）以便内部定位浮动按钮
-            .environment(\.tabBarHeight, tabBarHeight)
+            .environment(\.tabBarHeight, viewModel.isTabBarHidden ? 0 : viewModel.tabBarHeight)
+            .environment(\.setTabBarHidden, viewModel.setTabBarHidden)
 
             // Custom TabBar
-            CustomTabBar(items: items, selected: $selectedTab, spring: spring)
+            CustomTabBar(items: items, selected: $viewModel.selectedTab, spring: viewModel.spring)
                 .padding(.horizontal, 16)
                 .padding(.bottom, 8)
                 // Measure the rendered height of the TabBar (including paddings)
@@ -77,15 +69,17 @@ struct MainTabView: View {
                     }
                 )
                 .onPreferenceChange(CustomTabBarHeightPreferenceKey.self) { value in
-                    tabBarHeight = value
+                    viewModel.tabBarHeight = value
                 }
+                .opacity(viewModel.isTabBarHidden ? 0 : 1)
+                .animation(viewModel.spring, value: viewModel.isTabBarHidden)
         }
     }
 }
 
 private struct CustomTabBar: View {
     let items: [MainTabView.TabItemData]
-    @Binding var selected: MainTabView.Tab
+    @Binding var selected: MainTabViewModel.Tab
     let spring: Animation
 
     var body: some View {
@@ -134,6 +128,34 @@ extension EnvironmentValues {
     var tabBarHeight: CGFloat {
         get { self[TabBarHeightEnvironmentKey.self] }
         set { self[TabBarHeightEnvironmentKey.self] = newValue }
+    }
+}
+
+// MARK: - Environment for controlling TabBar visibility
+private struct SetTabBarHiddenKey: EnvironmentKey {
+    static let defaultValue: (Bool) -> Void = { _ in }
+}
+
+extension EnvironmentValues {
+    var setTabBarHidden: (Bool) -> Void {
+        get { self[SetTabBarHiddenKey.self] }
+        set { self[SetTabBarHiddenKey.self] = newValue }
+    }
+}
+
+// MARK: - View modifier for hiding TabBar on push
+private struct HideTabBarOnPush: ViewModifier {
+    @Environment(\.setTabBarHidden) private var setTabBarHidden
+    func body(content: Content) -> some View {
+        content
+            .onAppear { setTabBarHidden(true) }
+            .onDisappear { setTabBarHidden(false) }
+    }
+}
+
+extension View {
+    func hideTabBarOnPush() -> some View {
+        modifier(HideTabBarOnPush())
     }
 }
 

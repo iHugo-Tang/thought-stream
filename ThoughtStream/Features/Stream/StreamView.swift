@@ -32,7 +32,7 @@ struct StreamView: View {
                 }
             }
             ToolbarItem(placement: .topBarTrailing) {
-                NavigationLink(destination: CreateStream()) {
+                NavigationLink(destination: CreateStream().hideTabBarOnPush()) {
                     Image(systemName: "plus")
                 }
             }

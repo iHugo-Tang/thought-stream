@@ -9,6 +9,8 @@ struct CreateStream: View {
     @State private var cancelButtonWidth: CGFloat = 0
     @State private var isEditorExpanded: Bool = false
     @Namespace private var editorNamespace
+    @FocusState private var isTextEditorFocused: Bool
+    @FocusState private var isExpandTextEditorFocused: Bool
 
     var body: some View {
         ZStack {
@@ -99,6 +101,7 @@ private extension CreateStream {
         VStack(spacing: 0) {
             VStack(alignment: .leading) {
                 textEditor
+                    .focused($isTextEditorFocused)
             }
             .padding(16)
 
@@ -106,7 +109,7 @@ private extension CreateStream {
 
             HStack(spacing: 12) {
                 CircleIconButton(image: Lucide.mic)
-                CircleIconButton(image: Lucide.slidersHorizontal)
+                CircleIconButton(image: Lucide.hash)
                 Spacer()
                 actionBar
             }
@@ -122,6 +125,7 @@ private extension CreateStream {
         VStack(spacing: 0) {
             VStack(alignment: .leading) {
                 textEditor
+                    .focused($isExpandTextEditorFocused)
             }
             .padding(16)
 
@@ -161,7 +165,20 @@ private extension CreateStream {
             }
         }
         .overlay(alignment: .topTrailing) {
-            Button(action: { isEditorExpanded.toggle() }) {
+            Button(action: {
+                if isEditorExpanded {
+                    isEditorExpanded.toggle()
+                    isTextEditorFocused.toggle()
+                    isExpandTextEditorFocused.toggle()
+                } else {
+                    // 如果键盘和展开动画一起, 动画不流畅
+                    isTextEditorFocused.toggle()
+                    isExpandTextEditorFocused.toggle()
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                        isEditorExpanded.toggle()
+                    }
+                }
+            }) {
                 Image(systemName: isEditorExpanded ? "arrow.down.right.and.arrow.up.left" : "arrow.up.left.and.arrow.down.right")
                     .renderingMode(.template)
                     .foregroundColor(.thoughtStream.neutral.gray700)
