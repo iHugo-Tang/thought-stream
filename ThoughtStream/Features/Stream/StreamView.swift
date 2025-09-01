@@ -32,8 +32,13 @@ struct StreamView: View {
                 }
             }
             ToolbarItem(placement: .topBarTrailing) {
-                NavigationLink(destination: CreateStream().hideTabBarOnPush()) {
-                    Image(systemName: "plus")
+                HStack(spacing: 12) {
+                    NavigationLink(destination: ChatView(text: .constant("")).hideTabBarOnPush()) {
+                        Image(systemName: "message")
+                    }
+                    NavigationLink(destination: CreateStream().hideTabBarOnPush()) {
+                        Image(systemName: "plus")
+                    }
                 }
             }
         }
@@ -154,6 +159,12 @@ private struct StreamCard: View {
         }
         .padding(20)
         .appCard(cornerRadius: 12)
+        .background(
+            NavigationLink(destination: ChatView(text: .constant("")).hideTabBarOnPush()) {
+                EmptyView()
+            }
+            .opacity(0)
+        )
     }
 }
 
