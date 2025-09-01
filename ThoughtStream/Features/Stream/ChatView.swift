@@ -46,6 +46,10 @@ struct ChatView: View {
                     .ignoresSafeArea(edges: .bottom)
             }
         }
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbarBackground(Color.thoughtStream.white, for: .navigationBar)
+        .toolbarBackground(.visible, for: .navigationBar)
+        .toolbar { navigationBar }
     }
 }
 
@@ -157,6 +161,33 @@ struct BubbleShape: Shape {
         }
         
         return path
+    }
+}
+
+private extension ChatView {
+    @ToolbarContentBuilder
+    var navigationBar: some ToolbarContent {
+        ToolbarItem(placement: .principal) {
+            HStack(spacing: 8) {
+                Image(uiImage: Lucide.pen)
+                    .renderingMode(.template)
+                    .font(.system(size: 16, weight: .semibold))
+                    .foregroundColor(.thoughtStream.neutral.gray800)
+                Text("Thought")
+                    .appFont(size: .lg, weight: .bold)
+                    .foregroundColor(.thoughtStream.neutral.gray800)
+            }
+        }
+        ToolbarItem(placement: .topBarTrailing) {
+            Text("Free")
+                .appFont(size: .xs, weight: .medium)
+                .appCapsuleTag(
+                    background: .thoughtStream.theme.green100,
+                    foreground: .thoughtStream.theme.green700,
+                    horizontal: 8,
+                    vertical: 4
+                )
+        }
     }
 }
 

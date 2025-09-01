@@ -34,9 +34,6 @@ struct StreamView: View {
             ToolbarItem(placement: .topBarTrailing) {
                 HStack(spacing: 12) {
                     NavigationLink(destination: ChatView(text: .constant("")).hideTabBarOnPush()) {
-                        Image(systemName: "message")
-                    }
-                    NavigationLink(destination: CreateStream().hideTabBarOnPush()) {
                         Image(systemName: "plus")
                     }
                 }
