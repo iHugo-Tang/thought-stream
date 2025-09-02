@@ -7,8 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		9A5B3F8A2E66620800F734AA /* SwiftUIIntrospect in Frameworks */ = {isa = PBXBuildFile; productRef = 9A5B3F892E66620800F734AA /* SwiftUIIntrospect */; };
-		9AF624542E640AC800910418 /* LucideIcons in Frameworks */ = {isa = PBXBuildFile; productRef = 9AF624532E640AC800910418 /* LucideIcons */; };
+		9AA6899F2E677FB000A49EE1 /* LucideIcons in Frameworks */ = {isa = PBXBuildFile; productRef = 9AA6899E2E677FB000A49EE1 /* LucideIcons */; };
+		9AA689A22E677FBB00A49EE1 /* LookinServer in Frameworks */ = {isa = PBXBuildFile; productRef = 9AA689A12E677FBB00A49EE1 /* LookinServer */; };
+		9AA689A52E67868700A49EE1 /* SwiftUIIntrospect in Frameworks */ = {isa = PBXBuildFile; productRef = 9AA689A42E67868700A49EE1 /* SwiftUIIntrospect */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -70,8 +71,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9AF624542E640AC800910418 /* LucideIcons in Frameworks */,
-				9A5B3F8A2E66620800F734AA /* SwiftUIIntrospect in Frameworks */,
+				9AA689A52E67868700A49EE1 /* SwiftUIIntrospect in Frameworks */,
+				9AA6899F2E677FB000A49EE1 /* LucideIcons in Frameworks */,
+				9AA689A22E677FBB00A49EE1 /* LookinServer in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -132,8 +134,9 @@
 			);
 			name = ThoughtStream;
 			packageProductDependencies = (
-				9AF624532E640AC800910418 /* LucideIcons */,
-				9A5B3F892E66620800F734AA /* SwiftUIIntrospect */,
+				9AA6899E2E677FB000A49EE1 /* LucideIcons */,
+				9AA689A12E677FBB00A49EE1 /* LookinServer */,
+				9AA689A42E67868700A49EE1 /* SwiftUIIntrospect */,
 			);
 			productName = ThoughtStream;
 			productReference = 9AF6241D2E64057C00910418 /* ThoughtStream.app */;
@@ -218,8 +221,9 @@
 			mainGroup = 9AF624142E64057C00910418;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				9AF624522E640AC700910418 /* XCRemoteSwiftPackageReference "lucide-icons-swift" */,
-				9A5B3F882E66620800F734AA /* XCRemoteSwiftPackageReference "swiftui-introspect" */,
+				9AA6899D2E677FB000A49EE1 /* XCRemoteSwiftPackageReference "lucide-icons-swift" */,
+				9AA689A02E677FBB00A49EE1 /* XCRemoteSwiftPackageReference "LookinServer" */,
+				9AA689A32E67868700A49EE1 /* XCRemoteSwiftPackageReference "swiftui-introspect" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 9AF6241E2E64057C00910418 /* Products */;
@@ -590,15 +594,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		9A5B3F882E66620800F734AA /* XCRemoteSwiftPackageReference "swiftui-introspect" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/siteline/swiftui-introspect";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.3.0;
-			};
-		};
-		9AF624522E640AC700910418 /* XCRemoteSwiftPackageReference "lucide-icons-swift" */ = {
+		9AA6899D2E677FB000A49EE1 /* XCRemoteSwiftPackageReference "lucide-icons-swift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/JakubMazur/lucide-icons-swift";
 			requirement = {
@@ -606,18 +602,39 @@
 				minimumVersion = 0.542.0;
 			};
 		};
+		9AA689A02E677FBB00A49EE1 /* XCRemoteSwiftPackageReference "LookinServer" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/QMUI/LookinServer/";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.2.8;
+			};
+		};
+		9AA689A32E67868700A49EE1 /* XCRemoteSwiftPackageReference "swiftui-introspect" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/siteline/swiftui-introspect";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.3.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		9A5B3F892E66620800F734AA /* SwiftUIIntrospect */ = {
+		9AA6899E2E677FB000A49EE1 /* LucideIcons */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 9A5B3F882E66620800F734AA /* XCRemoteSwiftPackageReference "swiftui-introspect" */;
-			productName = SwiftUIIntrospect;
-		};
-		9AF624532E640AC800910418 /* LucideIcons */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 9AF624522E640AC700910418 /* XCRemoteSwiftPackageReference "lucide-icons-swift" */;
+			package = 9AA6899D2E677FB000A49EE1 /* XCRemoteSwiftPackageReference "lucide-icons-swift" */;
 			productName = LucideIcons;
+		};
+		9AA689A12E677FBB00A49EE1 /* LookinServer */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9AA689A02E677FBB00A49EE1 /* XCRemoteSwiftPackageReference "LookinServer" */;
+			productName = LookinServer;
+		};
+		9AA689A42E67868700A49EE1 /* SwiftUIIntrospect */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9AA689A32E67868700A49EE1 /* XCRemoteSwiftPackageReference "swiftui-introspect" */;
+			productName = SwiftUIIntrospect;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
