@@ -33,7 +33,7 @@ struct StreamView: View {
             }
             ToolbarItem(placement: .topBarTrailing) {
                 HStack(spacing: 12) {
-                    NavigationLink(destination: ChatView(text: .constant("")).hideTabBarOnPush()) {
+                    NavigationLink(destination: ChatView().hideTabBarOnPush()) {
                         Image(systemName: "plus")
                     }
                 }
@@ -156,12 +156,6 @@ private struct StreamCard: View {
         }
         .padding(20)
         .appCard(cornerRadius: 12)
-        .background(
-            NavigationLink(destination: ChatView(text: .constant("")).hideTabBarOnPush()) {
-                EmptyView()
-            }
-            .opacity(0)
-        )
     }
 }
 

@@ -3,8 +3,9 @@ import LucideIcons
 import SwiftUIIntrospect
 
 struct ChatView: View {
-    @Binding var text: String
+    @State var text: String = ""
     @FocusState private var isInputFocused: Bool
+    @State var height: CGFloat = 36
     
     let data = Array(1...20)
     
@@ -38,15 +39,18 @@ struct ChatView: View {
         .scrollDismissesKeyboard(.interactively)
         .bottomBar {
             HStack {
-                TextField("What's on your mind?", text: $text)
+                TextField("What's on your mind?", text: $text, axis: .vertical)
+                    .frame(height: height)
                     .appFont(size: .base)
-                    .frame(height: 36)
+                    .lineLimit(1...3)
+                    .frame(minHeight: 36)
                     .padding(.horizontal)
                     .cornerRadius(10)
                     .focused($isInputFocused)
                 
                 Spacer()
                 Button(action: {
+                    height += 36
                 }) {
                     Image(uiImage: Lucide.mic)
                         .renderingMode(.template)
@@ -54,6 +58,7 @@ struct ChatView: View {
                         .padding(.trailing)
                 }
             }
+            .frame(height: height)
             .overlay(
                 RoundedRectangle(cornerRadius: 18)
                     .stroke(Color.thoughtStream.neutral.gray300, lineWidth: 1)
@@ -69,7 +74,6 @@ struct ChatView: View {
         .toolbarBackground(Color.thoughtStream.white, for: .navigationBar)
         .toolbarBackground(.visible, for: .navigationBar)
         .toolbar { navigationBar }
-//        .ignoresSafeArea(.all, edges: .bottom)
     }
 }
 
@@ -212,5 +216,5 @@ private extension ChatView {
 }
 
 #Preview {
-    ChatView(text: .constant(""))
+    ChatView()
 }
