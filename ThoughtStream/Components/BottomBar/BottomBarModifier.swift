@@ -26,7 +26,7 @@ struct Modifier<BarContent : View>: ViewModifier {
     }
 }
 
-class BottomView: UIView {
+class ChatInputView: UIView {
     weak var textfield: UIKit.UITextView?
     
     override func hitTest(_ point: CGPoint, with event: UIKit.UIEvent?) -> UIKit.UIView? {
@@ -40,7 +40,7 @@ class BottomView: UIView {
     }
 }
 
-class MixedViewController: UIViewController, UITextViewDelegate {
+class ChatInputViewController: UIViewController, UITextViewDelegate {
     var rowHeight : CGFloat = 14
     var baseHeight: CGFloat = 30
     var maxHeight: CGFloat = 30
@@ -67,7 +67,7 @@ class MixedViewController: UIViewController, UITextViewDelegate {
     
     override func loadView() {
         super.loadView()
-        let bottomView = BottomView()
+        let bottomView = ChatInputView()
         bottomView.textfield = textfield
         self.view = bottomView
         bottomView.backgroundColor = .red.withAlphaComponent(0.5)
@@ -129,11 +129,11 @@ class MixedViewController: UIViewController, UITextViewDelegate {
 struct UIKitViewControllerWrapper: UIViewControllerRepresentable {
     let onUpdateBottom: ((CGRect, CGRect) -> Void)?
     
-    func makeUIViewController(context: Context) -> MixedViewController {
-        return MixedViewController(onUpdateBottom: onUpdateBottom)
+    func makeUIViewController(context: Context) -> ChatInputViewController {
+        return ChatInputViewController(onUpdateBottom: onUpdateBottom)
     }
 
-    func updateUIViewController(_ uiViewController: MixedViewController, context: Context) {
+    func updateUIViewController(_ uiViewController: ChatInputViewController, context: Context) {
         // 这里可以处理状态更新
     }
 }
