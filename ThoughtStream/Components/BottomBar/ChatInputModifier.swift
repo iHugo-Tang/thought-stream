@@ -1,7 +1,7 @@
 import SwiftUI
 
 extension View {
-    func bottomBar<Content: View>(@ViewBuilder content: () -> Content) -> some View {
+    func chatInput<Content: View>(@ViewBuilder content: () -> Content) -> some View {
         modifier(Modifier(barContent: content))
     }
 }

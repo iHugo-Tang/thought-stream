@@ -37,7 +37,7 @@ struct ChatView: View {
         }
         .listStyle(.plain)
         .scrollDismissesKeyboard(.interactively)
-        .bottomBar {
+        .chatInput {
             HStack {
                 TextField("What's on your mind?", text: $text, axis: .vertical)
                     .frame(height: height)
