@@ -21,7 +21,8 @@ class ChatInputView: UIView {
     
     // color
     private let borderColor = UIColor(Color.thoughtStream.neutral.gray400)
-    
+    private let micColor = UIColor(Color.thoughtStream.functional.red500)
+
     // callbacks
     // update content frame and keyboard frame
     var onBottomViewFrameChanged: ((CGRect) -> Void)?
@@ -29,8 +30,8 @@ class ChatInputView: UIView {
     init(onBottomViewFrameChanged: ((CGRect) -> Void)?) {
         self.inputTextView = UITextView()
         self.micButton = UIButton(type: .system)
-        self.micButton.setImage(Lucide.mic, for: .normal)
-        self.micButton.tintColor = self.borderColor
+        self.micButton.setImage(Lucide.audioLines, for: .normal)
+        self.micButton.tintColor = self.micColor
         self.bottomBackgroundView = UIView()
         self.onBottomViewFrameChanged = onBottomViewFrameChanged
         
@@ -142,7 +143,7 @@ extension ChatInputView {
         NSLayoutConstraint.activate([
             self.contentView.leadingAnchor.constraint(equalTo: self.bottomView.leadingAnchor, constant: 16),
             self.contentView.trailingAnchor.constraint(equalTo: self.bottomView.trailingAnchor, constant: -16),
-            self.contentView.topAnchor.constraint(equalTo: self.bottomView.topAnchor, constant: 8),
+            self.contentView.topAnchor.constraint(greaterThanOrEqualTo: self.bottomView.topAnchor, constant: 8),
             self.contentView.bottomAnchor.constraint(equalTo: self.keyboardLayoutGuide.topAnchor, constant: -8)
         ])
         
@@ -156,9 +157,9 @@ extension ChatInputView {
         NSLayoutConstraint.activate([
             self.micButton.leadingAnchor.constraint(equalTo: self.inputTextView.trailingAnchor),
             self.micButton.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -8),
-            self.micButton.centerYAnchor.constraint(equalTo: self.contentView.centerYAnchor),
-            self.micButton.widthAnchor.constraint(equalToConstant: 36),
-            self.micButton.heightAnchor.constraint(equalToConstant: 36),
+            self.micButton.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor),
+            self.micButton.widthAnchor.constraint(equalToConstant: 32),
+            self.micButton.heightAnchor.constraint(equalToConstant: 32),
         ])
         
         NSLayoutConstraint.activate([
