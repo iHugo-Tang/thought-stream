@@ -24,6 +24,10 @@ class ChatInputView: UIView {
     // callbacks
     // update content frame and keyboard frame
     var onBottomViewFrameChanged: ((CGRect) -> Void)?
+    // state for coalescing frame change callback
+    private var lastSentBottomViewFrame: CGRect?
+    private var pendingBottomViewFrame: CGRect?
+    private var isFrameCallbackScheduled: Bool = false
     // input text stream + callbacks
     private let inputTextPublisher: AnyPublisher<String, Never>?
     private let onTextSend: ((String, UITextView) -> Void)?
@@ -79,10 +83,23 @@ class ChatInputView: UIView {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        
-        if let onBottomViewFrameChanged {
-            print("onBottomViewFrameChanged: \(bottomView.frame)")
-            onBottomViewFrameChanged(bottomView.frame)
+        let currentFrame = bottomView.frame
+        if let last = lastSentBottomViewFrame, last.equalTo(currentFrame) {
+            return
+        }
+        pendingBottomViewFrame = currentFrame
+        if !isFrameCallbackScheduled {
+            isFrameCallbackScheduled = true
+            RunLoop.current.perform(inModes: [.default]) { [weak self] in
+                guard let self = self else { return }
+                self.isFrameCallbackScheduled = false
+                guard let frame = self.pendingBottomViewFrame else { return }
+                self.pendingBottomViewFrame = nil
+                if !(self.lastSentBottomViewFrame?.equalTo(frame) ?? false) {
+                    self.lastSentBottomViewFrame = frame
+                    self.onBottomViewFrameChanged?(frame)
+                }
+            }
         }
     }
 }

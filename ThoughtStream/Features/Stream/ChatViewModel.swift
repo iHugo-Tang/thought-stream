@@ -26,6 +26,7 @@ class ChatViewModel: ObservableObject {
         guard !trimmed.isEmpty else { return }
         messages.append(Message(text: trimmed, sendByYou: true))
         textView.text = ""
+        textView.delegate?.textViewDidChange?(textView)
     }
 
     func handleTextDidChange(_ text: String, textView: UITextView) {

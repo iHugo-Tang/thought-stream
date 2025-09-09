@@ -52,7 +52,9 @@ struct MessageBubble: View {
             
             Text(text)
                 .appFont(size: .base, weight: .regular)
-                .padding()
+                .padding(.all, 10)
+                .padding(.leading, !isFromUser ? 8 : 0)
+                .padding(.trailing, isFromUser ? 8 : 0)
                 .foregroundColor(isFromUser ? .white : .black)
                 .background(
                     BubbleShape()
@@ -177,4 +179,6 @@ private extension ChatView {
 
 #Preview {
     ChatView()
+    MessageBubble(text: "1", isFromUser: true)
+    MessageBubble(text: "2", isFromUser: false)
 }
