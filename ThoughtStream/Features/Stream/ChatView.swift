@@ -3,12 +3,9 @@ import LucideIcons
 import SwiftUIIntrospect
 
 struct ChatView: View {
-    @State var text: String = ""
-    @FocusState private var isInputFocused: Bool
-    @State var height: CGFloat = 36
+    @ObservedObject var chatViewModel = ChatViewModel()
     
     let data = Array(1...20)
-    
     
     var body: some View {
         ScrollViewReader { proxy in
@@ -37,39 +34,7 @@ struct ChatView: View {
         }
         .listStyle(.plain)
         .scrollDismissesKeyboard(.interactively)
-        .chatInput {
-            HStack {
-                TextField("What's on your mind?", text: $text, axis: .vertical)
-                    .frame(height: height)
-                    .appFont(size: .base)
-                    .lineLimit(1...3)
-                    .frame(minHeight: 36)
-                    .padding(.horizontal)
-                    .cornerRadius(10)
-                    .focused($isInputFocused)
-                
-                Spacer()
-                Button(action: {
-                    height += 36
-                }) {
-                    Image(uiImage: Lucide.mic)
-                        .renderingMode(.template)
-                        .foregroundColor(Color.thoughtStream.neutral.gray400)
-                        .padding(.trailing)
-                }
-            }
-            .frame(height: height)
-            .overlay(
-                RoundedRectangle(cornerRadius: 18)
-                    .stroke(Color.thoughtStream.neutral.gray300, lineWidth: 1)
-            )
-            .padding(.horizontal)
-            .padding(.vertical, 4)
-            .background {
-                Color.white.opacity(0.9)
-                    .background(.ultraThinMaterial)
-            }
-        }
+        .chatInput(chatViewModel: chatViewModel)
         .navigationBarTitleDisplayMode(.inline)
         .toolbarBackground(Color.thoughtStream.white, for: .navigationBar)
         .toolbarBackground(.visible, for: .navigationBar)

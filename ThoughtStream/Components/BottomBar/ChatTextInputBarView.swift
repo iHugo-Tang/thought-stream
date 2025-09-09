@@ -1,6 +1,7 @@
 import UIKit
 import SwiftUI
 import LucideIcons
+import Combine
 
 class ChatTextInputBarView: UIView {
     // UI
@@ -19,23 +20,51 @@ class ChatTextInputBarView: UIView {
     private var baseHeight: CGFloat = 30
     private var maxHeight: CGFloat = 58 // matches previous hard limit used
 
+    // ViewModel binding
+    private weak var chatViewModel: ChatViewModel?
+    private var cancellables = Set<AnyCancellable>()
+
     // Callbacks
     var onMicTapped: (() -> Void)?
     var onTextHeightChanged: ((CGFloat) -> Void)?
 
+    init(chatViewModel: ChatViewModel? = nil) {
+        self.chatViewModel = chatViewModel
+        super.init(frame: .zero)
+        setup()
+        setupViewModelBinding()
+    }
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         setup()
+        setupViewModelBinding()
     }
 
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         setup()
+        setupViewModelBinding()
     }
 
     private func setup() {
         setupUI()
         setupConstraints()
+    }
+
+    private func setupViewModelBinding() {
+        // Bind ViewModel's inputText to textView
+        chatViewModel?.$inputText
+            .sink { [weak self] newText in
+                guard let self = self else { return }
+                // Only update textView if the text is different and we're not currently editing
+                if self.textView.text != newText && !self.textView.isFirstResponder {
+                    self.textView.text = newText.isEmpty ? "" : newText
+                    // Update text color based on content
+                    self.textView.textColor = newText.isEmpty ? .lightGray : .black
+                }
+            }
+            .store(in: &cancellables)
     }
 
     private func setupUI() {
@@ -116,12 +145,24 @@ extension ChatTextInputBarView: UITextViewDelegate {
             textView.textColor = .lightGray
             textView.text = "Type your thoughts here..."
         }
+        // Sync final text to ViewModel when editing ends
+        syncTextToViewModel(textView.text)
     }
 
     func textViewDidChange(_ textView: UITextView) {
         let newHeight = min(textView.contentSize.height, maxHeight)
         textViewHeightConstraint?.constant = newHeight
         onTextHeightChanged?(newHeight)
+
+        // Sync text changes to ViewModel in real-time
+        syncTextToViewModel(textView.text)
+    }
+
+    private func syncTextToViewModel(_ text: String) {
+        let actualText = (text == "Type your thoughts here..." || textView.textColor == .lightGray) ? "" : text
+        if chatViewModel?.inputText != actualText {
+            chatViewModel?.inputText = actualText
+        }
     }
 }
 

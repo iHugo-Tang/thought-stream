@@ -4,7 +4,7 @@ import SwiftUI
 
 class ChatInputView: UIView {
     // input bar view (encapsulated)
-    private let textInputBar = ChatTextInputBarView()
+    private let textInputBar: ChatTextInputBarView
     private let audioInputBar = ChatAudioInputBarView()
     
     // dynamic constraints per bar
@@ -24,18 +24,19 @@ class ChatInputView: UIView {
     // update content frame and keyboard frame
     var onBottomViewFrameChanged: ((CGRect) -> Void)?
     
-    init(onBottomViewFrameChanged: ((CGRect) -> Void)?) {
+    init(chatViewModel: ChatViewModel? = nil, onBottomViewFrameChanged: ((CGRect) -> Void)?) {
+        self.textInputBar = ChatTextInputBarView(chatViewModel: chatViewModel)
         self.bottomBackgroundView = UIView()
         self.onBottomViewFrameChanged = onBottomViewFrameChanged
-        
+
         // Create the UIVisualEffectView
         let blurEffect = UIBlurEffect(style: .systemThickMaterial)
         self.blurredView = UIVisualEffectView(effect: blurEffect)
         self.blurredView.backgroundColor = UIColor(Color.thoughtStream.white.opacity(0.9))
         self.blurredView.frame = CGRect(x: 50, y: 150, width: 250, height: 250)
-        
+
         super.init(frame: .zero)
-        
+
         setupViews()
     }
     

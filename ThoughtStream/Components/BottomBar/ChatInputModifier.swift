@@ -1,24 +1,25 @@
 import SwiftUI
 
 extension View {
-    func chatInput<Content: View>(@ViewBuilder content: () -> Content) -> some View {
-        modifier(Modifier(barContent: content))
+    func chatInput(chatViewModel: ChatViewModel? = nil) -> some View {
+        modifier(Modifier(chatViewModel: chatViewModel))
     }
 }
 
-struct Modifier<BarContent : View>: ViewModifier {
-    
-    @ViewBuilder
-    let barContent: BarContent
-    
+struct Modifier: ViewModifier {
     @State
     private var height: CGFloat?
-    
+    private let chatViewModel: ChatViewModel?
+
+    init(chatViewModel: ChatViewModel? = nil) {
+        self.chatViewModel = chatViewModel
+    }
+
     func body(content: Content) -> some View {
         ZStack(alignment: .topLeading) {
             content
                 .safeAreaPadding(.bottom, height)
-            UIKitViewControllerWrapper { bottomViewFrame in
+            UIKitViewControllerWrapper(chatViewModel: chatViewModel) { bottomViewFrame in
                 height = bottomViewFrame.height
             }
         }
@@ -27,10 +28,16 @@ struct Modifier<BarContent : View>: ViewModifier {
 }
 
 struct UIKitViewControllerWrapper: UIViewControllerRepresentable {
+    let chatViewModel: ChatViewModel?
     let onBottomViewFrameChanged: ((CGRect) -> Void)?
-    
+
+    init(chatViewModel: ChatViewModel? = nil, onBottomViewFrameChanged: ((CGRect) -> Void)? = nil) {
+        self.chatViewModel = chatViewModel
+        self.onBottomViewFrameChanged = onBottomViewFrameChanged
+    }
+
     func makeUIViewController(context: Context) -> ChatInputViewController {
-        return ChatInputViewController(onBottomViewFrameChanged: onBottomViewFrameChanged)
+        return ChatInputViewController(chatViewModel: chatViewModel, onBottomViewFrameChanged: onBottomViewFrameChanged)
     }
 
     func updateUIViewController(_ uiViewController: ChatInputViewController, context: Context) {

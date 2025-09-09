@@ -6,12 +6,12 @@ class ChatInputViewController: UIViewController, UITextViewDelegate {
     var baseHeight: CGFloat = 30
     var maxHeight: CGFloat = 30
     let chatInputView: ChatInputView!
-    
-    init(onBottomViewFrameChanged: ((CGRect) -> Void)?) {
-        self.chatInputView = ChatInputView(onBottomViewFrameChanged: onBottomViewFrameChanged)
+
+    init(chatViewModel: ChatViewModel? = nil, onBottomViewFrameChanged: ((CGRect) -> Void)?) {
+        self.chatInputView = ChatInputView(chatViewModel: chatViewModel, onBottomViewFrameChanged: onBottomViewFrameChanged)
         super.init(nibName: nil, bundle: nil)
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
