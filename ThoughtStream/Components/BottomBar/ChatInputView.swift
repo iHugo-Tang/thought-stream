@@ -1,6 +1,7 @@
 import UIKit
 import LucideIcons
 import SwiftUI
+import Combine
 
 class ChatInputView: UIView {
     // input bar view (encapsulated)
@@ -23,11 +24,26 @@ class ChatInputView: UIView {
     // callbacks
     // update content frame and keyboard frame
     var onBottomViewFrameChanged: ((CGRect) -> Void)?
+    // input text stream + callbacks
+    private let inputTextPublisher: AnyPublisher<String, Never>?
+    private let onTextSend: ((String) -> Void)?
+    private let onAudioSend: (() -> Void)?
+    private let onTextDidChange: ((String) -> Void)?
     
-    init(chatViewModel: ChatViewModel? = nil, onBottomViewFrameChanged: ((CGRect) -> Void)?) {
-        self.textInputBar = ChatTextInputBarView(chatViewModel: chatViewModel)
+    init(
+        inputTextPublisher: AnyPublisher<String, Never>? = nil,
+        onTextSend: ((String) -> Void)? = nil,
+        onAudioSend: (() -> Void)? = nil,
+        onTextDidChange: ((String) -> Void)? = nil,
+        onBottomViewFrameChanged: ((CGRect) -> Void)?
+    ) {
+        self.textInputBar = ChatTextInputBarView(inputTextPublisher: inputTextPublisher, onTextDidChange: onTextDidChange)
         self.bottomBackgroundView = UIView()
         self.onBottomViewFrameChanged = onBottomViewFrameChanged
+        self.inputTextPublisher = inputTextPublisher
+        self.onTextSend = onTextSend
+        self.onAudioSend = onAudioSend
+        self.onTextDidChange = onTextDidChange
 
         // Create the UIVisualEffectView
         let blurEffect = UIBlurEffect(style: .systemThickMaterial)
@@ -78,12 +94,17 @@ extension ChatInputView {
         self.textInputBar.onMicTapped = { [weak self] in
             self?.switchToAudioMode()
         }
+        self.textInputBar.onSendTapped = { [weak self] text in
+            self?.onTextSend?(text)
+        }
 
         self.audioInputBar.onCancelTapped = { [weak self] in
             self?.switchToTextMode()
         }
         self.audioInputBar.onStopTapped = { [weak self] in
-            self?.switchToTextMode()
+            guard let self else { return }
+            self.onAudioSend?()
+            self.switchToTextMode()
         }
 
         // show text bar lazily

@@ -23,32 +23,34 @@ class ChatTextInputBarView: UIView {
     private var baseHeight: CGFloat = 30
     private var maxHeight: CGFloat = 58 // matches previous hard limit used
 
-    // ViewModel binding
-    private weak var chatViewModel: ChatViewModel?
+    // Stream binding
+    private var inputTextPublisher: AnyPublisher<String, Never>?
     private var cancellables = Set<AnyCancellable>()
 
     // Callbacks
     var onMicTapped: (() -> Void)?
-    var onSendTapped: (() -> Void)?
+    var onSendTapped: ((String) -> Void)?
     var onTextHeightChanged: ((CGFloat) -> Void)?
+    var onTextDidChange: ((String) -> Void)?
 
-    init(chatViewModel: ChatViewModel? = nil) {
-        self.chatViewModel = chatViewModel
+    init(inputTextPublisher: AnyPublisher<String, Never>? = nil, onTextDidChange: ((String) -> Void)? = nil) {
+        self.inputTextPublisher = inputTextPublisher
+        self.onTextDidChange = onTextDidChange
         super.init(frame: .zero)
         setup()
-        setupViewModelBinding()
+        setupStreamBinding()
     }
 
     override init(frame: CGRect) {
         super.init(frame: frame)
         setup()
-        setupViewModelBinding()
+        setupStreamBinding()
     }
 
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         setup()
-        setupViewModelBinding()
+        setupStreamBinding()
     }
 
     private func setup() {
@@ -56,18 +58,14 @@ class ChatTextInputBarView: UIView {
         setupConstraints()
     }
 
-    private func setupViewModelBinding() {
-        // Bind ViewModel's inputText to textView
-        chatViewModel?.$inputText
+    private func setupStreamBinding() {
+        inputTextPublisher?
             .sink { [weak self] newText in
                 guard let self = self else { return }
-                // Only update textView if the text is different and we're not currently editing
                 if self.textView.text != newText && !self.textView.isFirstResponder {
                     self.textView.text = newText.isEmpty ? "" : newText
-                    // Update text color based on content
                     self.textView.textColor = newText.isEmpty ? .lightGray : .black
                 }
-                // Update button visibility based on input text
                 self.updateButtonVisibility(hasText: !newText.isEmpty)
             }
             .store(in: &cancellables)
@@ -99,7 +97,9 @@ class ChatTextInputBarView: UIView {
         
         // send button setup
         sendButton.onSendTapped = { [weak self] in
-            self?.onSendTapped?()
+            guard let self = self else { return }
+            let text = self.currentActualText()
+            self.onSendTapped?(text)
         }
 
         addSubview(containerView)
@@ -181,7 +181,8 @@ class ChatTextInputBarView: UIView {
     }
 
     @objc private func sendTapped() {
-        onSendTapped?()
+        let text = currentActualText()
+        onSendTapped?(text)
     }
 }
 
@@ -198,24 +199,23 @@ extension ChatTextInputBarView: UITextViewDelegate {
             textView.textColor = .lightGray
             textView.text = "Type your thoughts here..."
         }
-        // Sync final text to ViewModel when editing ends
-        syncTextToViewModel(textView.text)
+        // emit final text
+        onTextDidChange?(currentActualText())
     }
 
     func textViewDidChange(_ textView: UITextView) {
         let newHeight = min(textView.contentSize.height, maxHeight)
         textViewHeightConstraint?.constant = newHeight
         onTextHeightChanged?(newHeight)
-
-        // Sync text changes to ViewModel in real-time
-        syncTextToViewModel(textView.text)
+        let actual = currentActualText()
+        onTextDidChange?(actual)
+        updateButtonVisibility(hasText: !actual.isEmpty)
     }
 
-    private func syncTextToViewModel(_ text: String) {
-        let actualText = (text == "Type your thoughts here..." || textView.textColor == .lightGray) ? "" : text
-        if chatViewModel?.inputText != actualText {
-            chatViewModel?.inputText = actualText
-        }
+    private func currentActualText() -> String {
+        let text = textView.text ?? ""
+        let actual = (text == "Type your thoughts here..." || textView.textColor == .lightGray) ? "" : text
+        return actual
     }
 }
 

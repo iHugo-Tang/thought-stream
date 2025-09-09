@@ -5,36 +5,37 @@ import SwiftUIIntrospect
 struct ChatView: View {
     @ObservedObject var chatViewModel = ChatViewModel()
     
-    let data = Array(1...20)
-    
     var body: some View {
         ScrollViewReader { proxy in
             List {
-                ForEach(data, id: \.self) { i in
-                    if i % 2 == 0 {
+                ForEach(chatViewModel.messages, id: \.self) {
                         MessageBubble(
-                            text: "Congratulations!",
-                            isFromUser: true
+                            text: $0.text,
+                            isFromUser: $0.sendByYou
                         )
-                        .id(i)
-                    } else {
-                        MessageBubble(
-                            text: "Thank you, I appreciate it;) btw, I'm hosting a party tonight, do come over!",
-                            isFromUser: false
-                        )
-                        .id(i)
-                    }
+                        .id($0.id)
                 }
             }
             .onReceive(NotificationCenter.default.publisher(for: UIApplication.keyboardDidShowNotification)) { _ in
                 withAnimation {
-                    proxy.scrollTo(data.last!, anchor: .bottom)
+                    proxy.scrollTo(chatViewModel.messages.last!, anchor: .bottom)
                 }
             }
         }
         .listStyle(.plain)
         .scrollDismissesKeyboard(.interactively)
-        .chatInput(chatViewModel: chatViewModel)
+        .chatInput(
+            inputTextPublisher: chatViewModel.$inputText.eraseToAnyPublisher(),
+            onTextSend: { text in
+                print("onTextSend: \(text)")
+            },
+            onAudioSend: {
+                print("onAudioSend")
+            },
+            onTextDidChange: { text in
+                chatViewModel.inputText = text
+            }
+        )
         .navigationBarTitleDisplayMode(.inline)
         .toolbarBackground(Color.thoughtStream.white, for: .navigationBar)
         .toolbarBackground(.visible, for: .navigationBar)

@@ -1,5 +1,6 @@
 import UIKit
 import SwiftUI
+import Combine
 
 class ChatInputViewController: UIViewController, UITextViewDelegate {
     var rowHeight : CGFloat = 14
@@ -7,8 +8,20 @@ class ChatInputViewController: UIViewController, UITextViewDelegate {
     var maxHeight: CGFloat = 30
     let chatInputView: ChatInputView!
 
-    init(chatViewModel: ChatViewModel? = nil, onBottomViewFrameChanged: ((CGRect) -> Void)?) {
-        self.chatInputView = ChatInputView(chatViewModel: chatViewModel, onBottomViewFrameChanged: onBottomViewFrameChanged)
+    init(
+        inputTextPublisher: AnyPublisher<String, Never>? = nil,
+        onTextSend: ((String) -> Void)? = nil,
+        onAudioSend: (() -> Void)? = nil,
+        onTextDidChange: ((String) -> Void)? = nil,
+        onBottomViewFrameChanged: ((CGRect) -> Void)?
+    ) {
+        self.chatInputView = ChatInputView(
+            inputTextPublisher: inputTextPublisher,
+            onTextSend: onTextSend,
+            onAudioSend: onAudioSend,
+            onTextDidChange: onTextDidChange,
+            onBottomViewFrameChanged: onBottomViewFrameChanged
+        )
         super.init(nibName: nil, bundle: nil)
     }
 

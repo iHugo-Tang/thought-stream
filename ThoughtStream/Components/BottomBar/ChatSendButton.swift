@@ -33,6 +33,7 @@ class ChatSendButton: UIView {
         backgroundView.backgroundColor = UIColor(Color.thoughtStream.theme.green600)
         backgroundView.layer.cornerRadius = 12
         backgroundView.layer.masksToBounds = true
+        backgroundView.isUserInteractionEnabled = false
 
         // Add background view below button's image
         button.insertSubview(backgroundView, belowSubview: button.imageView!)
