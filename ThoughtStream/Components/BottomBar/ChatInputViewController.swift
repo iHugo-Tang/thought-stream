@@ -10,9 +10,9 @@ class ChatInputViewController: UIViewController, UITextViewDelegate {
 
     init(
         inputTextPublisher: AnyPublisher<String, Never>? = nil,
-        onTextSend: ((String) -> Void)? = nil,
+        onTextSend: ((String, UITextView) -> Void)? = nil,
         onAudioSend: (() -> Void)? = nil,
-        onTextDidChange: ((String) -> Void)? = nil,
+        onTextDidChange: ((String, UITextView) -> Void)? = nil,
         onBottomViewFrameChanged: ((CGRect) -> Void)?
     ) {
         self.chatInputView = ChatInputView(

@@ -26,18 +26,21 @@ class ChatInputView: UIView {
     var onBottomViewFrameChanged: ((CGRect) -> Void)?
     // input text stream + callbacks
     private let inputTextPublisher: AnyPublisher<String, Never>?
-    private let onTextSend: ((String) -> Void)?
+    private let onTextSend: ((String, UITextView) -> Void)?
     private let onAudioSend: (() -> Void)?
-    private let onTextDidChange: ((String) -> Void)?
+    private let onTextDidChange: ((String, UITextView) -> Void)?
     
     init(
         inputTextPublisher: AnyPublisher<String, Never>? = nil,
-        onTextSend: ((String) -> Void)? = nil,
+        onTextSend: ((String, UITextView) -> Void)? = nil,
         onAudioSend: (() -> Void)? = nil,
-        onTextDidChange: ((String) -> Void)? = nil,
+        onTextDidChange: ((String, UITextView) -> Void)? = nil,
         onBottomViewFrameChanged: ((CGRect) -> Void)?
     ) {
-        self.textInputBar = ChatTextInputBarView(inputTextPublisher: inputTextPublisher, onTextDidChange: onTextDidChange)
+        self.textInputBar = ChatTextInputBarView(
+            inputTextPublisher: inputTextPublisher,
+            onTextDidChange: onTextDidChange,
+        )
         self.bottomBackgroundView = UIView()
         self.onBottomViewFrameChanged = onBottomViewFrameChanged
         self.inputTextPublisher = inputTextPublisher
@@ -94,8 +97,8 @@ extension ChatInputView {
         self.textInputBar.onMicTapped = { [weak self] in
             self?.switchToAudioMode()
         }
-        self.textInputBar.onSendTapped = { [weak self] text in
-            self?.onTextSend?(text)
+        self.textInputBar.onSendTapped = { [weak self] in
+            self?.onTextSend?($0, $1)
         }
 
         self.audioInputBar.onCancelTapped = { [weak self] in

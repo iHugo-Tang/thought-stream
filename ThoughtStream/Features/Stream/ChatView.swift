@@ -3,38 +3,32 @@ import LucideIcons
 import SwiftUIIntrospect
 
 struct ChatView: View {
-    @ObservedObject var chatViewModel = ChatViewModel()
+    @StateObject var chatViewModel = ChatViewModel()
     
     var body: some View {
         ScrollViewReader { proxy in
             List {
-                ForEach(chatViewModel.messages, id: \.self) {
-                        MessageBubble(
-                            text: $0.text,
-                            isFromUser: $0.sendByYou
-                        )
-                        .id($0.id)
+                ForEach(chatViewModel.messages) { message in
+                    MessageBubble(
+                        text: message.text,
+                        isFromUser: message.sendByYou
+                    )
                 }
             }
             .onReceive(NotificationCenter.default.publisher(for: UIApplication.keyboardDidShowNotification)) { _ in
                 withAnimation {
-                    proxy.scrollTo(chatViewModel.messages.last!, anchor: .bottom)
+                    if let lastId = chatViewModel.messages.last?.id {
+                        proxy.scrollTo(lastId, anchor: .bottom)
+                    }
                 }
             }
         }
         .listStyle(.plain)
         .scrollDismissesKeyboard(.interactively)
         .chatInput(
-            inputTextPublisher: chatViewModel.$inputText.eraseToAnyPublisher(),
-            onTextSend: { text in
-                print("onTextSend: \(text)")
-            },
-            onAudioSend: {
-                print("onAudioSend")
-            },
-            onTextDidChange: { text in
-                chatViewModel.inputText = text
-            }
+            onTextSend: { chatViewModel.handleTextSend($0, textView: $1) },
+            onAudioSend: { chatViewModel.handleAudioSend() },
+            onTextDidChange: { chatViewModel.handleTextDidChange($0, textView: $1) },
         )
         .navigationBarTitleDisplayMode(.inline)
         .toolbarBackground(Color.thoughtStream.white, for: .navigationBar)

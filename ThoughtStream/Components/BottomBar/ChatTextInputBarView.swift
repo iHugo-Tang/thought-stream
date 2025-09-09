@@ -29,11 +29,14 @@ class ChatTextInputBarView: UIView {
 
     // Callbacks
     var onMicTapped: (() -> Void)?
-    var onSendTapped: ((String) -> Void)?
+    var onSendTapped: ((String, UITextView) -> Void)?
     var onTextHeightChanged: ((CGFloat) -> Void)?
-    var onTextDidChange: ((String) -> Void)?
+    var onTextDidChange: ((String, UITextView) -> Void)?
 
-    init(inputTextPublisher: AnyPublisher<String, Never>? = nil, onTextDidChange: ((String) -> Void)? = nil) {
+    init(
+        inputTextPublisher: AnyPublisher<String, Never>? = nil,
+        onTextDidChange: ((String, UITextView) -> Void)? = nil,
+    ) {
         self.inputTextPublisher = inputTextPublisher
         self.onTextDidChange = onTextDidChange
         super.init(frame: .zero)
@@ -99,7 +102,7 @@ class ChatTextInputBarView: UIView {
         sendButton.onSendTapped = { [weak self] in
             guard let self = self else { return }
             let text = self.currentActualText()
-            self.onSendTapped?(text)
+            self.onSendTapped?(text, self.textView)
         }
 
         addSubview(containerView)
@@ -182,7 +185,7 @@ class ChatTextInputBarView: UIView {
 
     @objc private func sendTapped() {
         let text = currentActualText()
-        onSendTapped?(text)
+        onSendTapped?(text, self.textView)
     }
 }
 
@@ -200,7 +203,8 @@ extension ChatTextInputBarView: UITextViewDelegate {
             textView.text = "Type your thoughts here..."
         }
         // emit final text
-        onTextDidChange?(currentActualText())
+        let actual = currentActualText()
+        onTextDidChange?(actual, textView)
     }
 
     func textViewDidChange(_ textView: UITextView) {
@@ -208,7 +212,7 @@ extension ChatTextInputBarView: UITextViewDelegate {
         textViewHeightConstraint?.constant = newHeight
         onTextHeightChanged?(newHeight)
         let actual = currentActualText()
-        onTextDidChange?(actual)
+        onTextDidChange?(actual, textView)
         updateButtonVisibility(hasText: !actual.isEmpty)
     }
 

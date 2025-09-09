@@ -1,19 +1,18 @@
 import SwiftUI
 import Combine
+import UIKit
 
 extension View {
     func chatInput(
-        inputTextPublisher: AnyPublisher<String, Never>? = nil,
-        onTextSend: ((String) -> Void)? = nil,
+        onTextSend: ((String, UITextView) -> Void)? = nil,
         onAudioSend: (() -> Void)? = nil,
-        onTextDidChange: ((String) -> Void)? = nil
+        onTextDidChange: ((String, UITextView) -> Void)? = nil,
     ) -> some View {
         modifier(
             Modifier(
-                inputTextPublisher: inputTextPublisher,
                 onTextSend: onTextSend,
+                onTextDidChange: onTextDidChange,
                 onAudioSend: onAudioSend,
-                onTextDidChange: onTextDidChange
             )
         )
     }
@@ -25,17 +24,15 @@ struct Modifier: ViewModifier {
     private let makeWrapper: (((CGRect) -> Void)?) -> UIKitViewControllerWrapper
 
     init(
-        inputTextPublisher: AnyPublisher<String, Never>? = nil,
-        onTextSend: ((String) -> Void)? = nil,
+        onTextSend: ((String, UITextView) -> Void)? = nil,
+        onTextDidChange: ((String, UITextView) -> Void)? = nil,
         onAudioSend: (() -> Void)? = nil,
-        onTextDidChange: ((String) -> Void)? = nil
     ) {
         self.makeWrapper = { onBottomViewFrameChanged in
             UIKitViewControllerWrapper(
-                inputTextPublisher: inputTextPublisher,
                 onTextSend: onTextSend,
-                onAudioSend: onAudioSend,
                 onTextDidChange: onTextDidChange,
+                onAudioSend: onAudioSend,
                 onBottomViewFrameChanged: onBottomViewFrameChanged
             )
         }
@@ -55,20 +52,17 @@ struct Modifier: ViewModifier {
 
 struct UIKitViewControllerWrapper: UIViewControllerRepresentable {
     let onBottomViewFrameChanged: ((CGRect) -> Void)?
-    let inputTextPublisher: AnyPublisher<String, Never>?
-    let onTextSend: ((String) -> Void)?
+    let onTextSend: ((String, UITextView) -> Void)?
+    let onTextDidChange: ((String, UITextView) -> Void)?
     let onAudioSend: (() -> Void)?
-    let onTextDidChange: ((String) -> Void)?
 
     init(
-        inputTextPublisher: AnyPublisher<String, Never>? = nil,
-        onTextSend: ((String) -> Void)? = nil,
+        onTextSend: ((String, UITextView) -> Void)? = nil,
+        onTextDidChange: ((String, UITextView) -> Void)? = nil,
         onAudioSend: (() -> Void)? = nil,
-        onTextDidChange: ((String) -> Void)? = nil,
         onBottomViewFrameChanged: ((CGRect) -> Void)? = nil
     ) {
         self.onBottomViewFrameChanged = onBottomViewFrameChanged
-        self.inputTextPublisher = inputTextPublisher
         self.onTextSend = onTextSend
         self.onAudioSend = onAudioSend
         self.onTextDidChange = onTextDidChange
@@ -76,7 +70,6 @@ struct UIKitViewControllerWrapper: UIViewControllerRepresentable {
 
     func makeUIViewController(context: Context) -> ChatInputViewController {
         return ChatInputViewController(
-            inputTextPublisher: inputTextPublisher,
             onTextSend: onTextSend,
             onAudioSend: onAudioSend,
             onTextDidChange: onTextDidChange,

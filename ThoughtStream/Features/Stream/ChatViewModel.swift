@@ -1,5 +1,6 @@
 import Foundation
 import Combine
+import UIKit
 
 struct Message: Identifiable, Hashable {
     var id: UUID = UUID()
@@ -8,14 +9,25 @@ struct Message: Identifiable, Hashable {
 }
 
 class ChatViewModel: ObservableObject {
-    @Published var inputText: String = ""
     @Published var messages: [Message] = []
     
     var cancellables: Set<AnyCancellable> = []
     
     init() {
-        $inputText.sink { text in
-            print("inputText changed to: \(text)")
-        }.store(in: &cancellables)
+    }
+
+    func handleAudioSend() {
+        print("onAudioSend")
+    }
+
+    // MARK: - New handlers with UITextView
+    func handleTextSend(_ text: String, textView: UITextView) {
+        let trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmed.isEmpty else { return }
+        messages.append(Message(text: trimmed, sendByYou: true))
+        textView.text = ""
+    }
+
+    func handleTextDidChange(_ text: String, textView: UITextView) {
     }
 }
