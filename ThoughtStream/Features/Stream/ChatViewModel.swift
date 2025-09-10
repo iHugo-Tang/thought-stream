@@ -50,9 +50,8 @@ class ChatViewModel: ObservableObject {
 
     // MARK: - Command detection
     private func isCommandText(_ text: String) -> Bool {
-        // Simple matcher for known commands; extend as you add more
-        let commands: Set<String> = ["地道英语"]
-        return commands.contains(text) || text.hasPrefix("⌘ /")
+        // Use centralized registry with English keys and localized labels
+        return CommandRegistry.isCommandText(text)
     }
 
     // MARK: - Command execution (mock streaming)
@@ -77,13 +76,9 @@ class ChatViewModel: ObservableObject {
     }
 
     private func mapCommand(_ text: String) -> (String, [String: Any], Int?) {
-        // Resolve command name
-        let commandName: String
-        if text == "地道英语" || text == "⌘ /地道英语" {
-            commandName = "idiomatic_english"
-        } else {
-            commandName = text.replacingOccurrences(of: "⌘ /", with: "")
-        }
+        // Resolve command name (English key) from user-visible text
+        let commandName: String = CommandRegistry.resolveKey(from: text)
+            ?? CommandRegistry.stripSlashPrefix(text)
 
         // Collect unprocessed user messages (non-command) since last processed index
         let startIdx = (lastProcessedIndexByCommand[commandName] ?? -1) + 1

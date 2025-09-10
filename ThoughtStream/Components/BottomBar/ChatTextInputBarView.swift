@@ -34,16 +34,20 @@ class SlashTextView: UITextView, UIEditMenuInteractionDelegate {
 
     // Handle the action: directly send the command
     @objc func sendCommand(_ sender: Any?, cmd: String) {
-        onSlashCommandSelected?("⌘ /\(cmd)")
+        onSlashCommandSelected?("\(CommandRegistry.slashPrefix)\(cmd)")
     }
 
     // MARK: - UIEditMenuInteractionDelegate (iOS 16+)
     @available(iOS 16.0, *)
     func editMenuInteraction(_ interaction: UIEditMenuInteraction, menuFor configuration: UIEditMenuConfiguration, suggestedActions: [UIMenuElement]) -> UIMenu? {
-        let idiomatic = UIAction(title: "地道英语") { [weak self] _ in
-            self?.sendCommand(nil, cmd: "地道英语")
+        // Build actions from centralized command registry using system localization
+        let actions: [UIAction] = CommandRegistry.all.map { def in
+            let title = def.displayName()
+            return UIAction(title: title) { [weak self] _ in
+                self?.sendCommand(nil, cmd: title)
+            }
         }
-        return UIMenu(children: [idiomatic])
+        return UIMenu(children: actions)
     }
 }
 

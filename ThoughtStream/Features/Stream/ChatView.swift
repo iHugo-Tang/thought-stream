@@ -191,5 +191,5 @@ private extension ChatView {
     ChatView()
     MessageBubble(text: "1", isFromUser: true, isCommand: false)
     MessageBubble(text: "2", isFromUser: false, isCommand: false)
-    MessageBubble(text: "地道英语", isFromUser: true, isCommand: true)
+    MessageBubble(text: CommandRegistry.displayName(for: "idiomatic_english"), isFromUser: true, isCommand: true)
 }

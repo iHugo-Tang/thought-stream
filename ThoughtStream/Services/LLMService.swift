@@ -20,7 +20,7 @@ final class LLMService {
         // Choose a mock script based on the command and input
         let chunks: [String]
         switch command {
-        case "idiomatic_english", "地道英语":
+        case "idiomatic_english":
             if let text = input["text"] as? String, !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
                 // Pretend we rewrote the user's text
                 chunks = Self.idiomaticRewrite(for: text)
@@ -83,4 +83,3 @@ final class LLMService {
         ].filter { !$0.isEmpty }
     }
 }
-
