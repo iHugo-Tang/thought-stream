@@ -3,10 +3,54 @@ import SwiftUI
 import LucideIcons
 import Combine
 
+// A tiny UITextView subclass to support custom slash-command menu actions
+class SlashTextView: UITextView, UIEditMenuInteractionDelegate {
+    private var editMenuInteraction: UIEditMenuInteraction?
+    var onSlashCommandSelected: ((String) -> Void)?
+
+    override func didMoveToWindow() {
+        super.didMoveToWindow()
+        if #available(iOS 16.0, *) {
+            if editMenuInteraction == nil {
+                let interaction = UIEditMenuInteraction(delegate: self)
+                addInteraction(interaction)
+                editMenuInteraction = interaction
+            }
+        }
+    }
+
+    // Present the modern edit menu anchored at the caret
+    func presentSlashMenu() {
+        guard isFirstResponder, let range = selectedTextRange else { return }
+        let caret = caretRect(for: range.end)
+        if #available(iOS 16.0, *) {
+            let point = CGPoint(x: caret.midX, y: caret.minY)
+            let config = UIEditMenuConfiguration(identifier: nil, sourcePoint: point)
+            editMenuInteraction?.presentEditMenu(with: config)
+        } else {
+            // Fallback will be handled by caller via UIMenuController
+        }
+    }
+
+    // Handle the action: directly send the command
+    @objc func sendCommand(_ sender: Any?, cmd: String) {
+        onSlashCommandSelected?("⌘ /\(cmd)")
+    }
+
+    // MARK: - UIEditMenuInteractionDelegate (iOS 16+)
+    @available(iOS 16.0, *)
+    func editMenuInteraction(_ interaction: UIEditMenuInteraction, menuFor configuration: UIEditMenuConfiguration, suggestedActions: [UIMenuElement]) -> UIMenu? {
+        let idiomatic = UIAction(title: "地道英语") { [weak self] _ in
+            self?.sendCommand(nil, cmd: "地道英语")
+        }
+        return UIMenu(children: [idiomatic])
+    }
+}
+
 class ChatTextInputBarView: UIView {
     // UI
     private let containerView: UIView = UIView()
-    private let textView: UITextView = UITextView()
+    private let textView: SlashTextView = SlashTextView()
     private let micButton: UIButton = UIButton(type: .system)
     private let sendButton: ChatSendButton = ChatSendButton()
 
@@ -87,6 +131,11 @@ class ChatTextInputBarView: UIView {
         textView.text = "Type your thoughts here..."
         textView.font = .systemFont(ofSize: 14)
         textView.delegate = self
+        // Bridge slash command selection to sending callback
+        textView.onSlashCommandSelected = { [weak self] command in
+            guard let self = self else { return }
+            self.onSendTapped?(command, self.textView)
+        }
         
         if let font = textView.font {
             let verticalPadding = textView.textContainerInset.top + textView.textContainerInset.bottom
@@ -226,4 +275,3 @@ extension ChatTextInputBarView: UITextViewDelegate {
 #Preview {
     ChatView()
 }
-

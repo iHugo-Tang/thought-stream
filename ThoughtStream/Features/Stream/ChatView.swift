@@ -11,8 +11,16 @@ struct ChatView: View {
                 ForEach(chatViewModel.messages) { message in
                     MessageBubble(
                         text: message.text,
-                        isFromUser: message.sendByYou
+                        isFromUser: message.sendByYou,
+                        isCommand: message.isCommand
                     )
+                }
+            }
+            .onChange(of: chatViewModel.messages.count) { _ in
+                withAnimation {
+                    if let lastId = chatViewModel.messages.last?.id {
+                        proxy.scrollTo(lastId, anchor: .bottom)
+                    }
                 }
             }
             .onReceive(NotificationCenter.default.publisher(for: UIApplication.keyboardDidShowNotification)) { _ in
@@ -40,8 +48,10 @@ struct ChatView: View {
 struct MessageBubble: View {
     let text: String
     let isFromUser: Bool
+    let isCommand: Bool
     var backgroundColor: Color {
-        isFromUser ? Color.thoughtStream.theme.green600 : Color.thoughtStream.neutral.gray200
+        if isCommand { return Color.thoughtStream.functional.blue600 }
+        return isFromUser ? Color.thoughtStream.theme.green600 : Color.thoughtStream.neutral.gray200
     }
     
     var body: some View {
@@ -179,6 +189,7 @@ private extension ChatView {
 
 #Preview {
     ChatView()
-    MessageBubble(text: "1", isFromUser: true)
-    MessageBubble(text: "2", isFromUser: false)
+    MessageBubble(text: "1", isFromUser: true, isCommand: false)
+    MessageBubble(text: "2", isFromUser: false, isCommand: false)
+    MessageBubble(text: "地道英语", isFromUser: true, isCommand: true)
 }
