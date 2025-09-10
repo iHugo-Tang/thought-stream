@@ -53,10 +53,14 @@ class ChatInputView: UIView {
         self.onTextDidChange = onTextDidChange
 
         // Create the UIVisualEffectView
-        let blurEffect = UIBlurEffect(style: .systemThickMaterial)
+        let blurEffect = UIBlurEffect(style: .light)
         self.blurredView = UIVisualEffectView(effect: blurEffect)
-        self.blurredView.backgroundColor = UIColor(Color.thoughtStream.white.opacity(0.9))
         self.blurredView.frame = CGRect(x: 50, y: 150, width: 250, height: 250)
+        
+        let tintView = UIView(frame: self.blurredView.bounds)
+        tintView.backgroundColor = UIColor.white.withAlphaComponent(0.9)
+        tintView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        self.blurredView.contentView.addSubview(tintView)
 
         super.init(frame: .zero)
 
