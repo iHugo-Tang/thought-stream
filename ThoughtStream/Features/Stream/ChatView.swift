@@ -1,9 +1,20 @@
 import SwiftUI
 import LucideIcons
 import SwiftUIIntrospect
+import SwiftData
 
 struct ChatView: View {
-    @StateObject var chatViewModel = ChatViewModel()
+    @Environment(\.modelContext) private var modelContext
+    @StateObject private var chatViewModel: ChatViewModel
+
+    init(conversation: ConversationEntity? = nil) {
+        _chatViewModel = StateObject(wrappedValue: ChatViewModel(conversation: conversation))
+    }
+
+    // Alternative simpler init for new conversations
+    init() {
+        _chatViewModel = StateObject(wrappedValue: ChatViewModel())
+    }
     
     var body: some View {
         ScrollViewReader { proxy in
@@ -42,6 +53,9 @@ struct ChatView: View {
         .toolbarBackground(Color.thoughtStream.white, for: .navigationBar)
         .toolbarBackground(.visible, for: .navigationBar)
         .toolbar { navigationBar }
+        .onAppear {
+            chatViewModel.bind(modelContext: modelContext)
+        }
     }
 }
 

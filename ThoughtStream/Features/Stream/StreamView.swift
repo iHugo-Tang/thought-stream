@@ -1,14 +1,20 @@
 import SwiftUI
+import SwiftData
 import LucideIcons
 
 struct StreamView: View {
     @Environment(\.tabBarHeight) private var tabBarHeight
     @State private var searchText: String = ""
+    @Query(
+        sort: [SortDescriptor(\ConversationEntity.updatedAt, order: .reverse)],
+        animation: .default
+    ) private var conversations: [ConversationEntity]
+    
 
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 16) {
-                searchBar
+                // searchBar
                 yesterdaySection
                 olderSection
             }
@@ -79,71 +85,93 @@ private extension StreamView {
                 .appFont(size: .xs, weight: .medium)
                 .foregroundColor(.thoughtStream.neutral.gray700)
 
-            StreamCard(
-                title: "The highlight of my weekend so far was...",
-                bodyText: "I think the best part was the quiet morning I had. I woke up without an alarm clock, made a perfect cup of coffee, and just sat by the window reading a book. It was a simple moment but it felt so...",
-                tags: ["personal", "weekend", "reflection"],
-                dateText: "August 30, 2025 - 5:15 PM"
-            )
+            if let latestConversation = conversations.first {
+                NavigationLink(destination: ChatView(conversation: latestConversation).hideTabBarOnPush()) {
+                    StreamCard(conversation: latestConversation)
+                }
+                .buttonStyle(PlainButtonStyle())
+            } else {
+                EmptyStateView(message: "Start your first conversation")
+            }
         }
     }
 
+    @ViewBuilder
     var olderSection: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            Text("Older")
-                .appFont(size: .xs, weight: .medium)
-                .foregroundColor(.thoughtStream.neutral.gray700)
+        let olderConversations = Array(conversations.dropFirst())
+        
+        if !olderConversations.isEmpty {
+            VStack(alignment: .leading, spacing: 12) {
+                Text("Older")
+                    .appFont(size: .xs, weight: .medium)
+                    .foregroundColor(.thoughtStream.neutral.gray700)
 
-            VStack(spacing: 12) {
-                StreamCard(
-                    title: "My thoughts on the new project at work",
-                    bodyText: "The initial requirements seem a bit ambiguous, especially regarding the performance metrics. I should probably schedule a meeting with the PM to clarify these points next week. Writing this down helps me organize...",
-                    tags: ["work", "project", "productivity"],
-                    dateText: "August 29, 2025 - 9:22 AM"
-                )
-
-                StreamCard(
-                    title: "Practicing describing my favorite food",
-                    bodyText: "My favorite food has to be ramen. I love the rich and savory broth, the perfectly chewy noodles, and the soft-boiled egg on top. Every slurp is a comforting experience, especially on a cold day...",
-                    tags: ["learning", "food", "practice"],
-                    dateText: "August 27, 2025 - 8:04 PM"
-                )
+                VStack(spacing: 12) {
+                    ForEach(olderConversations.prefix(10), id: \.id) { conversation in
+                        NavigationLink(destination: ChatView(conversation: conversation).hideTabBarOnPush()) {
+                            StreamCard(conversation: conversation)
+                        }
+                        .buttonStyle(PlainButtonStyle())
+                    }
+                }
             }
+        } else {
+            EmptyView()
         }
     }
 }
 
 // MARK: - Components
+private struct EmptyStateView: View {
+    let message: String
+    
+    var body: some View {
+        VStack(spacing: 16) {
+            Image(uiImage: Lucide.messageCircle)
+                .renderingMode(.template)
+                .foregroundColor(.thoughtStream.neutral.gray300)
+                .font(.system(size: 48))
+                
+            Text(message)
+                .appFont(size: .sm)
+                .foregroundColor(.thoughtStream.neutral.gray500)
+                .multilineTextAlignment(.center)
+        }
+        .padding(32)
+        .frame(maxWidth: .infinity)
+        .appCard(cornerRadius: 12)
+    }
+}
+
 private struct StreamCard: View {
-    let title: String
-    let bodyText: String
-    let tags: [String]
-    let dateText: String
+    let conversation: ConversationEntity
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text(title)
+            Text(conversation.displayTitle)
                 .appFont(size: .sm, weight: .medium)
                 .foregroundColor(.thoughtStream.neutral.gray800)
 
-            Text(bodyText)
+            Text(conversation.displayBodyText)
                 .appFont(size: .sm)
                 .foregroundColor(.thoughtStream.neutral.gray600)
                 .lineLimit(4)
 
             // Tags
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: 8) {
-                    ForEach(tags, id: \.self) { tag in
-                        TagChip(text: tag)
+            if !conversation.tags.isEmpty {
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(spacing: 8) {
+                        ForEach(conversation.tags, id: \.self) { tag in
+                            TagChip(text: tag)
+                        }
                     }
+                    .padding(.vertical, 2)
                 }
-                .padding(.vertical, 2)
             }
 
             // Footer
             HStack {
-                Text("🕓 \(dateText)")
+                Text("🕓 \(conversation.formattedDateText)")
                     .appFont(size: .xs)
                     .foregroundColor(.thoughtStream.neutral.gray500)
                 Spacer()

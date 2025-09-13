@@ -13,6 +13,8 @@ struct ThoughtStreamApp: App {
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
             Item.self,
+            ConversationEntity.self,
+            ChatMessageEntity.self,
         ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
 

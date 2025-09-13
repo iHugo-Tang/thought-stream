@@ -1,6 +1,7 @@
 import Foundation
 import Combine
 import UIKit
+import SwiftData
 
 struct Message: Identifiable, Hashable {
     var id: UUID = UUID()
@@ -12,13 +13,63 @@ struct Message: Identifiable, Hashable {
 class ChatViewModel: ObservableObject {
     @Published var messages: [Message] = []
     private let llm = LLMService()
-    private let sessionId: String = UUID().uuidString
+    private var sessionId: String = UUID().uuidString
+
+    // Persistence
+    private var modelContext: ModelContext?
+    private(set) var conversation: ConversationEntity?
+    private var entityByMessageId: [UUID: ChatMessageEntity] = [:]
+
     // Track the last processed user message index per command
     private var lastProcessedIndexByCommand: [String: Int] = [:]
     
     var cancellables: Set<AnyCancellable> = []
     
-    init() {
+    init(conversation: ConversationEntity? = nil) {
+        self.conversation = conversation
+    }
+
+    // Bind context and ensure conversation exists; then load persisted messages
+    @MainActor
+    func bind(modelContext: ModelContext) {
+        guard self.modelContext == nil else { return }
+        self.modelContext = modelContext
+
+        if conversation == nil {
+            let conv = ConversationEntity(title: nil)
+            modelContext.insert(conv)
+            conversation = conv
+            try? modelContext.save()
+        }
+        if let conv = conversation {
+            sessionId = conv.id.uuidString
+        }
+        loadPersistedMessages()
+    }
+
+    @MainActor
+    private func loadPersistedMessages() {
+        guard let ctx = modelContext, let conv = conversation else { return }
+        let conversationId = conv.id
+        let descriptor = FetchDescriptor<ChatMessageEntity>(
+            predicate: #Predicate<ChatMessageEntity> { message in
+                message.conversation?.id == conversationId
+            },
+            sortBy: [SortDescriptor(\.createdAt, order: .forward)]
+        )
+        do {
+            let entities = try ctx.fetch(descriptor)
+            var ui: [Message] = []
+            entityByMessageId.removeAll(keepingCapacity: true)
+            for e in entities {
+                let m = Message(id: e.id, text: e.text, sendByYou: e.sendByYou, isCommand: e.isCommand)
+                ui.append(m)
+                entityByMessageId[m.id] = e
+            }
+            messages = ui
+        } catch {
+            // swallow to keep UI simple
+        }
     }
 
     func handleAudioSend() {
@@ -26,11 +77,16 @@ class ChatViewModel: ObservableObject {
     }
 
     // MARK: - New handlers with UITextView
+    @MainActor
     func handleTextSend(_ text: String, textView: UITextView) {
         let trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !trimmed.isEmpty else { return }
         let isCmd = isCommandText(trimmed)
-        messages.append(Message(text: trimmed, sendByYou: true, isCommand: isCmd))
+
+        let uiMsg = Message(text: trimmed, sendByYou: true, isCommand: isCmd)
+        messages.append(uiMsg)
+        persist(uiMsg)
+
         textView.text = ""
         textView.delegate?.textViewDidChange?(textView)
 
@@ -42,6 +98,7 @@ class ChatViewModel: ObservableObject {
         }
     }
 
+    @MainActor
     func handleTextDidChange(_ text: String, textView: UITextView) {
         // Show a slash-command menu when user types '/'
         guard text.last == "/", textView.isFirstResponder else { return }
@@ -70,8 +127,11 @@ class ChatViewModel: ObservableObject {
             if let li = lastIdx {
                 lastProcessedIndexByCommand[command] = li
             }
+            touchConversation()
         } catch {
-            messages.append(Message(text: "命令执行失败：\(error.localizedDescription)", sendByYou: false, isCommand: false))
+            let uiMsg = Message(text: "命令执行失败：\(error.localizedDescription)", sendByYou: false, isCommand: false)
+            messages.append(uiMsg)
+            persist(uiMsg)
         }
     }
 
@@ -105,6 +165,8 @@ class ChatViewModel: ObservableObject {
         // Append a placeholder assistant message we will update incrementally
         var assistant = Message(text: "", sendByYou: false, isCommand: false)
         messages.append(assistant)
+        persist(assistant, asPlaceholder: true)
+
         let idx = messages.count - 1
 
         for try await chunk in stream {
@@ -112,6 +174,37 @@ class ChatViewModel: ObservableObject {
             if idx < messages.count {
                 messages[idx] = assistant
             }
+            // update the persisted placeholder text
+            updatePersisted(for: assistant)
         }
+    }
+
+    // MARK: - Persistence helpers
+    @MainActor
+    private func persist(_ ui: Message, asPlaceholder: Bool = false) {
+        guard let ctx = modelContext, let conv = conversation else { return }
+        let entity = ChatMessageEntity(text: ui.text, sendByYou: ui.sendByYou, isCommand: ui.isCommand, conversation: conv)
+        // align ids to keep mapping stable
+        entity.id = ui.id
+        ctx.insert(entity)
+        entityByMessageId[ui.id] = entity
+        touchConversation()
+        try? ctx.save()
+    }
+
+    @MainActor
+    private func updatePersisted(for ui: Message) {
+        guard let ctx = modelContext, let entity = entityByMessageId[ui.id] else { return }
+        if entity.text != ui.text {
+            entity.text = ui.text
+            try? ctx.save()
+        }
+    }
+
+    @MainActor
+    private func touchConversation() {
+        guard let ctx = modelContext, let conv = conversation else { return }
+        conv.updatedAt = Date()
+        try? ctx.save()
     }
 }
