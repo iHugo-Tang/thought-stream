@@ -15,8 +15,13 @@ struct StreamView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: 16) {
                 // searchBar
-                yesterdaySection
-                olderSection
+                if conversations.isEmpty {
+                    EmptyStateView(message: "Start your first conversation")
+                } else {
+                    todaySection
+                    yesterdaySection
+                    olderSection
+                }
             }
             .padding(.horizontal, 16)
             .padding(.top, 16)
@@ -50,6 +55,19 @@ struct StreamView: View {
 
 // MARK: - Subviews
 private extension StreamView {
+    // MARK: - Grouped Conversations
+    var todayConversations: [ConversationEntity] {
+        conversations.filter { Calendar.current.isDateInToday($0.updatedAt) }
+    }
+
+    var yesterdayConversations: [ConversationEntity] {
+        conversations.filter { Calendar.current.isDateInYesterday($0.updatedAt) }
+    }
+
+    var olderDateConversations: [ConversationEntity] {
+        conversations.filter { !Calendar.current.isDateInToday($0.updatedAt) && !Calendar.current.isDateInYesterday($0.updatedAt) }
+    }
+
     var searchBar: some View {
         HStack(spacing: 12) {
             HStack(spacing: 8) {
@@ -79,27 +97,50 @@ private extension StreamView {
         }
     }
 
-    var yesterdaySection: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            Text("Yesterday")
-                .appFont(size: .xs, weight: .medium)
-                .foregroundColor(.thoughtStream.neutral.gray700)
+    @ViewBuilder
+    var todaySection: some View {
+        if !todayConversations.isEmpty {
+            VStack(alignment: .leading, spacing: 12) {
+                Text("Today")
+                    .appFont(size: .xs, weight: .medium)
+                    .foregroundColor(.thoughtStream.neutral.gray700)
 
-            if let latestConversation = conversations.first {
-                NavigationLink(destination: ChatView(conversation: latestConversation).hideTabBarOnPush()) {
-                    StreamCard(conversation: latestConversation)
+                VStack(spacing: 12) {
+                    ForEach(todayConversations, id: \.id) { conversation in
+                        NavigationLink(destination: ChatView(conversation: conversation).hideTabBarOnPush()) {
+                            StreamCard(conversation: conversation)
+                        }
+                        .buttonStyle(PlainButtonStyle())
+                    }
                 }
-                .buttonStyle(PlainButtonStyle())
-            } else {
-                EmptyStateView(message: "Start your first conversation")
+            }
+        }
+    }
+
+    @ViewBuilder
+    var yesterdaySection: some View {
+        if !yesterdayConversations.isEmpty {
+            VStack(alignment: .leading, spacing: 12) {
+                Text("Yesterday")
+                    .appFont(size: .xs, weight: .medium)
+                    .foregroundColor(.thoughtStream.neutral.gray700)
+
+                VStack(spacing: 12) {
+                    ForEach(yesterdayConversations, id: \.id) { conversation in
+                        NavigationLink(destination: ChatView(conversation: conversation).hideTabBarOnPush()) {
+                            StreamCard(conversation: conversation)
+                        }
+                        .buttonStyle(PlainButtonStyle())
+                    }
+                }
             }
         }
     }
 
     @ViewBuilder
     var olderSection: some View {
-        let olderConversations = Array(conversations.dropFirst())
-        
+        let olderConversations = olderDateConversations
+
         if !olderConversations.isEmpty {
             VStack(alignment: .leading, spacing: 12) {
                 Text("Older")
