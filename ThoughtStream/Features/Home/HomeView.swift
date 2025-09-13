@@ -19,7 +19,7 @@ struct HomeView: View {
             .background(Color.thoughtStream.neutral.gray50)
             
             // 悬浮写作按钮（位于自定义 TabBar 顶部 8pt）
-            Button(action: {}) {
+            NavigationLink(destination: ChatView().hideTabBarOnPush()) {
                 Image(systemName: "plus")
                     .font(.system(size: 20, weight: .bold))
                     .foregroundColor(.white)
@@ -28,6 +28,7 @@ struct HomeView: View {
                     .clipShape(Circle())
                     .shadow(color: Color.black.opacity(0.1), radius: 10, x: 0, y: 6)
             }
+            .buttonStyle(PlainButtonStyle())
             .padding(.trailing, 16)
             .padding(.bottom, tabBarHeight + 8)
         }
@@ -185,7 +186,7 @@ struct HomeView: View {
                         .foregroundColor(.thoughtStream.neutral.gray600)
                 }
 
-                Button(action: {}) {
+                NavigationLink(destination: ChatView().hideTabBarOnPush()) {
                     HStack(spacing: 8) {
                         Image(uiImage: Lucide.squarePen)
                             .renderingMode(.template)
@@ -198,6 +199,7 @@ struct HomeView: View {
                     .background(Color.thoughtStream.theme.green600)
                     .cornerRadius(8)
                 }
+                .buttonStyle(PlainButtonStyle())
             }
             .padding(24)
         }
