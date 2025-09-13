@@ -189,15 +189,29 @@ private extension ChatView {
             }
         }
         ToolbarItem(placement: .topBarTrailing) {
-            Text("Free")
-                .appFont(size: .xs, weight: .medium)
-                .appCapsuleTag(
-                    background: .thoughtStream.theme.green100,
-                    foreground: .thoughtStream.theme.green700,
-                    horizontal: 8,
-                    vertical: 4
-                )
+            ShareLink(item: makeExportFileURL()) {
+                Image(systemName: "square.and.arrow.up")
+                    .font(.system(size: 16, weight: .semibold))
+                    .foregroundColor(.thoughtStream.neutral.gray800)
+            }
         }
+    }
+}
+
+private extension ChatView {
+    func makeExportFileURL() -> URL {
+        let text = chatViewModel.exportText()
+        let df = DateFormatter()
+        df.dateFormat = "yyyyMMdd-HHmmss"
+        let timestamp = df.string(from: Date())
+        let filename = "Conversation-\(timestamp).txt"
+        let url = FileManager.default.temporaryDirectory.appendingPathComponent(filename)
+        do {
+            try text.write(to: url, atomically: true, encoding: .utf8)
+        } catch {
+            // Best-effort: if write fails, still return a path to avoid crashing
+        }
+        return url
     }
 }
 

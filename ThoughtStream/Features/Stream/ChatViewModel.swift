@@ -208,3 +208,17 @@ class ChatViewModel: ObservableObject {
         try? ctx.save()
     }
 }
+
+extension ChatViewModel {
+    /// Compose current conversation as plain text for export.
+    /// Format: "You:" / "Assistant:" prefixes and skip command messages.
+    func exportText() -> String {
+        var lines: [String] = []
+        for message in messages {
+            if message.isCommand { continue }
+            let role = message.sendByYou ? "You" : "Assistant"
+            lines.append("\(role): \(message.text)")
+        }
+        return lines.joined(separator: "\n\n")
+    }
+}
