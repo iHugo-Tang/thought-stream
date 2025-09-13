@@ -5,7 +5,9 @@ import SwiftData
 
 struct ChatView: View {
     @Environment(\.modelContext) private var modelContext
+    @Environment(\.dismiss) private var dismiss
     @StateObject private var chatViewModel: ChatViewModel
+    @State private var showDeleteAlert: Bool = false
 
     init(conversation: ConversationEntity? = nil) {
         _chatViewModel = StateObject(wrappedValue: ChatViewModel(conversation: conversation))
@@ -53,6 +55,16 @@ struct ChatView: View {
         .toolbarBackground(Color.thoughtStream.white, for: .navigationBar)
         .toolbarBackground(.visible, for: .navigationBar)
         .toolbar { navigationBar }
+        .alert("Delete this conversation?", isPresented: $showDeleteAlert) {
+            Button("Delete", role: .destructive) {
+                if chatViewModel.deleteConversation() {
+                    dismiss()
+                }
+            }
+            Button("Cancel", role: .cancel) {}
+        } message: {
+            Text("This will permanently remove all messages.")
+        }
         .onAppear {
             chatViewModel.bind(modelContext: modelContext)
         }
@@ -189,8 +201,17 @@ private extension ChatView {
             }
         }
         ToolbarItem(placement: .topBarTrailing) {
-            ShareLink(item: makeExportFileURL()) {
-                Image(systemName: "square.and.arrow.up")
+            Menu {
+                ShareLink(item: makeExportFileURL()) {
+                    Label("Share", systemImage: "square.and.arrow.up")
+                }
+                Button(role: .destructive) {
+                    showDeleteAlert = true
+                } label: {
+                    Label("Delete", systemImage: "trash")
+                }
+            } label: {
+                Image(systemName: "ellipsis")
                     .font(.system(size: 16, weight: .semibold))
                     .foregroundColor(.thoughtStream.neutral.gray800)
             }

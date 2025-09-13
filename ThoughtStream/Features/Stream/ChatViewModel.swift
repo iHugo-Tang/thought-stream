@@ -207,6 +207,19 @@ class ChatViewModel: ObservableObject {
         conv.updatedAt = Date()
         try? ctx.save()
     }
+
+    // MARK: - Delete conversation
+    @MainActor
+    func deleteConversation() -> Bool {
+        guard let ctx = modelContext, let conv = conversation else { return false }
+        ctx.delete(conv)
+        do {
+            try ctx.save()
+            return true
+        } catch {
+            return false
+        }
+    }
 }
 
 extension ChatViewModel {
