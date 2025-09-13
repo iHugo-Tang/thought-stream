@@ -1,6 +1,8 @@
 import Foundation
 import Combine
+#if canImport(UIKit)
 import UIKit
+#endif
 import SwiftData
 
 struct Message: Identifiable, Hashable {
@@ -35,16 +37,10 @@ class ChatViewModel: ObservableObject {
         guard self.modelContext == nil else { return }
         self.modelContext = modelContext
 
-        if conversation == nil {
-            let conv = ConversationEntity(title: nil)
-            modelContext.insert(conv)
-            conversation = conv
-            try? modelContext.save()
-        }
         if let conv = conversation {
             sessionId = conv.id.uuidString
+            loadPersistedMessages()
         }
-        loadPersistedMessages()
     }
 
     @MainActor
@@ -77,6 +73,7 @@ class ChatViewModel: ObservableObject {
     }
 
     // MARK: - New handlers with UITextView
+    #if canImport(UIKit)
     @MainActor
     func handleTextSend(_ text: String, textView: UITextView) {
         let trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -104,6 +101,7 @@ class ChatViewModel: ObservableObject {
         guard text.last == "/", textView.isFirstResponder else { return }
         (textView as? SlashTextView)?.presentSlashMenu()
     }
+    #endif
 
     // MARK: - Command detection
     private func isCommandText(_ text: String) -> Bool {
@@ -182,7 +180,15 @@ class ChatViewModel: ObservableObject {
     // MARK: - Persistence helpers
     @MainActor
     private func persist(_ ui: Message, asPlaceholder: Bool = false) {
-        guard let ctx = modelContext, let conv = conversation else { return }
+        guard let ctx = modelContext else { return }
+        if conversation == nil {
+            let newConv = ConversationEntity(title: nil)
+            ctx.insert(newConv)
+            conversation = newConv
+            sessionId = newConv.id.uuidString
+            try? ctx.save()
+        }
+        guard let conv = conversation else { return }
         let entity = ChatMessageEntity(text: ui.text, sendByYou: ui.sendByYou, isCommand: ui.isCommand, conversation: conv)
         // align ids to keep mapping stable
         entity.id = ui.id
