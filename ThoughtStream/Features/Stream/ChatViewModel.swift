@@ -5,15 +5,9 @@ import UIKit
 #endif
 import SwiftData
 
-struct Message: Identifiable, Hashable {
-    var id: UUID = UUID()
-    var text: String
-    var sendByYou: Bool = false
-    var isCommand: Bool = false
-}
-
 class ChatViewModel: ObservableObject {
     @Published var messages: [Message] = []
+    @Published var errorMessage: String?
     private let llm = LLMService()
     private var sessionId: String = UUID().uuidString
 
@@ -21,9 +15,10 @@ class ChatViewModel: ObservableObject {
     private var modelContext: ModelContext?
     private(set) var conversation: ConversationEntity?
     private var entityByMessageId: [UUID: ChatMessageEntity] = [:]
+    private var conversationDAO: ConversationDAO?
+    private var messageDAO: MessageDAO?
 
-    // Track the last processed user message index per command
-    private var lastProcessedIndexByCommand: [String: Int] = [:]
+    // Trackers removed for simplicity
     
     var cancellables: Set<AnyCancellable> = []
     
@@ -36,6 +31,8 @@ class ChatViewModel: ObservableObject {
     func bind(modelContext: ModelContext) {
         guard self.modelContext == nil else { return }
         self.modelContext = modelContext
+        self.conversationDAO = ConversationDAO(context: modelContext)
+        self.messageDAO = MessageDAO(context: modelContext)
 
         if let conv = conversation {
             sessionId = conv.id.uuidString
@@ -45,23 +42,10 @@ class ChatViewModel: ObservableObject {
 
     @MainActor
     private func loadPersistedMessages() {
-        guard let ctx = modelContext, let conv = conversation else { return }
-        let conversationId = conv.id
-        let descriptor = FetchDescriptor<ChatMessageEntity>(
-            predicate: #Predicate<ChatMessageEntity> { message in
-                message.conversation?.id == conversationId
-            },
-            sortBy: [SortDescriptor(\.createdAt, order: .forward)]
-        )
+        guard let dao = messageDAO, let conv = conversation else { return }
         do {
-            let entities = try ctx.fetch(descriptor)
-            var ui: [Message] = []
-            entityByMessageId.removeAll(keepingCapacity: true)
-            for e in entities {
-                let m = Message(id: e.id, text: e.text, sendByYou: e.sendByYou, isCommand: e.isCommand)
-                ui.append(m)
-                entityByMessageId[m.id] = e
-            }
+            let (ui, map) = try dao.uiMessages(for: conv)
+            entityByMessageId = map
             messages = ui
         } catch {
             // swallow to keep UI simple
@@ -79,8 +63,10 @@ class ChatViewModel: ObservableObject {
         let trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !trimmed.isEmpty else { return }
         let isCmd = isCommandText(trimmed)
+        let key = CommandRegistry.resolveKey(from: trimmed)
+        let cmdDef = key.flatMap { CommandRegistry.command(for: $0) }
 
-        let uiMsg = Message(text: trimmed, sendByYou: true, isCommand: isCmd)
+        let uiMsg = Message(text: trimmed, sendByYou: true, command: cmdDef)
         messages.append(uiMsg)
         persist(uiMsg)
 
@@ -112,56 +98,37 @@ class ChatViewModel: ObservableObject {
     // MARK: - Command execution (mock streaming)
     @MainActor
     private func executeCommandFor(text: String) async {
-        let (command, input, lastIdx) = mapCommand(text)
+        let (command, input) = mapCommand(text)
         do {
-            let stream = try await llm.executeCommand(
+            let result = try await llm.executeCommand(
                 sessionId: sessionId,
                 command: command,
                 input: input,
                 stream: true
             )
-            try await streamAssistantResponse(stream)
-            // Mark processed only after successful streaming
-            if let li = lastIdx {
-                lastProcessedIndexByCommand[command] = li
+            try await streamAssistantResponse(result.stream)
+            if let analysis = result.analysis {
+                await persistAnalysis(analysis)
             }
             touchConversation()
         } catch {
-            let uiMsg = Message(text: "命令执行失败：\(error.localizedDescription)", sendByYou: false, isCommand: false)
-            messages.append(uiMsg)
-            persist(uiMsg)
+            errorMessage = error.localizedDescription
         }
     }
 
-    private func mapCommand(_ text: String) -> (String, [String: Any], Int?) {
+    private func mapCommand(_ text: String) -> (String, [String: Any]) {
         // Resolve command name (English key) from user-visible text
         let commandName: String = CommandRegistry.resolveKey(from: text)
             ?? CommandRegistry.stripSlashPrefix(text)
-
-        // Collect unprocessed user messages (non-command) since last processed index
-        let startIdx = (lastProcessedIndexByCommand[commandName] ?? -1) + 1
-        var collected: [String] = []
-        var lastIncludedIndex: Int? = nil
-        if startIdx < messages.count {
-            for (idx, msg) in messages.enumerated() where idx >= startIdx {
-                guard msg.sendByYou, msg.isCommand == false else { continue }
-                collected.append(msg.text)
-                lastIncludedIndex = idx
-            }
-        }
-
         var input: [String: Any] = [:]
-        if !collected.isEmpty {
-            input["text"] = collected.joined(separator: "\n\n")
-        }
-
-        return (commandName, input, lastIncludedIndex)
+        input["messages"] = messages
+        return (commandName, input)
     }
 
     @MainActor
     private func streamAssistantResponse(_ stream: AsyncThrowingStream<String, Error>) async throws {
         // Append a placeholder assistant message we will update incrementally
-        var assistant = Message(text: "", sendByYou: false, isCommand: false)
+        var assistant = Message(text: "", sendByYou: false, command: nil)
         messages.append(assistant)
         persist(assistant, asPlaceholder: true)
 
@@ -180,51 +147,41 @@ class ChatViewModel: ObservableObject {
     // MARK: - Persistence helpers
     @MainActor
     private func persist(_ ui: Message, asPlaceholder: Bool = false) {
-        guard let ctx = modelContext else { return }
-        if conversation == nil {
-            let newConv = ConversationEntity(title: nil)
-            ctx.insert(newConv)
-            conversation = newConv
-            sessionId = newConv.id.uuidString
-            try? ctx.save()
-        }
-        guard let conv = conversation else { return }
-        let entity = ChatMessageEntity(text: ui.text, sendByYou: ui.sendByYou, isCommand: ui.isCommand, conversation: conv)
-        // align ids to keep mapping stable
-        entity.id = ui.id
-        ctx.insert(entity)
+        guard let convDAO = conversationDAO, let msgDAO = messageDAO else { return }
+        let conv = convDAO.ensureConversation(&conversation)
+        sessionId = conv.id.uuidString
+        let entity = msgDAO.insert(uiMessage: ui, into: conv)
         entityByMessageId[ui.id] = entity
         touchConversation()
-        try? ctx.save()
     }
 
     @MainActor
     private func updatePersisted(for ui: Message) {
-        guard let ctx = modelContext, let entity = entityByMessageId[ui.id] else { return }
-        if entity.text != ui.text {
-            entity.text = ui.text
-            try? ctx.save()
-        }
+        guard let msgDAO = messageDAO, let entity = entityByMessageId[ui.id] else { return }
+        msgDAO.update(entity: entity, text: ui.text)
     }
 
     @MainActor
     private func touchConversation() {
-        guard let ctx = modelContext, let conv = conversation else { return }
-        conv.updatedAt = Date()
-        try? ctx.save()
+        guard let convDAO = conversationDAO, let conv = conversation else { return }
+        convDAO.touch(conv)
+    }
+
+    // MARK: - Persist Analysis to system message and conversation metadata
+    @MainActor
+    private func persistAnalysis(_ analysis: AnalysisData) async {
+        guard let convDAO = conversationDAO else { return }
+        let conv = convDAO.ensureConversation(&conversation)
+        sessionId = conv.id.uuidString
+        convDAO.applyAnalysis(analysis, to: conv)
+        convDAO.insertSystemAnalysis(analysis, into: conv)
     }
 
     // MARK: - Delete conversation
     @MainActor
     func deleteConversation() -> Bool {
-        guard let ctx = modelContext, let conv = conversation else { return false }
-        ctx.delete(conv)
-        do {
-            try ctx.save()
-            return true
-        } catch {
-            return false
-        }
+        guard let convDAO = conversationDAO, let conv = conversation else { return false }
+        return convDAO.delete(conv)
     }
 }
 

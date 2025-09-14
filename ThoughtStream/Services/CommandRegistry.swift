@@ -3,7 +3,7 @@ import Foundation
 // Centralized registry for slash-commands.
 // - Internal keys are English (stable identifiers)
 // - Display labels rely on system localization; no per-language arrays here
-struct CommandDef: Equatable {
+struct CommandDef: Hashable {
     let key: String           // e.g. "idiomatic_english"
     let label: String  // default display text (typically English)
 

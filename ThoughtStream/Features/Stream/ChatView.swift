@@ -55,6 +55,14 @@ struct ChatView: View {
         .toolbarBackground(Color.thoughtStream.white, for: .navigationBar)
         .toolbarBackground(.visible, for: .navigationBar)
         .toolbar { navigationBar }
+        .alert(chatViewModel.errorMessage ?? "", isPresented: Binding(
+            get: { chatViewModel.errorMessage != nil },
+            set: { if !$0 { chatViewModel.errorMessage = nil } }
+        )) {
+            Button("OK", role: .cancel) {
+                chatViewModel.errorMessage = nil
+            }
+        }
         .alert("Delete this conversation?", isPresented: $showDeleteAlert) {
             Button("Delete", role: .destructive) {
                 if chatViewModel.deleteConversation() {

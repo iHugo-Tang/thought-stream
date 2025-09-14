@@ -15,6 +15,7 @@ struct ThoughtStreamApp: App {
             Item.self,
             ConversationEntity.self,
             ChatMessageEntity.self,
+            SystemMessageEntity.self,
         ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
 

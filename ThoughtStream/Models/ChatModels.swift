@@ -57,3 +57,19 @@ final class ChatMessageEntity {
         self.conversation = conversation
     }
 }
+
+@Model
+final class SystemMessageEntity {
+    @Attribute(.unique) var id: UUID = UUID()
+    var type: String // e.g., "analysis"
+    var payload: String // raw JSON or text
+    var createdAt: Date = Date()
+
+    @Relationship var conversation: ConversationEntity?
+
+    init(type: String, payload: String, conversation: ConversationEntity?) {
+        self.type = type
+        self.payload = payload
+        self.conversation = conversation
+    }
+}
