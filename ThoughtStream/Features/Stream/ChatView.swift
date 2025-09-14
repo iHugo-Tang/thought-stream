@@ -28,6 +28,12 @@ struct ChatView: View {
                         isCommand: message.isCommand
                     )
                 }
+                if let status = chatViewModel.systemStatus {
+                    SystemStatusRow(status: status) {
+                        chatViewModel.retryCurrentSystemTask()
+                    }
+                    .listRowSeparator(.hidden)
+                }
             }
             .onChange(of: chatViewModel.messages.count) { _ in
                 withAnimation {
@@ -55,12 +61,17 @@ struct ChatView: View {
         .toolbarBackground(Color.thoughtStream.white, for: .navigationBar)
         .toolbarBackground(.visible, for: .navigationBar)
         .toolbar { navigationBar }
-        .alert(chatViewModel.errorMessage ?? "", isPresented: Binding(
-            get: { chatViewModel.errorMessage != nil },
-            set: { if !$0 { chatViewModel.errorMessage = nil } }
-        )) {
-            Button("OK", role: .cancel) {
-                chatViewModel.errorMessage = nil
+        // Toast overlay for transient errors
+        .overlay(alignment: .top) {
+            if let msg = chatViewModel.errorMessage {
+                ToastView(text: msg)
+                    .transition(.move(edge: .top).combined(with: .opacity))
+                    .onAppear {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+                            withAnimation { chatViewModel.errorMessage = nil }
+                        }
+                    }
+                    .padding(.top, 8)
             }
         }
         .alert("Delete this conversation?", isPresented: $showDeleteAlert) {
@@ -112,6 +123,67 @@ struct MessageBubble: View {
             }
         }
         .listRowSeparator(.hidden)
+    }
+}
+
+private struct SystemStatusRow: View {
+    let status: ChatViewModel.SystemStatus
+    var onRetry: () -> Void
+
+    var body: some View {
+        HStack {
+            // Left-aligned like assistant/system
+            HStack {
+                Text(contentText)
+                    .appFont(size: .xs)
+                    .padding(.leading, 8)
+                if case .loading = status {
+                    ProgressView()
+                        .scaleEffect(0.8)
+                }
+                if case .error = status {
+                    Button(action: onRetry) {
+                        Text("Retry")
+                            .appFont(size: .xs, weight: .medium)
+                    }
+                    .buttonStyle(.bordered)
+                    .tint(.thoughtStream.theme.green600)
+                }
+            }
+                .padding(.all, 10)
+                .foregroundColor(.black)
+                .background(
+                    BubbleShape()
+                        .fill(Color.thoughtStream.neutral.gray200)
+                        .stroke(Color.thoughtStream.neutral.gray200)
+                        .rotation3DEffect(.degrees(180), axis: (x: 0, y: 1, z: 0))
+                )
+            Spacer(minLength: 50)
+        }
+        .listRowSeparator(.hidden)
+    }
+
+    private var contentText: String {
+        switch status {
+        case .loading(let msg):
+            return msg
+        case .error(let msg):
+            return msg
+        }
+    }
+}
+
+private struct ToastView: View {
+    let text: String
+    var body: some View {
+        Text(text)
+            .appFont(size: .xs)
+            .foregroundColor(.white)
+            .padding(.horizontal, 12)
+            .padding(.vertical, 8)
+            .background(Color.black.opacity(0.8))
+            .cornerRadius(8)
+            .shadow(radius: 4)
     }
 }
 
@@ -246,6 +318,8 @@ private extension ChatView {
 
 #Preview {
     ChatView()
+    SystemStatusRow(status: ChatViewModel.SystemStatus.loading("loading")) {}
+    SystemStatusRow(status: ChatViewModel.SystemStatus.error("error")) {}
     MessageBubble(text: "1", isFromUser: true, isCommand: false)
     MessageBubble(text: "2", isFromUser: false, isCommand: false)
     MessageBubble(text: CommandRegistry.displayName(for: "idiomatic_english"), isFromUser: true, isCommand: true)

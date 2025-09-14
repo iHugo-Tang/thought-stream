@@ -73,3 +73,21 @@ final class SystemMessageEntity {
         self.conversation = conversation
     }
 }
+
+@Model
+final class PendingSystemTaskEntity {
+    @Attribute(.unique) var id: UUID = UUID()
+    var commandKey: String
+    var status: String // "loading" | "error"
+    var errorMessage: String?
+    var createdAt: Date = Date()
+
+    @Relationship var conversation: ConversationEntity?
+
+    init(commandKey: String, status: String, errorMessage: String? = nil, conversation: ConversationEntity?) {
+        self.commandKey = commandKey
+        self.status = status
+        self.errorMessage = errorMessage
+        self.conversation = conversation
+    }
+}

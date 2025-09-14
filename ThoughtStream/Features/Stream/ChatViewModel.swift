@@ -8,8 +8,14 @@ import SwiftData
 class ChatViewModel: ObservableObject {
     @Published var messages: [Message] = []
     @Published var errorMessage: String?
+    enum SystemStatus: Equatable {
+        case loading(String)
+        case error(String)
+    }
+    @Published var systemStatus: SystemStatus?
     private let llm = LLMService()
     private var sessionId: String = UUID().uuidString
+    private var currentRequest: (command: String, input: [String: Any])?
 
     // Persistence
     private var modelContext: ModelContext?
@@ -17,6 +23,8 @@ class ChatViewModel: ObservableObject {
     private var entityByMessageId: [UUID: ChatMessageEntity] = [:]
     private var conversationDAO: ConversationDAO?
     private var messageDAO: MessageDAO?
+    private var systemTaskDAO: SystemTaskDAO?
+    private var pendingTaskEntity: PendingSystemTaskEntity?
 
     // Trackers removed for simplicity
     
@@ -33,10 +41,16 @@ class ChatViewModel: ObservableObject {
         self.modelContext = modelContext
         self.conversationDAO = ConversationDAO(context: modelContext)
         self.messageDAO = MessageDAO(context: modelContext)
+        self.systemTaskDAO = SystemTaskDAO(context: modelContext)
 
         if let conv = conversation {
             sessionId = conv.id.uuidString
             loadPersistedMessages()
+            // Load any pending system task for resume/retry
+            if let task = systemTaskDAO?.fetchPending(for: conv) {
+                pendingTaskEntity = task
+                updateSystemStatus(from: task)
+            }
         }
     }
 
@@ -73,7 +87,7 @@ class ChatViewModel: ObservableObject {
         textView.text = ""
         textView.delegate?.textViewDidChange?(textView)
 
-        // If it is a recognized command, execute via mock LLM service
+        // If it is a recognized command, execute via LLM service
         if isCmd {
             Task { [weak self] in
                 await self?.executeCommandFor(text: trimmed)
@@ -100,20 +114,128 @@ class ChatViewModel: ObservableObject {
     private func executeCommandFor(text: String) async {
         let (command, input) = mapCommand(text)
         do {
+            currentRequest = (command, input)
+            let conv = conversationDAO!.ensureConversation(&conversation)
+            sessionId = conv.id.uuidString
+            let task = systemTaskDAO!.upsertLoading(for: conv, commandKey: command)
+            pendingTaskEntity = task
+            await MainActor.run { self.systemStatus = .loading(self.loadingText(for: command)) }
             let result = try await llm.executeCommand(
                 sessionId: sessionId,
                 command: command,
                 input: input,
                 stream: true
             )
+            await MainActor.run { self.systemStatus = nil }
             try await streamAssistantResponse(result.stream)
             if let analysis = result.analysis {
                 await persistAnalysis(analysis)
             }
             touchConversation()
+            currentRequest = nil
+            if let e = pendingTaskEntity { systemTaskDAO?.clear(e); pendingTaskEntity = nil }
         } catch {
-            errorMessage = error.localizedDescription
+            await MainActor.run {
+                self.systemStatus = .error(self.errorText(for: command))
+                self.errorMessage = error.localizedDescription
+            }
+            if let e = pendingTaskEntity { systemTaskDAO?.markError(e, message: error.localizedDescription) }
         }
+    }
+
+    // Allow user to retry the last failed command
+    @MainActor
+    func retryCurrentSystemTask() {
+        // Prefer persisted task so retry works after relaunch
+        if let task = pendingTaskEntity ?? (conversation.flatMap { systemTaskDAO?.fetchPending(for: $0) }) {
+            let commandKey = task.commandKey
+            let (command, input) = mapCommandFromKey(commandKey)
+            Task { [weak self] in
+                guard let self else { return }
+                await MainActor.run { self.systemStatus = .loading(self.loadingText(for: commandKey)) }
+                do {
+                    let result = try await self.llm.executeCommand(
+                        sessionId: self.sessionId,
+                        command: command,
+                        input: input,
+                        stream: true
+                    )
+                    await MainActor.run { self.systemStatus = nil }
+                    try await self.streamAssistantResponse(result.stream)
+                    if let analysis = result.analysis {
+                        await self.persistAnalysis(analysis)
+                    }
+                    self.touchConversation()
+                    if let e = self.pendingTaskEntity ?? (self.conversation.flatMap { self.systemTaskDAO?.fetchPending(for: $0) }) {
+                        self.systemTaskDAO?.clear(e)
+                        self.pendingTaskEntity = nil
+                    }
+                } catch {
+                    await MainActor.run {
+                        self.systemStatus = .error(self.errorText(for: commandKey))
+                        self.errorMessage = error.localizedDescription
+                    }
+                    if let e = self.pendingTaskEntity ?? (self.conversation.flatMap { self.systemTaskDAO?.fetchPending(for: $0) }) {
+                        self.systemTaskDAO?.markError(e, message: error.localizedDescription)
+                    }
+                }
+            }
+            return
+        }
+        // Fallback to in-memory request if exists
+        guard let req = currentRequest else { return }
+        Task { [weak self] in
+            guard let self else { return }
+            await MainActor.run { self.systemStatus = .loading(self.loadingText(for: req.command)) }
+            do {
+                let result = try await self.llm.executeCommand(
+                    sessionId: self.sessionId,
+                    command: req.command,
+                    input: req.input,
+                    stream: true
+                )
+                await MainActor.run { self.systemStatus = nil }
+                try await self.streamAssistantResponse(result.stream)
+                if let analysis = result.analysis {
+                    await self.persistAnalysis(analysis)
+                }
+                self.touchConversation()
+                self.currentRequest = nil
+            } catch {
+                await MainActor.run {
+                    self.systemStatus = .error(self.errorText(for: req.command))
+                    self.errorMessage = error.localizedDescription
+                }
+            }
+        }
+    }
+
+    private func mapCommandFromKey(_ key: String) -> (String, [String: Any]) {
+        var input: [String: Any] = [:]
+        input["messages"] = messages
+        return (key, input)
+    }
+
+    private func updateSystemStatus(from task: PendingSystemTaskEntity) {
+        switch task.status {
+        case "loading":
+            systemStatus = .loading(loadingText(for: task.commandKey))
+        case "error":
+            systemStatus = .error(errorText(for: task.commandKey))
+            errorMessage = task.errorMessage
+        default:
+            break
+        }
+    }
+
+    private func loadingText(for commandKey: String) -> String {
+        let label = CommandRegistry.displayName(for: commandKey)
+        return "Analyzing… (\(label))"
+    }
+
+    private func errorText(for commandKey: String) -> String {
+        let label = CommandRegistry.displayName(for: commandKey)
+        return "分析失败 (\(label))"
     }
 
     private func mapCommand(_ text: String) -> (String, [String: Any]) {

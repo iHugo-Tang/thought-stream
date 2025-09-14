@@ -77,10 +77,8 @@ final class LLMService {
             let payload = Self.composeAnalyzePayload(from: userOnly)
             let analysis = try await analyze(messagesPayload: payload)
 
-            // Choose the best improved text to stream back
-            let improved = analysis.revisions.last?.good_to_say ?? ""
-            let sample = "Here’s a more idiomatic version: \n\n"
-            let combined = sample + improved
+            // Compose a detailed output including original, suggestions and fixed sentences
+            let combined = Self.composeDetailedOutput(from: analysis)
             let chunks = Self.splitForStreaming(combined)
 
             let streamObj: AsyncThrowingStream<String, Error>
@@ -121,6 +119,27 @@ final class LLMService {
         let safeStart = max(0, start)
         let safeEnd = max(safeStart, min(end, messages.count))
         return messages[safeStart..<safeEnd]
+    }
+
+    private static func composeDetailedOutput(from analysis: AnalysisData) -> String {
+        guard !analysis.revisions.isEmpty else {
+            return "Here’s a more idiomatic version:\n\n" + (analysis.revisions.last?.good_to_say ?? "")
+        }
+
+        var lines: [String] = []
+        lines.append("以下是建议的修改和说明：\n")
+        for rev in analysis.revisions {
+            lines.append("原句：\(rev.original)")
+            lines.append("修改：\(rev.good_to_say)")
+            if !rev.suggestions.isEmpty {
+                lines.append("建议：")
+                for (idx, s) in rev.suggestions.enumerated() {
+                    lines.append("\(idx + 1). \(s)")
+                }
+            }
+            lines.append("")
+        }
+        return lines.joined(separator: "\n")
     }
 
     private static func composeAnalyzePayload(from userMessages: [Message]) -> String {
