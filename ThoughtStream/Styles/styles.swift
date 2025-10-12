@@ -19,6 +19,9 @@ public extension Color {
         
         /// 渐变色
         public let gradients = GradientColors()
+        
+        /// 背景色
+        public let bg = BackgroundColors()
 
         /// 基础色
         public let black = Color(hex: "#000000")
@@ -82,9 +85,36 @@ public extension Color {
                 endPoint: .trailing
             )
         }
+        
+        public struct BackgroundColors {
+            public let indigo600: Color = Color(hex: "#4F46E5")
+        }
     }
 }
 
+// MARK: - Spacing
+public enum AppSpacing: CGFloat {
+    case xs = 2.0
+    case sm = 4.0
+    case base = 8.0
+    case lg = 16.0
+    case xl = 24.0
+    case xxxl = 32.0
+    
+    public var value: CGFloat {
+        self.rawValue
+    }
+}
+
+public extension AppSpacing {
+    /// Shorthand to get the CGFloat value of a spacing token
+    var cg: CGFloat { rawValue }
+}
+
+public extension CGFloat {
+    /// Returns a CGFloat value for a given spacing token, e.g. `.spacing(.lg)`
+    static func spacing(_ s: AppSpacing) -> CGFloat { s.rawValue }
+}
 
 // MARK: - 字体系统 (Font System)
 // 定义应用的字体大小和粗细，并通过 ViewModifier 应用。
@@ -251,3 +281,4 @@ struct DesignSystemUsageExample_Previews: PreviewProvider {
         DesignSystemUsageExample()
     }
 }
+
