@@ -49,12 +49,14 @@ final class ChatMessageEntity {
     var createdAt: Date = Date()
 
     @Relationship var conversation: ConversationEntity?
+    var systemMessage: SystemMessageEntity?
 
-    init(text: String, sendByYou: Bool, isCommand: Bool, conversation: ConversationEntity?) {
+    init(text: String, sendByYou: Bool, isCommand: Bool, conversation: ConversationEntity?, systemMessage: SystemMessageEntity? = nil) {
         self.text = text
         self.sendByYou = sendByYou
         self.isCommand = isCommand
         self.conversation = conversation
+        self.systemMessage = systemMessage
     }
 }
 
@@ -66,11 +68,19 @@ final class SystemMessageEntity {
     var createdAt: Date = Date()
 
     @Relationship var conversation: ConversationEntity?
+    var messages: ChatMessageEntity?
 
     init(type: String, payload: String, conversation: ConversationEntity?) {
         self.type = type
         self.payload = payload
         self.conversation = conversation
+    }
+}
+
+extension SystemMessageEntity {
+    var analysis: AnalysisData? {
+        guard type == "analysis", let data = payload.data(using: .utf8) else { return nil }
+        return try? JSONDecoder().decode(AnalysisData.self, from: data)
     }
 }
 

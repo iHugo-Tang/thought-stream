@@ -48,23 +48,21 @@ final class LLMService {
         }
     }
     /// Execute a registered command against the current session context.
-    /// This mock ignores any remote networking and yields canned chunks.
+    /// This mock ignores any remote networking and returns最终文本。
     ///
     /// - Parameters:
     ///   - sessionId: Logical session identifier for conversation scoping.
     ///   - command: Command name, e.g. "idiomatic_english".
     ///   - input: Structured payload for the command. Optional in this mock.
-    ///   - stream: When true (default), yields chunks with small delays.
     struct CommandResult {
-        let stream: AsyncThrowingStream<String, Error>
+        let text: String
         let analysis: AnalysisData?
     }
 
     func executeCommand(
         sessionId: String,
         command: String,
-        input: [String: Any],
-        stream: Bool = true
+        input: [String: Any]
     ) async throws -> CommandResult {
         switch command {
         case "idiomatic_english":
@@ -79,27 +77,7 @@ final class LLMService {
 
             // Compose a detailed output including original, suggestions and fixed sentences
             let combined = Self.composeDetailedOutput(from: analysis)
-            let chunks = Self.splitForStreaming(combined)
-
-            let streamObj: AsyncThrowingStream<String, Error>
-            if stream {
-                streamObj = AsyncThrowingStream { continuation in
-                    Task {
-                        for (idx, part) in chunks.enumerated() {
-                            try? await Task.sleep(nanoseconds: UInt64(200_000_000 + idx * 80_000_000))
-                            continuation.yield(part)
-                        }
-                        continuation.finish()
-                    }
-                }
-            } else {
-                let final = chunks.joined()
-                streamObj = AsyncThrowingStream { continuation in
-                    continuation.yield(final)
-                    continuation.finish()
-                }
-            }
-            return CommandResult(stream: streamObj, analysis: analysis)
+            return CommandResult(text: combined, analysis: analysis)
         default:
             throw LLMServiceError.unsupportedCommand(command)
         }
@@ -150,15 +128,7 @@ final class LLMService {
         return lines.joined(separator: "\n")
     }
 
-    private static func splitForStreaming(_ combined: String) -> [String] {
-        let mid = combined.index(combined.startIndex, offsetBy: min(24, combined.count))
-        let end1 = combined.index(combined.startIndex, offsetBy: min(64, combined.count))
-        return [
-            String(combined[..<mid]),
-            String(combined[mid..<(combined.count > 64 ? end1 : combined.endIndex)]),
-            combined.count > 64 ? String(combined[end1...]) : ""
-        ].filter { !$0.isEmpty }
-    }
+    
 
     // MARK: - Networking
     private func analyze(messagesPayload: String) async throws -> AnalysisData {

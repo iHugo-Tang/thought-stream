@@ -123,14 +123,17 @@ class ChatViewModel: ObservableObject {
             let result = try await llm.executeCommand(
                 sessionId: sessionId,
                 command: command,
-                input: input,
-                stream: true
+                input: input
             )
             await MainActor.run { self.systemStatus = nil }
-            try await streamAssistantResponse(result.stream)
+            var systemMessageEntity: SystemMessageEntity?
             if let analysis = result.analysis {
-                await persistAnalysis(analysis)
+                systemMessageEntity = await persistAnalysis(analysis)
             }
+            // 一次性追加助手消息（非流式）
+            let assistant = Message(text: result.text, sendByYou: false, command: nil, systemMessage: systemMessageEntity)
+            messages.append(assistant)
+            persist(assistant)
             touchConversation()
             currentRequest = nil
             if let e = pendingTaskEntity { systemTaskDAO?.clear(e); pendingTaskEntity = nil }
@@ -157,14 +160,16 @@ class ChatViewModel: ObservableObject {
                     let result = try await self.llm.executeCommand(
                         sessionId: self.sessionId,
                         command: command,
-                        input: input,
-                        stream: true
+                        input: input
                     )
                     await MainActor.run { self.systemStatus = nil }
-                    try await self.streamAssistantResponse(result.stream)
+                    var systemMessageEntity: SystemMessageEntity?
                     if let analysis = result.analysis {
-                        await self.persistAnalysis(analysis)
+                        systemMessageEntity = await persistAnalysis(analysis)
                     }
+                    let assistant = Message(text: result.text, sendByYou: false, command: nil, systemMessage: systemMessageEntity)
+                    self.messages.append(assistant)
+                    self.persist(assistant)
                     self.touchConversation()
                     if let e = self.pendingTaskEntity ?? (self.conversation.flatMap { self.systemTaskDAO?.fetchPending(for: $0) }) {
                         self.systemTaskDAO?.clear(e)
@@ -191,14 +196,16 @@ class ChatViewModel: ObservableObject {
                 let result = try await self.llm.executeCommand(
                     sessionId: self.sessionId,
                     command: req.command,
-                    input: req.input,
-                    stream: true
+                    input: req.input
                 )
                 await MainActor.run { self.systemStatus = nil }
-                try await self.streamAssistantResponse(result.stream)
+                var systemMessageEntity: SystemMessageEntity?
                 if let analysis = result.analysis {
-                    await self.persistAnalysis(analysis)
+                    systemMessageEntity = await persistAnalysis(analysis)
                 }
+                let assistant = Message(text: result.text, sendByYou: false, command: nil, systemMessage: systemMessageEntity)
+                self.messages.append(assistant)
+                self.persist(assistant)
                 self.touchConversation()
                 self.currentRequest = nil
             } catch {
@@ -247,24 +254,7 @@ class ChatViewModel: ObservableObject {
         return (commandName, input)
     }
 
-    @MainActor
-    private func streamAssistantResponse(_ stream: AsyncThrowingStream<String, Error>) async throws {
-        // Append a placeholder assistant message we will update incrementally
-        var assistant = Message(text: "", sendByYou: false, command: nil)
-        messages.append(assistant)
-        persist(assistant, asPlaceholder: true)
-
-        let idx = messages.count - 1
-
-        for try await chunk in stream {
-            assistant.text += chunk
-            if idx < messages.count {
-                messages[idx] = assistant
-            }
-            // update the persisted placeholder text
-            updatePersisted(for: assistant)
-        }
-    }
+    
 
     // MARK: - Persistence helpers
     @MainActor
@@ -291,12 +281,12 @@ class ChatViewModel: ObservableObject {
 
     // MARK: - Persist Analysis to system message and conversation metadata
     @MainActor
-    private func persistAnalysis(_ analysis: AnalysisData) async {
-        guard let convDAO = conversationDAO else { return }
+    private func persistAnalysis(_ analysis: AnalysisData) async -> SystemMessageEntity? {
+        guard let convDAO = conversationDAO else { return nil }
         let conv = convDAO.ensureConversation(&conversation)
         sessionId = conv.id.uuidString
         convDAO.applyAnalysis(analysis, to: conv)
-        convDAO.insertSystemAnalysis(analysis, into: conv)
+        return convDAO.insertSystemAnalysis(analysis, into: conv)
     }
 
     // MARK: - Delete conversation

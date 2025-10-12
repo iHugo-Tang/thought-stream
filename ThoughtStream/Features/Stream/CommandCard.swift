@@ -39,7 +39,9 @@ struct CommandCard: View {
                     }
                 }
             }.padding(Edge.Set.horizontal)
-        }.cornerRadius(10)
+        }
+        .padding(.bottom)
+        .appCard()
     }
 }
 

@@ -46,13 +46,15 @@ final class ConversationDAO {
         try? context.save()
     }
 
-    func insertSystemAnalysis(_ analysis: AnalysisData, into conversation: ConversationEntity) {
+    func insertSystemAnalysis(_ analysis: AnalysisData, into conversation: ConversationEntity) -> SystemMessageEntity? {
         if let json = try? JSONEncoder().encode(analysis),
            let jsonText = String(data: json, encoding: .utf8) {
             let sys = SystemMessageEntity(type: "analysis", payload: jsonText, conversation: conversation)
             context.insert(sys)
             try? context.save()
+            return sys
         }
+        return nil
     }
 }
 

@@ -31,6 +31,16 @@ struct IdiomaticResultView: View {
     }
 }
 
+extension IdiomaticResultView {
+    init(analysis: AnalysisData) {
+        let title = "英语修改建议"
+        let originals = analysis.revisions.map { $0.original }
+        let revisions = analysis.revisions.map { $0.good_to_say }
+        let explanations = analysis.revisions.flatMap { $0.explanations }
+        self.init(title: title, original: originals, revision: revisions, explanations: explanations)
+    }
+}
+
 #Preview {
     IdiomaticResultView(
         title: "英语修改建议",

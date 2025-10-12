@@ -22,11 +22,15 @@ struct ChatView: View {
         ScrollViewReader { proxy in
             List {
                 ForEach(chatViewModel.messages) { message in
-                    MessageBubble(
-                        text: message.text,
-                        isFromUser: message.sendByYou,
-                        isCommand: message.isCommand
-                    )
+                    if let analysis = message.analysis {
+                        IdiomaticResultView(analysis: analysis)
+                    } else {
+                        MessageBubble(
+                            text: message.text,
+                            isFromUser: message.sendByYou,
+                            isCommand: message.isCommand
+                        )
+                    }
                 }
                 if let status = chatViewModel.systemStatus {
                     SystemStatusRow(status: status) {

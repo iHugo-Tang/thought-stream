@@ -25,7 +25,7 @@ final class MessageDAO {
         var map: [UUID: ChatMessageEntity] = [:]
         for e in entities {
             let cmdDef: CommandDef? = e.isCommand ? (CommandRegistry.resolveKey(from: e.text).flatMap { CommandRegistry.command(for: $0) }) : nil
-            let m = Message(id: e.id, text: e.text, sendByYou: e.sendByYou, command: cmdDef)
+            let m = Message(id: e.id, text: e.text, sendByYou: e.sendByYou, command: cmdDef, systemMessage: e.systemMessage)
             ui.append(m)
             map[m.id] = e
         }
@@ -33,7 +33,12 @@ final class MessageDAO {
     }
 
     func insert(uiMessage: Message, into conversation: ConversationEntity) -> ChatMessageEntity {
-        let entity = ChatMessageEntity(text: uiMessage.text, sendByYou: uiMessage.sendByYou, isCommand: uiMessage.isCommand, conversation: conversation)
+        let entity = ChatMessageEntity(
+            text: uiMessage.text,
+            sendByYou: uiMessage.sendByYou,
+            isCommand: uiMessage.isCommand,
+            conversation: conversation,
+            systemMessage: uiMessage.systemMessage)
         entity.id = uiMessage.id
         context.insert(entity)
         try? context.save()
