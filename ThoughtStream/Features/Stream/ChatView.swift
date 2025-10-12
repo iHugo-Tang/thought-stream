@@ -322,5 +322,19 @@ private extension ChatView {
     SystemStatusRow(status: ChatViewModel.SystemStatus.error("error")) {}
     MessageBubble(text: "1", isFromUser: true, isCommand: false)
     MessageBubble(text: "2", isFromUser: false, isCommand: false)
+    IdiomaticResultView(
+        title: "英语修改建议",
+        original: [
+            "I've updated the rewriting API to remove the suggestions and reviews fields."
+        ],
+        revision: [
+            "I've updated the rewriting API to remove the suggestions and reviews fields."
+        ],
+        explanations: [
+            "1. After 'have', the verb should be in the past participle form. For 'update', it's 'updated'.",
+            "2. It's more natural to contract 'I have' to 'I've' in conversation.",
+            "3. Acronyms like 'API' should be capitalized."
+        ]
+    )
     MessageBubble(text: CommandRegistry.displayName(for: "idiomatic_english"), isFromUser: true, isCommand: true)
 }

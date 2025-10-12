@@ -1,11 +1,49 @@
 import SwiftUI
 
 struct IdiomaticResultView: View {
+    let title: String
+    let original: [String]
+    let revision: [String]
+    let explanations: [String]
+
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        CommandCard(
+            title: title,
+            sections: [
+                CommandCardSection(
+                    title: "原句",
+                    content: original,
+                    contentBackground: Color.thoughtStream.neutral.gray100
+                ),
+                CommandCardSection(
+                    title: "修改",
+                    content: revision,
+                    contentBackground: Color.thoughtStream.theme.green100
+                ),
+                CommandCardSection(
+                    title: "说明:",
+                    content: explanations,
+                    contentBackground: Color.thoughtStream.neutral.gray100
+                )
+            ],
+            headerBackground: Color.thoughtStream.bg.indigo600
+        )
     }
 }
 
 #Preview {
-    IdiomaticResultView()
+    IdiomaticResultView(
+        title: "英语修改建议",
+        original: [
+            "I've updated the rewriting API to remove the suggestions and reviews fields."
+        ],
+        revision: [
+            "I've updated the rewriting API to remove the suggestions and reviews fields."
+        ],
+        explanations: [
+            "1. After 'have', the verb should be in the past participle form. For 'update', it's 'updated'.",
+            "2. It's more natural to contract 'I have' to 'I've' in conversation.",
+            "3. Acronyms like 'API' should be capitalized."
+        ]
+    )
 }

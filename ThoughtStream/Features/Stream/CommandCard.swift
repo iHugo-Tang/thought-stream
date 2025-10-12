@@ -1,57 +1,76 @@
 import SwiftUI
 
+struct CommandCardSection: Identifiable {
+    let id = UUID()
+    let title: String
+    let content: [String]
+    let contentBackground: Color
+}
+
 struct CommandCard: View {
+    let title: String
+    let sections: [CommandCardSection]
+    let headerBackground: Color
+
     var body: some View {
-        VStack(alignment: .leading, spacing: .spacing(.lg)) {
-            Text("英语修改建议")
-                .appFont(size: .base)
-                .foregroundColor(.white)
-                .padding(.horizontal)
-                .padding(.vertical, 8)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .background(Color.thoughtStream.bg.indigo600)
-            
-            VStack(alignment: .leading, spacing: .spacing(.lg)) {
-                VStack(alignment: .leading, spacing: .spacing(.base)) {
-                    Text("原句")
-                        .appFont(size: .base, weight: .bold)
-                    Text("I've updated the rewriting API to remove the suggestions and reviews fields.")
-                        .appFont(size: .base)
+        VStack(alignment: .leading, spacing: 16) {
+            Text(title)
+                .font(.system(size: 16, weight: .regular))
+                .foregroundColor(Color.white)
+                .padding(Edge.Set.horizontal)
+                .padding(Edge.Set.vertical, 8)
+                .frame(maxWidth: CGFloat.infinity, alignment: Alignment.leading)
+                .background(headerBackground)
+
+            VStack(alignment: .leading, spacing: 16) {
+                ForEach(sections) { section in
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text(section.title)
+                            .font(.system(size: 16, weight: .bold))
+                        VStack(alignment: .leading, spacing: 6) {
+                            ForEach(section.content, id: \.self) { line in
+                                Text(line)
+                                    .font(.system(size: 16, weight: .regular))
+                            }
+                        }
                         .padding()
-                        .background(Color.thoughtStream.neutral.gray100)
-                        .cornerRadius(.spacing(.base))
-                }
-                
-                VStack(alignment: .leading, spacing: .spacing(.base)) {
-                    Text("修改")
-                        .appFont(size: .base, weight: .bold)
-                    Text("I've updated the rewriting API to remove the suggestions and reviews fields.")
-                        .appFont(size: .base)
-                        .padding()
-                        .background(Color.thoughtStream.theme.green100)
-                        .cornerRadius(.spacing(.base))
-                }
-                
-                VStack(alignment: .leading, spacing: .spacing(.base)) {
-                    Text("说明:")
-                        .appFont(size: .base, weight: .bold)
-                    VStack(alignment: .leading, spacing: .spacing(.base)) {
-                        Text("1. After 'have', the verb should be in the past participle form. For 'update', it's 'updated'.")
-                            .appFont(size: .base)
-                        Text("2. It's more natural to contract 'I have' to 'I've' in conversation.")
-                            .appFont(size: .base)
-                        Text("3. Acronyms like 'API' should be capitalized.")
-                            .appFont(size: .base)
+                        .background(section.contentBackground)
+                        .cornerRadius(8)
                     }
-                    .padding()
-                    .background(Color.thoughtStream.neutral.gray100)
-                    .cornerRadius(.spacing(.base))
                 }
-            }.padding(.horizontal)
+            }.padding(Edge.Set.horizontal)
         }.cornerRadius(10)
     }
 }
 
 #Preview {
-    CommandCard()
+    CommandCard(
+        title: "英语修改建议",
+        sections: [
+            CommandCardSection(
+                title: "原句",
+                content: [
+                    "I've updated the rewriting API to remove the suggestions and reviews fields."
+                ],
+                contentBackground: Color.thoughtStream.neutral.gray100
+            ),
+            CommandCardSection(
+                title: "修改",
+                content: [
+                    "I've updated the rewriting API to remove the suggestions and reviews fields."
+                ],
+                contentBackground: Color.thoughtStream.theme.green100
+            ),
+            CommandCardSection(
+                title: "说明:",
+                content: [
+                    "1. After 'have', the verb should be in the past participle form. For 'update', it's 'updated'.",
+                    "2. It's more natural to contract 'I have' to 'I've' in conversation.",
+                    "3. Acronyms like 'API' should be capitalized."
+                ],
+                contentBackground: Color.thoughtStream.neutral.gray100
+            )
+        ],
+        headerBackground: Color.thoughtStream.bg.indigo600
+    )
 }
