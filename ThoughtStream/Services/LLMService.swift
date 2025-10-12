@@ -127,13 +127,13 @@ final class LLMService {
         }
 
         var lines: [String] = []
-        lines.append("以下是建议的修改和说明：\n")
+        lines.append("英语修改建议：\n")
         for rev in analysis.revisions {
             lines.append("原句：\(rev.original)")
             lines.append("修改：\(rev.good_to_say)")
-            if !rev.suggestions.isEmpty {
-                lines.append("建议：")
-                for (idx, s) in rev.suggestions.enumerated() {
+            if !rev.explanations.isEmpty {
+                lines.append("说明：")
+                for (idx, s) in rev.explanations.enumerated() {
                     lines.append("\(idx + 1). \(s)")
                 }
             }
@@ -198,11 +198,9 @@ struct AnalysisData: Decodable, Encodable {
         let original: String
         let good_to_say: String
         let main_issue: String
-        let suggestions: [String]
         let explanations: [String]
     }
     let revisions: [Revision]
     let suggest_topic: String?
     let tags: [String]?
-    let reviews: [String]?
 }

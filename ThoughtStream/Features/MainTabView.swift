@@ -25,8 +25,7 @@ struct MainTabView: View {
         [
             .init(tab: .home, title: "主页", image: Lucide.house),
             .init(tab: .stream, title: "思绪", image: Lucide.pen),
-            .init(tab: .vocab, title: "词汇", image: Lucide.bookOpen),
-            .init(tab: .review, title: "复习", image: Lucide.sparkles),
+            .init(tab: .vocab, title: "输出", image: Lucide.bookOpen),
             .init(tab: .profile, title: "我的", image: Lucide.user)
         ]
     }

@@ -39,9 +39,9 @@ final class ConversationDAO {
         if let tags = analysis.tags {
             conversation.tags = tags
         }
-        if let reviews = analysis.reviews, !reviews.isEmpty {
-            conversation.summary = reviews.joined(separator: "\n")
-        }
+//        if let reviews = analysis.reviews, !reviews.isEmpty {
+//            conversation.summary = reviews.joined(separator: "\n")
+//        }
         conversation.updatedAt = Date()
         try? context.save()
     }
