@@ -99,7 +99,7 @@ struct MessageBubble: View {
     let isFromUser: Bool
     let isCommand: Bool
     var backgroundColor: Color {
-        if isCommand { return Color.thoughtStream.functional.blue600 }
+        if isCommand { return Color.thoughtStream.bg.indigo600 }
         return isFromUser ? Color.thoughtStream.theme.green600 : Color.thoughtStream.neutral.gray200
     }
     
@@ -340,5 +340,5 @@ private extension ChatView {
             "3. Acronyms like 'API' should be capitalized."
         ]
     )
-    MessageBubble(text: CommandRegistry.displayName(for: "idiomatic_english"), isFromUser: true, isCommand: true)
+    MessageBubble(text: CommandRegistry.slashPrefix + CommandRegistry.displayName(for: "idiomatic_english"), isFromUser: true, isCommand: true)
 }
