@@ -25,7 +25,7 @@ struct MainTabView: View {
         [
             .init(tab: .home, title: "主页", image: Lucide.house),
             .init(tab: .stream, title: "思绪", image: Lucide.pen),
-            .init(tab: .vocab, title: "输出", image: Lucide.bookOpen),
+            .init(tab: .review, title: "记录", image: Lucide.bookOpen),
             .init(tab: .profile, title: "我的", image: Lucide.user)
         ]
     }
@@ -43,11 +43,10 @@ struct MainTabView: View {
                 }
                 .tag(MainTabViewModel.Tab.stream)
             
-                VacabularyView()
-                    .tag(MainTabViewModel.Tab.vocab)
-            
-                ReviewView()
-                    .tag(MainTabViewModel.Tab.review)
+                NavigationView {
+                    RecordView()
+                }
+                .tag(MainTabViewModel.Tab.review)
             
                 ProfileView()
                     .tag(MainTabViewModel.Tab.profile)
@@ -105,7 +104,7 @@ private struct CustomTabBar: View {
         }
         .padding(.horizontal, 8)
         .padding(.vertical, 6)
-        .background(.ultraThinMaterial)
+        .background(.regularMaterial)
         .cornerRadius(16)
         .shadow(color: Color.black.opacity(0.06), radius: 8, x: 0, y: 4)
     }

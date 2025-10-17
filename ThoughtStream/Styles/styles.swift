@@ -87,9 +87,18 @@ public extension Color {
         }
         
         public struct BackgroundColors {
+            public let indigo100: Color = Color(hex: "#C5CAE9")
             public let indigo600: Color = Color(hex: "#4F46E5")
+            public let indigo800: Color = Color(hex: "#283593")
         }
     }
+}
+
+public enum CornerRadius: CGFloat {
+    case xs = 2.0
+    case sm = 4.0
+    case base = 8.0
+    case large = 12.0
 }
 
 // MARK: - Spacing
