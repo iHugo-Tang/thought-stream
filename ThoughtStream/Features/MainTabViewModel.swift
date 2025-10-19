@@ -9,7 +9,7 @@ final class MainTabViewModel: ObservableObject {
         case profile
     }
 
-    @Published var selectedTab: Tab = .stream
+    @Published var selectedTab: Tab = .home
     @Published var tabBarHeight: CGFloat = 0
     @Published var isTabBarHidden: Bool = false
 

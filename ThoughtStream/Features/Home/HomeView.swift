@@ -68,11 +68,6 @@ struct HomeView: View {
                         .foregroundColor(.thoughtStream.neutral.gray800)
                 }
             }
-            ToolbarItem(placement: .topBarTrailing) {
-                Text("Free")
-                    .appFont(size: .xs, weight: .regular)
-                    .appCapsuleTag(background: .thoughtStream.theme.green100, foreground: .thoughtStream.theme.green700)
-            }
         }
     }
 }
