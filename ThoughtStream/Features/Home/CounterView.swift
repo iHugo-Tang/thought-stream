@@ -13,9 +13,6 @@ struct CounterView: View {
         VStack(spacing: 24) {
             // 标题与说明
             VStack(spacing: 8) {
-                Text("计次数")
-                    .appFont(size: .xxl, weight: .bold)
-                    .foregroundColor(.thoughtStream.neutral.gray800)
                 Text("点击下方按钮进行计数，达阈值时触觉提醒；达到最终目标时更强震动")
                     .appFont(size: .sm, weight: .regular)
                     .foregroundColor(.thoughtStream.neutral.gray500)
