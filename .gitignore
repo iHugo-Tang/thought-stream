@@ -1,3 +1,4 @@
 ThoughtStream.xcodeproj/xcuserdata/hugo.xcuserdatad/
 build/
+.build/
 .vscode/
