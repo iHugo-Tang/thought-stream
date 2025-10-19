@@ -1,6 +1,5 @@
 import SwiftUI
 import LucideIcons
-import SwiftUIIntrospect
 import SwiftData
 
 struct ChatView: View {

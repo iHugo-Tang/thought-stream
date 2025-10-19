@@ -187,6 +187,41 @@ public extension View {
             .cornerRadius(cornerRadius)
     }
 
+    /// 次要按钮样式（浅灰背景，深灰文字）
+    func appSecondaryButtonStyle(cornerRadius: CGFloat = 8) -> some View {
+        self
+            .padding()
+            .frame(maxWidth: .infinity)
+            .background(Color.thoughtStream.neutral.gray100)
+            .foregroundColor(Color.thoughtStream.neutral.gray800)
+            .cornerRadius(cornerRadius)
+    }
+
+    /// 危险按钮样式（红色背景，白字）
+    func appDestructiveButtonStyle(cornerRadius: CGFloat = 8) -> some View {
+        self
+            .padding()
+            .frame(maxWidth: .infinity)
+            .background(Color.thoughtStream.functional.red600)
+            .foregroundColor(.white)
+            .cornerRadius(cornerRadius)
+    }
+
+    /// 圆形图标按钮（常用于操作入口）
+    func appCircularButton(size: CGFloat = 56,
+                           background: Color = Color.thoughtStream.theme.green600,
+                           foreground: Color = .white,
+                           shadowOpacity: Double = 0.1,
+                           shadowRadius: CGFloat = 10,
+                           shadowYOffset: CGFloat = 6) -> some View {
+        self
+            .frame(width: size, height: size)
+            .background(background)
+            .foregroundColor(foreground)
+            .clipShape(Circle())
+            .shadow(color: Color.black.opacity(shadowOpacity), radius: shadowRadius, x: 0, y: shadowYOffset)
+    }
+
     /// 胶囊标签样式（用于 Free、状态等）
     func appCapsuleTag(background: Color, foreground: Color, horizontal: CGFloat = 8, vertical: CGFloat = 4) -> some View {
         self
