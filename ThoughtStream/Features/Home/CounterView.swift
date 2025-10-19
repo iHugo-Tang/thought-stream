@@ -1,9 +1,11 @@
 import SwiftUI
 import UIKit
+import CoreHaptics
 
 struct CounterView: View {
     @AppStorage("counter.current") private var currentCount: Int = 0
     @AppStorage("counter.threshold") private var threshold: Int = 10
+    @AppStorage("counter.goal") private var goal: Int = 100
     @State private var showSettings: Bool = false
 
     var body: some View {
@@ -13,7 +15,7 @@ struct CounterView: View {
                 Text("计次数")
                     .appFont(size: .xxl, weight: .bold)
                     .foregroundColor(.thoughtStream.neutral.gray800)
-                Text("点击下方按钮进行计数，达阈值时触觉提醒")
+                Text("点击下方按钮进行计数，达阈值时触觉提醒；达到最终目标时更强震动")
                     .appFont(size: .sm, weight: .regular)
                     .foregroundColor(.thoughtStream.neutral.gray500)
             }
@@ -59,11 +61,14 @@ struct CounterView: View {
             Spacer()
         }
         .padding(16)
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+        .contentShape(Rectangle())
+        .onTapGesture(perform: increment)
         .background(Color.thoughtStream.neutral.gray50)
         .navigationTitle("计次数")
         .navigationBarTitleDisplayMode(.inline)
         .sheet(isPresented: $showSettings) {
-            CounterSettingsView(threshold: $threshold)
+            CounterSettingsView(threshold: $threshold, goal: $goal)
         }
     }
 
@@ -79,6 +84,32 @@ struct CounterView: View {
     private func checkHapticIfNeeded() {
         guard threshold > 0 else { return }
         if currentCount % threshold == 0 {
+            let generator = UINotificationFeedbackGenerator()
+            generator.notificationOccurred(.success)
+        }
+        if goal > 0, currentCount == goal {
+            triggerLongHaptic()
+        }
+    }
+
+    private func triggerLongHaptic() {
+        // Prefer CoreHaptics if available for a longer, more intense effect
+        if CHHapticEngine.capabilitiesForHardware().supportsHaptics {
+            do {
+                let engine = try CHHapticEngine()
+                try engine.start()
+                let intensity = CHHapticEventParameter(parameterID: .hapticIntensity, value: 1.0)
+                let sharpness = CHHapticEventParameter(parameterID: .hapticSharpness, value: 0.5)
+                let event = CHHapticEvent(eventType: .hapticContinuous, parameters: [intensity, sharpness], relativeTime: 0, duration: 0.6)
+                let pattern = try CHHapticPattern(events: [event], parameters: [])
+                let player = try engine.makePlayer(with: pattern)
+                try player.start(atTime: 0)
+                engine.notifyWhenPlayersFinished { _ in .stopEngine }
+            } catch {
+                let generator = UINotificationFeedbackGenerator()
+                generator.notificationOccurred(.success)
+            }
+        } else {
             let generator = UINotificationFeedbackGenerator()
             generator.notificationOccurred(.success)
         }

@@ -2,6 +2,7 @@ import SwiftUI
 
 struct CounterSettingsView: View {
     @Binding var threshold: Int
+    @Binding var goal: Int
     @Environment(\.dismiss) private var dismiss
 
     var body: some View {
@@ -11,6 +12,16 @@ struct CounterSettingsView: View {
                     Stepper(value: $threshold, in: 1...500) {
                         HStack {
                             Text("每 \(threshold) 次触发一次触觉反馈")
+                                .appFont(size: .base, weight: .regular)
+                                .foregroundColor(.thoughtStream.neutral.gray800)
+                        }
+                    }
+                }
+
+                Section(header: Text("最终目标").appFont(size: .sm, weight: .medium)) {
+                    Stepper(value: $goal, in: 1...10000) {
+                        HStack {
+                            Text("目标：\(goal) 次时触发更强触觉反馈")
                                 .appFont(size: .base, weight: .regular)
                                 .foregroundColor(.thoughtStream.neutral.gray800)
                         }
@@ -36,7 +47,7 @@ struct CounterSettingsView: View {
 
 struct CounterSettingsView_Previews: PreviewProvider {
     static var previews: some View {
-        CounterSettingsView(threshold: .constant(10))
+        CounterSettingsView(threshold: .constant(10), goal: .constant(100))
     }
 }
 
