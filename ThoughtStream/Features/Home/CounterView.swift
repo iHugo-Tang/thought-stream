@@ -1,6 +1,7 @@
 import SwiftUI
 import UIKit
 import CoreHaptics
+import Foundation
 
 struct CounterView: View {
     @AppStorage("counter.current") private var currentCount: Int = 0
@@ -87,32 +88,13 @@ struct CounterView: View {
             let generator = UINotificationFeedbackGenerator()
             generator.notificationOccurred(.success)
         }
-        if goal > 0, currentCount == goal {
+        if goal > 0, currentCount >= goal {
             triggerLongHaptic()
         }
     }
 
     private func triggerLongHaptic() {
-        // Prefer CoreHaptics if available for a longer, more intense effect
-        if CHHapticEngine.capabilitiesForHardware().supportsHaptics {
-            do {
-                let engine = try CHHapticEngine()
-                try engine.start()
-                let intensity = CHHapticEventParameter(parameterID: .hapticIntensity, value: 1.0)
-                let sharpness = CHHapticEventParameter(parameterID: .hapticSharpness, value: 0.5)
-                let event = CHHapticEvent(eventType: .hapticContinuous, parameters: [intensity, sharpness], relativeTime: 0, duration: 0.6)
-                let pattern = try CHHapticPattern(events: [event], parameters: [])
-                let player = try engine.makePlayer(with: pattern)
-                try player.start(atTime: 0)
-                engine.notifyWhenPlayersFinished { _ in .stopEngine }
-            } catch {
-                let generator = UINotificationFeedbackGenerator()
-                generator.notificationOccurred(.success)
-            }
-        } else {
-            let generator = UINotificationFeedbackGenerator()
-            generator.notificationOccurred(.success)
-        }
+        HapticsService.shared.playContinuous(duration: 0.6, intensity: 1.0, sharpness: 0.5)
     }
 }
 
