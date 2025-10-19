@@ -68,6 +68,12 @@ struct CounterView: View {
         .background(Color.thoughtStream.neutral.gray50)
         .navigationTitle("计次数")
         .navigationBarTitleDisplayMode(.inline)
+        .onAppear {
+            UIApplication.shared.isIdleTimerDisabled = true
+        }
+        .onDisappear {
+            UIApplication.shared.isIdleTimerDisabled = false
+        }
         .sheet(isPresented: $showSettings) {
             CounterSettingsView(threshold: $threshold, goal: $goal)
         }
