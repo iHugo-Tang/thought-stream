@@ -1,10 +1,3 @@
-//
-//  ThoughtStreamTests.swift
-//  ThoughtStreamTests
-//
-//  Created by Hugo L on 2025-08-30.
-//
-
 import Testing
 @testable import ThoughtStream
 

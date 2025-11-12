@@ -1,10 +1,10 @@
 {
-  "originHash" : "fbce637dc349ec809dbd6db9bd2cbad39d642220371e72216957d017e98c3c44",
+  "originHash" : "41a1f4a6ede26a037ac2c5d47195569bf31ec503393b5bf1d65fc9a2af61d4ca",
   "pins" : [
     {
       "identity" : "lookinserver",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/QMUI/LookinServer/",
+      "location" : "https://github.com/QMUI/LookinServer",
       "state" : {
         "revision" : "e553d1b689d147817dc54ad5c28fcff71e860101",
         "version" : "1.2.8"
@@ -15,8 +15,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/JakubMazur/lucide-icons-swift",
       "state" : {
-        "revision" : "cb4887a090a4ee4244e411ebbe5bef81e67d449d",
-        "version" : "0.546.0"
+        "revision" : "5f5d8d742cb5a05c48b8178fe42f8b3dcb3b312b",
+        "version" : "0.553.0"
       }
     }
   ],

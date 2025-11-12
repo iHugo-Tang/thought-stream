@@ -1,0 +1,5 @@
+{
+    "mcp.servers":{"tuist":{"command":"\/opt\/homebrew\/bin\/tuist","args":["mcp","start"]}},
+    "sweetpad.tuist.autogenerate": true,
+    "sweetpad.workspacePath": "/Volumes/Data/Code/mine/ThoughtStream/ThoughtStream.xcworkspace"
+}

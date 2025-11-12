@@ -12,7 +12,6 @@ import SwiftData
 struct ThoughtStreamApp: App {
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
-            Item.self,
             ConversationEntity.self,
             ChatMessageEntity.self,
             SystemMessageEntity.self,
