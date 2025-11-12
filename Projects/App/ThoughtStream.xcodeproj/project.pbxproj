@@ -1,0 +1,647 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 70;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0321E89C318D0C449715016B /* LookinServerSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55157CF94E2A614E4188760F /* LookinServerSwift.framework */; };
+		0480300B062C4126D2A3AC28 /* LucideIcons.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ABA09601076E941A2C92F38 /* LucideIcons.framework */; };
+		772BC6C1A6D2D23B2D25DEC0 /* LookinServerBase.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29005BBCD60FBB21EADBFF50 /* LookinServerBase.framework */; };
+		9DDB79CF30BB2C501D1680F4 /* TuistAssets+ThoughtStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCC877D0D77525319D93518E /* TuistAssets+ThoughtStream.swift */; };
+		B1E681A2C9921992ACA12BB9 /* TuistBundle+ThoughtStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = F420050A7382886EE4429898 /* TuistBundle+ThoughtStream.swift */; };
+		E1976D22226F45F604A331CC /* LucideIcons_LucideIcons.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 4F676EE460340DDF5DB7A8A1 /* LucideIcons_LucideIcons.bundle */; };
+		E2591AACB361CC014D523878 /* LucideIcons_LucideIcons.bundle in Dependencies */ = {isa = PBXBuildFile; fileRef = 4F676EE460340DDF5DB7A8A1 /* LucideIcons_LucideIcons.bundle */; };
+		F5CF97132B4798F777AE48B2 /* LookinServer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C4A9E54DDA1255C16B8A5CF9 /* LookinServer.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		44166991913AC8AF71424003 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5895A14C0FC6BC1F548E00B0 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E6059454895DC2DF06140444;
+			remoteInfo = ThoughtStream;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		8666255CEE06151F7274FED6 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		926557009CBF8D0305487E7B /* Dependencies */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 8;
+			dstSubfolderSpec = 16;
+			files = (
+				E2591AACB361CC014D523878 /* LucideIcons_LucideIcons.bundle in Dependencies */,
+			);
+			name = Dependencies;
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+		B2786FAEC128FB93BCDD2137 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		29005BBCD60FBB21EADBFF50 /* LookinServerBase.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = LookinServerBase.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		4F676EE460340DDF5DB7A8A1 /* LucideIcons_LucideIcons.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LucideIcons_LucideIcons.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
+		55157CF94E2A614E4188760F /* LookinServerSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = LookinServerSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		7ABA09601076E941A2C92F38 /* LucideIcons.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = LucideIcons.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		9DB4D457794527FDB70C164B /* ThoughtStream-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "ThoughtStream-Info.plist"; sourceTree = "<group>"; };
+		A724E773D0EC52C10A3FD604 /* ThoughtStreamTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ThoughtStreamTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		C4A9E54DDA1255C16B8A5CF9 /* LookinServer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = LookinServer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		DCC877D0D77525319D93518E /* TuistAssets+ThoughtStream.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TuistAssets+ThoughtStream.swift"; sourceTree = "<group>"; };
+		ED592B96445214D68CB6931C /* ThoughtStreamTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "ThoughtStreamTests-Info.plist"; sourceTree = "<group>"; };
+		F420050A7382886EE4429898 /* TuistBundle+ThoughtStream.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TuistBundle+ThoughtStream.swift"; sourceTree = "<group>"; };
+		FBCB44CAD3DA06B57A3B4B16 /* ThoughtStream.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ThoughtStream.app; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		985EED5C389FDF8100FA0903 /* Sources */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Sources; sourceTree = "<group>"; };
+		B26FA5830B116960948A39EF /* Tests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Tests; sourceTree = "<group>"; };
+		F1522E085EA5E010B4FD95DE /* Resources */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Resources; sourceTree = "<group>"; };
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		1A44DECD1F6A958FCDE0B5F1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F5CF97132B4798F777AE48B2 /* LookinServer.framework in Frameworks */,
+				772BC6C1A6D2D23B2D25DEC0 /* LookinServerBase.framework in Frameworks */,
+				0321E89C318D0C449715016B /* LookinServerSwift.framework in Frameworks */,
+				0480300B062C4126D2A3AC28 /* LucideIcons.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8674D68E2FF705D266103048 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		56CCC6ACAE0C8D3014EAF9F1 = {
+			isa = PBXGroup;
+			children = (
+				E16D69E1D5CD482C5BDCF05C /* Products */,
+				C87C9ED13BE735185F0F1A66 /* Project */,
+			);
+			sourceTree = "<group>";
+		};
+		56FAAF34DC5CC66DF8782B0D /* ThoughtStream */ = {
+			isa = PBXGroup;
+			children = (
+				B26FA5830B116960948A39EF /* Tests */,
+			);
+			path = ThoughtStream;
+			sourceTree = "<group>";
+		};
+		7F30139F30F345A1AFAEA251 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				DCC877D0D77525319D93518E /* TuistAssets+ThoughtStream.swift */,
+				F420050A7382886EE4429898 /* TuistBundle+ThoughtStream.swift */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		8B8330D6EF20EF9A7D79DC20 /* InfoPlists */ = {
+			isa = PBXGroup;
+			children = (
+				9DB4D457794527FDB70C164B /* ThoughtStream-Info.plist */,
+				ED592B96445214D68CB6931C /* ThoughtStreamTests-Info.plist */,
+			);
+			path = InfoPlists;
+			sourceTree = "<group>";
+		};
+		A7B2C2BE81C29BA17C7F9340 /* Derived */ = {
+			isa = PBXGroup;
+			children = (
+				8B8330D6EF20EF9A7D79DC20 /* InfoPlists */,
+				7F30139F30F345A1AFAEA251 /* Sources */,
+			);
+			path = Derived;
+			sourceTree = "<group>";
+		};
+		C87C9ED13BE735185F0F1A66 /* Project */ = {
+			isa = PBXGroup;
+			children = (
+				A7B2C2BE81C29BA17C7F9340 /* Derived */,
+				56FAAF34DC5CC66DF8782B0D /* ThoughtStream */,
+				F1522E085EA5E010B4FD95DE /* Resources */,
+				985EED5C389FDF8100FA0903 /* Sources */,
+			);
+			name = Project;
+			sourceTree = "<group>";
+		};
+		E16D69E1D5CD482C5BDCF05C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				C4A9E54DDA1255C16B8A5CF9 /* LookinServer.framework */,
+				29005BBCD60FBB21EADBFF50 /* LookinServerBase.framework */,
+				55157CF94E2A614E4188760F /* LookinServerSwift.framework */,
+				4F676EE460340DDF5DB7A8A1 /* LucideIcons_LucideIcons.bundle */,
+				7ABA09601076E941A2C92F38 /* LucideIcons.framework */,
+				FBCB44CAD3DA06B57A3B4B16 /* ThoughtStream.app */,
+				A724E773D0EC52C10A3FD604 /* ThoughtStreamTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		ACEDA258BCCB57095FFEF0B7 /* ThoughtStreamTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CEC032E05A7FDADED2D8CA52 /* Build configuration list for PBXNativeTarget "ThoughtStreamTests" */;
+			buildPhases = (
+				02BC413745A2D241A1C04787 /* Sources */,
+				C5A04A58EE7D41B0EB8D0C0B /* Resources */,
+				8674D68E2FF705D266103048 /* Frameworks */,
+				8666255CEE06151F7274FED6 /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				78F5BCE67E021A5A04F937FF /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				B26FA5830B116960948A39EF /* Tests */,
+			);
+			name = ThoughtStreamTests;
+			packageProductDependencies = (
+			);
+			productName = ThoughtStreamTests;
+			productReference = A724E773D0EC52C10A3FD604 /* ThoughtStreamTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		E6059454895DC2DF06140444 /* ThoughtStream */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9D6DC734EDDF87712B9FF511 /* Build configuration list for PBXNativeTarget "ThoughtStream" */;
+			buildPhases = (
+				D0BBF90404BE4B677BA62D6F /* Sources */,
+				7328A85BB53723A6824998C7 /* Resources */,
+				1A44DECD1F6A958FCDE0B5F1 /* Frameworks */,
+				B2786FAEC128FB93BCDD2137 /* Embed Frameworks */,
+				926557009CBF8D0305487E7B /* Dependencies */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				985EED5C389FDF8100FA0903 /* Sources */,
+				F1522E085EA5E010B4FD95DE /* Resources */,
+			);
+			name = ThoughtStream;
+			packageProductDependencies = (
+			);
+			productName = ThoughtStream;
+			productReference = FBCB44CAD3DA06B57A3B4B16 /* ThoughtStream.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		5895A14C0FC6BC1F548E00B0 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				TargetAttributes = {
+					ACEDA258BCCB57095FFEF0B7 = {
+						TestTargetID = E6059454895DC2DF06140444;
+					};
+				};
+			};
+			buildConfigurationList = 5FDF1F12C799C273C72E0CEB /* Build configuration list for PBXProject "ThoughtStream" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 56CCC6ACAE0C8D3014EAF9F1;
+			productRefGroup = E16D69E1D5CD482C5BDCF05C /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				E6059454895DC2DF06140444 /* ThoughtStream */,
+				ACEDA258BCCB57095FFEF0B7 /* ThoughtStreamTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		7328A85BB53723A6824998C7 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E1976D22226F45F604A331CC /* LucideIcons_LucideIcons.bundle in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C5A04A58EE7D41B0EB8D0C0B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		02BC413745A2D241A1C04787 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D0BBF90404BE4B677BA62D6F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9DDB79CF30BB2C501D1680F4 /* TuistAssets+ThoughtStream.swift in Sources */,
+				B1E681A2C9921992ACA12BB9 /* TuistBundle+ThoughtStream.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		78F5BCE67E021A5A04F937FF /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = ThoughtStream;
+			target = E6059454895DC2DF06140444 /* ThoughtStream */;
+			targetProxy = 44166991913AC8AF71424003 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		0A5CCA8A6A8A319801658CE4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		2AEE5697AFE58A031985ADDF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/../../Tuist/.build/checkouts/LookinServer/Src/Base",
+					"$(SRCROOT)/../../Tuist/.build/checkouts/LookinServer/Src/Main",
+					"$(SRCROOT)/../../Tuist/.build/checkouts/LookinServer/Src/Main/**",
+					"$(SRCROOT)/../../Tuist/.build/checkouts/LookinServer/Src/Main/Server",
+					"$(SRCROOT)/../../Tuist/.build/checkouts/LookinServer/Src/Main/Server/Category",
+					"$(SRCROOT)/../../Tuist/.build/checkouts/LookinServer/Src/Main/Server/Connection",
+					"$(SRCROOT)/../../Tuist/.build/checkouts/LookinServer/Src/Main/Server/Connection/RequestHandler",
+					"$(SRCROOT)/../../Tuist/.build/checkouts/LookinServer/Src/Main/Server/Inspect",
+					"$(SRCROOT)/../../Tuist/.build/checkouts/LookinServer/Src/Main/Server/Others",
+					"$(SRCROOT)/../../Tuist/.build/checkouts/LookinServer/Src/Main/Server/Perspective",
+					"$(SRCROOT)/../../Tuist/.build/checkouts/LookinServer/Src/Main/Shared",
+					"$(SRCROOT)/../../Tuist/.build/checkouts/LookinServer/Src/Main/Shared/Category",
+					"$(SRCROOT)/../../Tuist/.build/checkouts/LookinServer/Src/Main/Shared/Message",
+					"$(SRCROOT)/../../Tuist/.build/checkouts/LookinServer/Src/Main/Shared/Peertalk",
+				);
+				INFOPLIST_FILE = "Derived/InfoPlists/ThoughtStreamTests-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				OTHER_CFLAGS = (
+					"$(inherited)",
+					"-fmodule-map-file=$(SRCROOT)/../../Tuist/.build/tuist-derived/LookinServer/LookinServer.modulemap",
+					"-fmodule-map-file=$(SRCROOT)/../../Tuist/.build/tuist-derived/LookinServerBase/LookinServerBase.modulemap",
+				);
+				OTHER_SWIFT_FLAGS = "$(inherited) -Xcc -fmodule-map-file=$(SRCROOT)/../../Tuist/.build/tuist-derived/LookinServer/LookinServer.modulemap -Xcc -fmodule-map-file=$(SRCROOT)/../../Tuist/.build/tuist-derived/LookinServerBase/LookinServerBase.modulemap";
+				PRODUCT_BUNDLE_IDENTIFIER = cc.ihugo.practice.ThoughtStreamTests;
+				PRODUCT_NAME = ThoughtStreamTests;
+				SDKROOT = iphoneos;
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ThoughtStream.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/ThoughtStream";
+				TEST_TARGET_NAME = ThoughtStream;
+			};
+			name = Release;
+		};
+		4A1C3F46D8353B80FCD747F1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		99D021701500F5535133C6A7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				ENABLE_PREVIEWS = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/../../Tuist/.build/checkouts/LookinServer/Src/Base",
+					"$(SRCROOT)/../../Tuist/.build/checkouts/LookinServer/Src/Main",
+					"$(SRCROOT)/../../Tuist/.build/checkouts/LookinServer/Src/Main/**",
+					"$(SRCROOT)/../../Tuist/.build/checkouts/LookinServer/Src/Main/Server",
+					"$(SRCROOT)/../../Tuist/.build/checkouts/LookinServer/Src/Main/Server/Category",
+					"$(SRCROOT)/../../Tuist/.build/checkouts/LookinServer/Src/Main/Server/Connection",
+					"$(SRCROOT)/../../Tuist/.build/checkouts/LookinServer/Src/Main/Server/Connection/RequestHandler",
+					"$(SRCROOT)/../../Tuist/.build/checkouts/LookinServer/Src/Main/Server/Inspect",
+					"$(SRCROOT)/../../Tuist/.build/checkouts/LookinServer/Src/Main/Server/Others",
+					"$(SRCROOT)/../../Tuist/.build/checkouts/LookinServer/Src/Main/Server/Perspective",
+					"$(SRCROOT)/../../Tuist/.build/checkouts/LookinServer/Src/Main/Shared",
+					"$(SRCROOT)/../../Tuist/.build/checkouts/LookinServer/Src/Main/Shared/Category",
+					"$(SRCROOT)/../../Tuist/.build/checkouts/LookinServer/Src/Main/Shared/Message",
+					"$(SRCROOT)/../../Tuist/.build/checkouts/LookinServer/Src/Main/Shared/Peertalk",
+				);
+				INFOPLIST_FILE = "Derived/InfoPlists/ThoughtStream-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				OTHER_CFLAGS = (
+					"$(inherited)",
+					"-fmodule-map-file=$(SRCROOT)/../../Tuist/.build/tuist-derived/LookinServer/LookinServer.modulemap",
+					"-fmodule-map-file=$(SRCROOT)/../../Tuist/.build/tuist-derived/LookinServerBase/LookinServerBase.modulemap",
+				);
+				OTHER_SWIFT_FLAGS = "$(inherited) -Xcc -fmodule-map-file=$(SRCROOT)/../../Tuist/.build/tuist-derived/LookinServer/LookinServer.modulemap -Xcc -fmodule-map-file=$(SRCROOT)/../../Tuist/.build/tuist-derived/LookinServerBase/LookinServerBase.modulemap";
+				PRODUCT_BUNDLE_IDENTIFIER = cc.ihugo.practice.ThoughtStream;
+				PRODUCT_NAME = ThoughtStream;
+				SDKROOT = iphoneos;
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) DEBUG";
+				SWIFT_COMPILATION_MODE = singlefile;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		B464D8C75450DB0BF390537E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/../../Tuist/.build/checkouts/LookinServer/Src/Base",
+					"$(SRCROOT)/../../Tuist/.build/checkouts/LookinServer/Src/Main",
+					"$(SRCROOT)/../../Tuist/.build/checkouts/LookinServer/Src/Main/**",
+					"$(SRCROOT)/../../Tuist/.build/checkouts/LookinServer/Src/Main/Server",
+					"$(SRCROOT)/../../Tuist/.build/checkouts/LookinServer/Src/Main/Server/Category",
+					"$(SRCROOT)/../../Tuist/.build/checkouts/LookinServer/Src/Main/Server/Connection",
+					"$(SRCROOT)/../../Tuist/.build/checkouts/LookinServer/Src/Main/Server/Connection/RequestHandler",
+					"$(SRCROOT)/../../Tuist/.build/checkouts/LookinServer/Src/Main/Server/Inspect",
+					"$(SRCROOT)/../../Tuist/.build/checkouts/LookinServer/Src/Main/Server/Others",
+					"$(SRCROOT)/../../Tuist/.build/checkouts/LookinServer/Src/Main/Server/Perspective",
+					"$(SRCROOT)/../../Tuist/.build/checkouts/LookinServer/Src/Main/Shared",
+					"$(SRCROOT)/../../Tuist/.build/checkouts/LookinServer/Src/Main/Shared/Category",
+					"$(SRCROOT)/../../Tuist/.build/checkouts/LookinServer/Src/Main/Shared/Message",
+					"$(SRCROOT)/../../Tuist/.build/checkouts/LookinServer/Src/Main/Shared/Peertalk",
+				);
+				INFOPLIST_FILE = "Derived/InfoPlists/ThoughtStreamTests-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				OTHER_CFLAGS = (
+					"$(inherited)",
+					"-fmodule-map-file=$(SRCROOT)/../../Tuist/.build/tuist-derived/LookinServer/LookinServer.modulemap",
+					"-fmodule-map-file=$(SRCROOT)/../../Tuist/.build/tuist-derived/LookinServerBase/LookinServerBase.modulemap",
+				);
+				OTHER_SWIFT_FLAGS = "$(inherited) -Xcc -fmodule-map-file=$(SRCROOT)/../../Tuist/.build/tuist-derived/LookinServer/LookinServer.modulemap -Xcc -fmodule-map-file=$(SRCROOT)/../../Tuist/.build/tuist-derived/LookinServerBase/LookinServerBase.modulemap";
+				PRODUCT_BUNDLE_IDENTIFIER = cc.ihugo.practice.ThoughtStreamTests;
+				PRODUCT_NAME = ThoughtStreamTests;
+				SDKROOT = iphoneos;
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) DEBUG";
+				SWIFT_COMPILATION_MODE = singlefile;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ThoughtStream.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/ThoughtStream";
+				TEST_TARGET_NAME = ThoughtStream;
+			};
+			name = Debug;
+		};
+		F0BE07C92C14FAE92155376B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				ENABLE_PREVIEWS = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/../../Tuist/.build/checkouts/LookinServer/Src/Base",
+					"$(SRCROOT)/../../Tuist/.build/checkouts/LookinServer/Src/Main",
+					"$(SRCROOT)/../../Tuist/.build/checkouts/LookinServer/Src/Main/**",
+					"$(SRCROOT)/../../Tuist/.build/checkouts/LookinServer/Src/Main/Server",
+					"$(SRCROOT)/../../Tuist/.build/checkouts/LookinServer/Src/Main/Server/Category",
+					"$(SRCROOT)/../../Tuist/.build/checkouts/LookinServer/Src/Main/Server/Connection",
+					"$(SRCROOT)/../../Tuist/.build/checkouts/LookinServer/Src/Main/Server/Connection/RequestHandler",
+					"$(SRCROOT)/../../Tuist/.build/checkouts/LookinServer/Src/Main/Server/Inspect",
+					"$(SRCROOT)/../../Tuist/.build/checkouts/LookinServer/Src/Main/Server/Others",
+					"$(SRCROOT)/../../Tuist/.build/checkouts/LookinServer/Src/Main/Server/Perspective",
+					"$(SRCROOT)/../../Tuist/.build/checkouts/LookinServer/Src/Main/Shared",
+					"$(SRCROOT)/../../Tuist/.build/checkouts/LookinServer/Src/Main/Shared/Category",
+					"$(SRCROOT)/../../Tuist/.build/checkouts/LookinServer/Src/Main/Shared/Message",
+					"$(SRCROOT)/../../Tuist/.build/checkouts/LookinServer/Src/Main/Shared/Peertalk",
+				);
+				INFOPLIST_FILE = "Derived/InfoPlists/ThoughtStream-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				OTHER_CFLAGS = (
+					"$(inherited)",
+					"-fmodule-map-file=$(SRCROOT)/../../Tuist/.build/tuist-derived/LookinServer/LookinServer.modulemap",
+					"-fmodule-map-file=$(SRCROOT)/../../Tuist/.build/tuist-derived/LookinServerBase/LookinServerBase.modulemap",
+				);
+				OTHER_SWIFT_FLAGS = "$(inherited) -Xcc -fmodule-map-file=$(SRCROOT)/../../Tuist/.build/tuist-derived/LookinServer/LookinServer.modulemap -Xcc -fmodule-map-file=$(SRCROOT)/../../Tuist/.build/tuist-derived/LookinServerBase/LookinServerBase.modulemap";
+				PRODUCT_BUNDLE_IDENTIFIER = cc.ihugo.practice.ThoughtStream;
+				PRODUCT_NAME = ThoughtStream;
+				SDKROOT = iphoneos;
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		5FDF1F12C799C273C72E0CEB /* Build configuration list for PBXProject "ThoughtStream" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4A1C3F46D8353B80FCD747F1 /* Debug */,
+				0A5CCA8A6A8A319801658CE4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		9D6DC734EDDF87712B9FF511 /* Build configuration list for PBXNativeTarget "ThoughtStream" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				99D021701500F5535133C6A7 /* Debug */,
+				F0BE07C92C14FAE92155376B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CEC032E05A7FDADED2D8CA52 /* Build configuration list for PBXNativeTarget "ThoughtStreamTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B464D8C75450DB0BF390537E /* Debug */,
+				2AEE5697AFE58A031985ADDF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 5895A14C0FC6BC1F548E00B0 /* Project object */;
+}

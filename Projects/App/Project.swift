@@ -17,8 +17,8 @@ let project = Project(
                 ]
             ),
             buildableFolders: [
-                "ThoughtStream/Sources",
-                "ThoughtStream/Resources",
+                "./Sources",
+                "./Resources",
             ],
             dependencies: [
                 .external(name: "LookinServer"),
@@ -29,7 +29,7 @@ let project = Project(
             name: "ThoughtStreamTests",
             destinations: .iOS,
             product: .unitTests,
-            bundleId: "dev.tuist.ThoughtStreamTests",
+            bundleId: "cc.ihugo.practice.ThoughtStreamTests",
             infoPlist: .default,
             buildableFolders: [
                 "ThoughtStream/Tests"

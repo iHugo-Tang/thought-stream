@@ -14,10 +14,9 @@
 - 使用 Tuist 重新生成工程 (可选)：`tuist generate`。
 
 ## 目录速览
-- 源码：`ThoughtStream/Sources`
-- 资源：`ThoughtStream/Resources`
-- 迁移脚本：`ThoughtStream/Resources/Migrations`
-- 测试：`ThoughtStream/Tests`
+- 源码：`Projects/App/Sources`
+- 资源：`Projects/App/Resources`
+- 测试：`Projects/App/Tests`
 
 ## 开发约定
 - 4 空格缩进；类型 PascalCase；属性/方法/文件名 camelCase。

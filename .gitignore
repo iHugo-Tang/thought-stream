@@ -1,4 +1,7 @@
-ThoughtStream.xcodeproj/xcuserdata/hugo.xcuserdatad/
+ThoughtStream.xcodeproj/
 build/
 .build/
 .vscode/
+ThoughtStream.xcworkspace/
+Projects/App/ThoughtStream.xcodeproj/
+buildServer.json
