@@ -2,12 +2,11 @@ import SwiftUI
 import LucideIcons
 
 struct HomeView: View {
-    @Environment(\.tabBarHeight) private var tabBarHeight
     var body: some View {
         ZStack(alignment: .bottomTrailing) {
             // 工具入口. 这里显示一系列工具.
             VStack(alignment: .leading, spacing: 16) {
-                NavigationLink(destination: CounterView().hideTabBarOnPush()) {
+                NavigationLink(destination: CounterView().toolbarVisibility(.hidden, for: .tabBar)) {
                     HStack(alignment: .center, spacing: 12) {
                         Image(systemName: "number.circle.fill")
                             .font(.system(size: 28, weight: .semibold))
@@ -40,7 +39,7 @@ struct HomeView: View {
             .padding(.top, 16)
             
             // 悬浮写作按钮（位于自定义 TabBar 顶部 8pt）
-            NavigationLink(destination: ChatView().hideTabBarOnPush()) {
+            NavigationLink(destination: ChatView()) {
                 Image(systemName: "plus")
                     .font(.system(size: 20, weight: .bold))
                     .foregroundColor(.white)
@@ -51,11 +50,9 @@ struct HomeView: View {
             }
             .buttonStyle(PlainButtonStyle())
             .padding(.trailing, 16)
-            .padding(.bottom, tabBarHeight + 8)
+            .padding(.bottom, 8)
         }
         .navigationBarTitleDisplayMode(.inline)
-        .toolbarBackground(Color.thoughtStream.white, for: .navigationBar)
-        .toolbarBackground(.visible, for: .navigationBar)
         .toolbar {
             ToolbarItem(placement: .principal) {
                 HStack(spacing: 8) {

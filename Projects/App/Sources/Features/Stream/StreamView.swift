@@ -3,7 +3,6 @@ import SwiftData
 import LucideIcons
 
 struct StreamView: View {
-    @Environment(\.tabBarHeight) private var tabBarHeight
     @State private var searchText: String = ""
     @Query(
         sort: [SortDescriptor(\ConversationEntity.updatedAt, order: .reverse)],
@@ -25,7 +24,7 @@ struct StreamView: View {
             }
             .padding(.horizontal, 16)
             .padding(.top, 16)
-            .padding(.bottom, tabBarHeight + 8)
+            .padding(.bottom, 8)
         }
         .navigationBarTitleDisplayMode(.inline)
         .toolbarBackground(Color.thoughtStream.white, for: .navigationBar)
@@ -44,7 +43,7 @@ struct StreamView: View {
             }
             ToolbarItem(placement: .topBarTrailing) {
                 HStack(spacing: 12) {
-                    NavigationLink(destination: ChatView().hideTabBarOnPush()) {
+                    NavigationLink(destination: ChatView()) {
                         Image(systemName: "plus")
                     }
                 }
@@ -107,7 +106,7 @@ private extension StreamView {
 
                 VStack(spacing: 12) {
                     ForEach(todayConversations, id: \.id) { conversation in
-                        NavigationLink(destination: ChatView(conversation: conversation).hideTabBarOnPush()) {
+                        NavigationLink(destination: ChatView(conversation: conversation)) {
                             StreamCard(conversation: conversation)
                         }
                         .buttonStyle(PlainButtonStyle())
@@ -127,7 +126,7 @@ private extension StreamView {
 
                 VStack(spacing: 12) {
                     ForEach(yesterdayConversations, id: \.id) { conversation in
-                        NavigationLink(destination: ChatView(conversation: conversation).hideTabBarOnPush()) {
+                        NavigationLink(destination: ChatView(conversation: conversation)) {
                             StreamCard(conversation: conversation)
                         }
                         .buttonStyle(PlainButtonStyle())
@@ -149,7 +148,7 @@ private extension StreamView {
 
                 VStack(spacing: 12) {
                     ForEach(olderConversations.prefix(10), id: \.id) { conversation in
-                        NavigationLink(destination: ChatView(conversation: conversation).hideTabBarOnPush()) {
+                        NavigationLink(destination: ChatView(conversation: conversation)) {
                             StreamCard(conversation: conversation)
                         }
                         .buttonStyle(PlainButtonStyle())
