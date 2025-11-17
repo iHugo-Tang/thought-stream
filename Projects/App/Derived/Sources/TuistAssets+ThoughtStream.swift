@@ -34,6 +34,17 @@ public enum ThoughtStreamAsset: Sendable {
   public enum Assets {
   public static let accentColor = ThoughtStreamColors(name: "AccentColor")
   }
+  public enum Colors {
+  public static let bgPrimary = ThoughtStreamColors(name: "BgPrimary")
+    public static let bgSecondary = ThoughtStreamColors(name: "BgSecondary")
+    public static let btnPrimary = ThoughtStreamColors(name: "BtnPrimary")
+    public static let btnSecondary = ThoughtStreamColors(name: "BtnSecondary")
+    public static let iconPrimary = ThoughtStreamColors(name: "IconPrimary")
+    public static let textAccentInteractive = ThoughtStreamColors(name: "TextAccentInteractive")
+    public static let textAccentPositive = ThoughtStreamColors(name: "TextAccentPositive")
+    public static let textPrimary = ThoughtStreamColors(name: "TextPrimary")
+    public static let textSecondary = ThoughtStreamColors(name: "TextSecondary")
+  }
   public enum PreviewAssets {
   }
 }

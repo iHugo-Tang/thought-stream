@@ -36,5 +36,6 @@ let project = Project(
             ],
             dependencies: [.target(name: "ThoughtStream")]
         ),
-    ]
+    ],
+    resourceSynthesizers: [.assets()],
 )

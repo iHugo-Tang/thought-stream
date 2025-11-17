@@ -1,33 +1,49 @@
-# Agent Guide
+# Swift Code Style Guidelines
 
-本仓库为 ThoughtStream（iOS）语音与音频分段应用的最简开发指引。
+## Core Style
+- **Indentation**: 4 spaces
+- **Braces**: Opening brace on same line
+- **Spacing**: Single space around operators and commas
+- **Naming**: PascalCase for types, camelCase for properties/methods
 
-## 环境
-- Xcode（稳定版），Swift 6.2+。
-- 依赖管理：Swift Package Manager
-- 数据持久化: SwiftData
+## File Organization
+- Logical directory grouping
+- PascalCase files for types, `+` for extensions
+- Modular design with extensions
 
-## 打开与运行
-- 打开 `ThoughtStream.xcworkspace`
-- 选择 `ThoughtStream` scheme，目标为 iOS 模拟器或真机，直接运行。
-- 清理 Tuist (可选): `tuist clean && tuist install`.
-- 使用 Tuist 重新生成工程 (可选)：`tuist generate`。
+## Modern Swift Features
+- **@Observable macro**: Replace `ObservableObject`/`@Published`
+- **Swift concurrency**: `async/await`, `Task`, `actor`, `@MainActor`
+- **Result builders**: Declarative APIs
+- **Property wrappers**: Use line breaks for long declarations
+- **Opaque types**: `some` for protocol returns
 
-## 目录速览
-- 源码：`Projects/App/Sources`
-- 资源：`Projects/App/Resources`
-- 测试：`Projects/App/Tests`
+## Code Structure
+- Early returns to reduce nesting
+- Guard statements for optional unwrapping
+- Single responsibility per type/extension
+- Value types over reference types
 
-## 开发约定
-- 4 空格缩进；类型 PascalCase；属性/方法/文件名 camelCase。
-- 倾向现代 Swift：`async/await`、协议优先、结果构建器等。
-- 代码样式参考 @DesignStyles.md, 如果里面没有定义则在其内增加定义。
-- 只需要考虑iOS 26，不需要考虑兼容。
+## Error Handling
+- `Result` enum for typed errors
+- `throws`/`try` for propagation
+- Optional chaining with `guard let`/`if let`
+- Typed error definitions
 
-## 安全与隐私
-- 不要硬编码密钥或令牌；如需存储，使用系统钥匙串。
-- 对持久化与日志保持最小化收集。
+## Architecture
+- Protocol-oriented design
+- Dependency injection over singletons
+- Composition over inheritance
+- Factory/Repository patterns
 
-## 协作
-- 提交信息简洁清晰（如：`Adjust Database Schema`），正文说明动机与影响。
-- PR 简要列出变更要点与测试方式。
+## Debug Assertions
+- Use `assert()` for development-time invariant checking
+- Use `assertionFailure()` for unreachable code paths
+- Assertions removed in release builds for performance
+- Precondition checking with `precondition()` for fatal errors
+
+## Memory Management
+- `weak` references for cycles
+- `unowned` when guaranteed non-nil
+- Capture lists in closures
+- `deinit` for cleanup

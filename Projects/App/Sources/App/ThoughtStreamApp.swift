@@ -1,10 +1,3 @@
-//
-//  ThoughtStreamApp.swift
-//  ThoughtStream
-//
-//  Created by Hugo L on 2025-08-30.
-//
-
 import SwiftUI
 import SwiftData
 
@@ -12,10 +5,6 @@ import SwiftData
 struct ThoughtStreamApp: App {
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
-            ConversationEntity.self,
-            ChatMessageEntity.self,
-            SystemMessageEntity.self,
-            PendingSystemTaskEntity.self,
         ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
 
@@ -29,6 +18,7 @@ struct ThoughtStreamApp: App {
     var body: some Scene {
         WindowGroup {
             MainTabView()
+                .preferredColorScheme(.dark)
         }
         .modelContainer(sharedModelContainer)
     }

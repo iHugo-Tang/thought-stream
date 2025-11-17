@@ -5,3 +5,4 @@ build/
 ThoughtStream.xcworkspace/
 Projects/App/ThoughtStream.xcodeproj/
 buildServer.json
+Projects/App/Derived/

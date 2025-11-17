@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 70;
+	objectVersion = 55;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -75,9 +75,33 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		985EED5C389FDF8100FA0903 /* Sources */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Sources; sourceTree = "<group>"; };
-		B26FA5830B116960948A39EF /* Tests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Tests; sourceTree = "<group>"; };
-		F1522E085EA5E010B4FD95DE /* Resources */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Resources; sourceTree = "<group>"; };
+		985EED5C389FDF8100FA0903 /* Sources */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			explicitFileTypes = {
+			};
+			explicitFolders = (
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		B26FA5830B116960948A39EF /* Tests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			explicitFileTypes = {
+			};
+			explicitFolders = (
+			);
+			path = Tests;
+			sourceTree = "<group>";
+		};
+		F1522E085EA5E010B4FD95DE /* Resources */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			explicitFileTypes = {
+			};
+			explicitFolders = (
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -387,7 +411,13 @@
 					"-fmodule-map-file=$(SRCROOT)/../../Tuist/.build/tuist-derived/LookinServer/LookinServer.modulemap",
 					"-fmodule-map-file=$(SRCROOT)/../../Tuist/.build/tuist-derived/LookinServerBase/LookinServerBase.modulemap",
 				);
-				OTHER_SWIFT_FLAGS = "$(inherited) -Xcc -fmodule-map-file=$(SRCROOT)/../../Tuist/.build/tuist-derived/LookinServer/LookinServer.modulemap -Xcc -fmodule-map-file=$(SRCROOT)/../../Tuist/.build/tuist-derived/LookinServerBase/LookinServerBase.modulemap";
+				OTHER_SWIFT_FLAGS = (
+					"$(inherited)",
+					"-Xcc",
+					"-fmodule-map-file=$(SRCROOT)/../../Tuist/.build/tuist-derived/LookinServer/LookinServer.modulemap",
+					"-Xcc",
+					"-fmodule-map-file=$(SRCROOT)/../../Tuist/.build/tuist-derived/LookinServerBase/LookinServerBase.modulemap",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = cc.ihugo.practice.ThoughtStreamTests;
 				PRODUCT_NAME = ThoughtStreamTests;
 				SDKROOT = iphoneos;
@@ -487,7 +517,6 @@
 					"$(SRCROOT)/../../Tuist/.build/checkouts/LookinServer/Src/Main/Shared/Peertalk",
 				);
 				INFOPLIST_FILE = "Derived/InfoPlists/ThoughtStream-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -497,14 +526,23 @@
 					"-fmodule-map-file=$(SRCROOT)/../../Tuist/.build/tuist-derived/LookinServer/LookinServer.modulemap",
 					"-fmodule-map-file=$(SRCROOT)/../../Tuist/.build/tuist-derived/LookinServerBase/LookinServerBase.modulemap",
 				);
-				OTHER_SWIFT_FLAGS = "$(inherited) -Xcc -fmodule-map-file=$(SRCROOT)/../../Tuist/.build/tuist-derived/LookinServer/LookinServer.modulemap -Xcc -fmodule-map-file=$(SRCROOT)/../../Tuist/.build/tuist-derived/LookinServerBase/LookinServerBase.modulemap";
+				OTHER_SWIFT_FLAGS = (
+					"$(inherited)",
+					"-Xcc",
+					"-fmodule-map-file=$(SRCROOT)/../../Tuist/.build/tuist-derived/LookinServer/LookinServer.modulemap",
+					"-Xcc",
+					"-fmodule-map-file=$(SRCROOT)/../../Tuist/.build/tuist-derived/LookinServerBase/LookinServerBase.modulemap",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = cc.ihugo.practice.ThoughtStream;
 				PRODUCT_NAME = ThoughtStream;
 				SDKROOT = iphoneos;
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) DEBUG";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = (
+					"$(inherited)",
+					DEBUG,
+				);
 				SWIFT_COMPILATION_MODE = singlefile;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -545,14 +583,23 @@
 					"-fmodule-map-file=$(SRCROOT)/../../Tuist/.build/tuist-derived/LookinServer/LookinServer.modulemap",
 					"-fmodule-map-file=$(SRCROOT)/../../Tuist/.build/tuist-derived/LookinServerBase/LookinServerBase.modulemap",
 				);
-				OTHER_SWIFT_FLAGS = "$(inherited) -Xcc -fmodule-map-file=$(SRCROOT)/../../Tuist/.build/tuist-derived/LookinServer/LookinServer.modulemap -Xcc -fmodule-map-file=$(SRCROOT)/../../Tuist/.build/tuist-derived/LookinServerBase/LookinServerBase.modulemap";
+				OTHER_SWIFT_FLAGS = (
+					"$(inherited)",
+					"-Xcc",
+					"-fmodule-map-file=$(SRCROOT)/../../Tuist/.build/tuist-derived/LookinServer/LookinServer.modulemap",
+					"-Xcc",
+					"-fmodule-map-file=$(SRCROOT)/../../Tuist/.build/tuist-derived/LookinServerBase/LookinServerBase.modulemap",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = cc.ihugo.practice.ThoughtStreamTests;
 				PRODUCT_NAME = ThoughtStreamTests;
 				SDKROOT = iphoneos;
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) DEBUG";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = (
+					"$(inherited)",
+					DEBUG,
+				);
 				SWIFT_COMPILATION_MODE = singlefile;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -587,7 +634,6 @@
 					"$(SRCROOT)/../../Tuist/.build/checkouts/LookinServer/Src/Main/Shared/Peertalk",
 				);
 				INFOPLIST_FILE = "Derived/InfoPlists/ThoughtStream-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -597,7 +643,13 @@
 					"-fmodule-map-file=$(SRCROOT)/../../Tuist/.build/tuist-derived/LookinServer/LookinServer.modulemap",
 					"-fmodule-map-file=$(SRCROOT)/../../Tuist/.build/tuist-derived/LookinServerBase/LookinServerBase.modulemap",
 				);
-				OTHER_SWIFT_FLAGS = "$(inherited) -Xcc -fmodule-map-file=$(SRCROOT)/../../Tuist/.build/tuist-derived/LookinServer/LookinServer.modulemap -Xcc -fmodule-map-file=$(SRCROOT)/../../Tuist/.build/tuist-derived/LookinServerBase/LookinServerBase.modulemap";
+				OTHER_SWIFT_FLAGS = (
+					"$(inherited)",
+					"-Xcc",
+					"-fmodule-map-file=$(SRCROOT)/../../Tuist/.build/tuist-derived/LookinServer/LookinServer.modulemap",
+					"-Xcc",
+					"-fmodule-map-file=$(SRCROOT)/../../Tuist/.build/tuist-derived/LookinServerBase/LookinServerBase.modulemap",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = cc.ihugo.practice.ThoughtStream;
 				PRODUCT_NAME = ThoughtStream;
 				SDKROOT = iphoneos;
