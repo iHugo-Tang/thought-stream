@@ -26,6 +26,11 @@ struct HomeView: View {
                 
                 VStack(alignment: .leading, spacing: 16) {
                     SectionTitleLabel(title: "Thought of the Day")
+                    ThoughtTopicView(
+                        title: "The limits of my language mean the limits of my world.",
+                        source: "Ludwig Wittgenstein",
+                        subtitle: "A daily quote to inspire your English thinking journey."
+                    )
                 }
             }
             .padding(.horizontal, 24)
