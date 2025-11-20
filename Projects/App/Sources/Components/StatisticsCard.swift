@@ -5,9 +5,6 @@ struct StatisticsCard: View {
     let count: Int
     let change: String
     
-    @Binding var measuredHeight: CGFloat?
-    var enforcedHeight: CGFloat?
-    
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             Text(title)
@@ -25,15 +22,10 @@ struct StatisticsCard: View {
                 .padding(.top, 8)
         }
         .padding(24)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .frame(maxHeight: .infinity, alignment: .top)
         .background(ThoughtStreamAsset.Colors.bgSecondary.swiftUIColor)
-        .onGeometryChange(for: CGSize.self) { proxy in
-            proxy.size
-        } action: { size in
-            let newHeight = size.height
-            guard measuredHeight != newHeight else { return }
-            measuredHeight = newHeight
-        }
-        .frame(height: enforcedHeight)
+        .cornerRadius(CornerSize.medium)
     }
 }
 
@@ -59,47 +51,18 @@ struct StatisticsCardData: Identifiable, Equatable {
 struct StatisticsCardGrid: View {
     let cards: [StatisticsCardData]
     
-    @State private var cardHeights: [StatisticsCardData.ID: CGFloat] = [:]
-    @State private var sharedHeight: CGFloat?
-    
-    private let columns: [GridItem] = [
-        GridItem(.flexible(), spacing: 16),
-        GridItem(.flexible(), spacing: 16)
-    ]
-    
     var body: some View {
-        LazyVGrid(columns: columns, spacing: 16) {
-            ForEach(cards) { card in
-                StatisticsCard(
-                    title: card.title,
-                    count: card.count,
-                    change: card.change,
-                    measuredHeight: bindingForCardHeight(card.id),
-                    enforcedHeight: sharedHeight
-                )
-                .frame(maxWidth: .infinity)
-                .background(ThoughtStreamAsset.Colors.bgSecondary.swiftUIColor)
-                .cornerRadius(CornerSize.medium)
-            }
-        }
-        .onChange(of: cards.map(\.id)) { _, ids in
-            cardHeights = cardHeights.filter { ids.contains($0.key) }
-            sharedHeight = cardHeights.values.max()
-        }
-    }
-    
-    private func bindingForCardHeight(_ id: StatisticsCardData.ID) -> Binding<CGFloat?> {
-        Binding(
-            get: { cardHeights[id] },
-            set: { newValue in
-                if let newValue {
-                    cardHeights[id] = newValue
-                } else {
-                    cardHeights[id] = nil
+        Grid(horizontalSpacing: 16) {
+            GridRow {
+                ForEach(cards) { card in
+                    StatisticsCard(
+                        title: card.title,
+                        count: card.count,
+                        change: card.change
+                    )
                 }
-                sharedHeight = cardHeights.values.max()
             }
-        )
+        }
     }
 }
 
