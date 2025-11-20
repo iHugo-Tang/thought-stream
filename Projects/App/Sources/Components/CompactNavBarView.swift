@@ -45,7 +45,7 @@ struct CircleView: View {
     ZStack {
         ThoughtStreamAsset.Colors.bgPrimary.swiftUIColor.ignoresSafeArea()
         VStack {
-d            LargeNavBarView()
+            LargeNavBarView()
         }
     }
 }

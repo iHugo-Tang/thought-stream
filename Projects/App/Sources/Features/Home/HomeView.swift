@@ -89,9 +89,6 @@ struct HomeView: View {
         let threshold: CGFloat = 80
         largeHeaderOpacity = min(1, max((threshold + scrollOffset) / threshold, 0))
         compactHeaderOpacity = 1 - largeHeaderOpacity
-        print(
-            "scroll: \(scrollOffset), largeHeaderOpacity: \(largeHeaderOpacity), compactHeaderOpacity: \(compactHeaderOpacity)"
-        )
     }
 }
 
