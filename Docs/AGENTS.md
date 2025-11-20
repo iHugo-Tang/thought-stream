@@ -47,3 +47,6 @@
 - `unowned` when guaranteed non-nil
 - Capture lists in closures
 - `deinit` for cleanup
+
+## Gemini Added Memories
+- When the user says 'quick commit', generate a commit message for staged changes by examining git status, git diff --staged, and git log -n 3. The commit message should follow the 'type(scope): message' format. Then, commit the changes using the generated message.
