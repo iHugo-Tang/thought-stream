@@ -23,7 +23,13 @@ let project = Project(
             dependencies: [
                 .external(name: "LookinServer"),
                 .external(name: "LucideIcons"),
-            ]
+            ],
+            settings: .settings(
+                configurations: [
+                    .debug(name: "Debug", settings: ["OTHER_LDFLAGS": ["$(inherited)", "-ObjC"]]),
+                    .release(name: "Release", settings: ["OTHER_LDFLAGS": ["$(inherited)"]])
+                ]
+            )
         ),
         .target(
             name: "ThoughtStreamTests",

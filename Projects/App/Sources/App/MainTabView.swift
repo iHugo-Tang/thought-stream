@@ -14,7 +14,7 @@ struct MainTabView: View {
 
             NavigationStack {
                 HistoryView()
-                    .navigationTitle("History")
+                    .navigationTitle("Knowledge Hub")
                     .navigationBarTitleDisplayMode(.large)
             }
             .tabItem {
