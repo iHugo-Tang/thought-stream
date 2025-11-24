@@ -12,14 +12,20 @@ struct HistoryView: View {
     }
 
     var body: some View {
-        VStack(spacing: 24) {
+        List {
             search
+                .listRowBackground(ThoughtStreamAsset.Colors.bgPrimary.swiftUIColor)
+                .listRowSeparator(.hidden)
             segment
+                .listRowBackground(ThoughtStreamAsset.Colors.bgPrimary.swiftUIColor)
+                .listRowSeparator(.hidden)
             filter
+                .listRowBackground(ThoughtStreamAsset.Colors.bgPrimary.swiftUIColor)
             itemList
-            Spacer()
+                .listRowBackground(ThoughtStreamAsset.Colors.bgPrimary.swiftUIColor)
         }
-        .padding()
+        .listStyle(.plain)
+        .scrollContentBackground(.hidden)
         .background(ThoughtStreamAsset.Colors.bgPrimary.swiftUIColor)
     }
     
@@ -62,7 +68,21 @@ struct HistoryView: View {
     }
     
     var itemList: some View {
-        Text("TODO: Item list")
+        ForEach(1..<10, id: \.self) { _ in
+            KnowledgeRow(
+                item: KnowledgeItem(
+                    title: "Idiom: Break the ice",
+                    desc: "To initiate a conversation in a social setting to make people feel more comfortable.",
+                    tags: [
+                        ("English", ThoughtStreamAsset.Colors.tagGreen.swiftUIColor),
+                        ("Idiom", ThoughtStreamAsset.Colors.tagPurple.swiftUIColor),
+                        ("Conversation", ThoughtStreamAsset.Colors.tagOrange.swiftUIColor)
+                    ],
+                    createdAt: Date(),
+                    isSelected: true
+                )
+            )
+        }
     }
 }
 
