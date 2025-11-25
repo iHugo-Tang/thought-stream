@@ -23,8 +23,8 @@ struct MainTabView: View {
 
             NavigationStack {
                 TrainingView()
-                    .navigationTitle("Training")
-                    .navigationBarTitleDisplayMode(.large)
+                    .navigationTitle("Free Practice")
+                    .navigationBarTitleDisplayMode(.inline)
             }
             .tabItem {
                 Label("Training", systemImage: "bolt.badge.a.fill")

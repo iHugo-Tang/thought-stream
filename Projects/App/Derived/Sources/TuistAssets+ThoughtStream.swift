@@ -46,6 +46,7 @@ public enum ThoughtStreamAsset: Sendable {
     public static let tagPurple = ThoughtStreamColors(name: "TagPurple")
     public static let textAccentInteractive = ThoughtStreamColors(name: "TextAccentInteractive")
     public static let textAccentPositive = ThoughtStreamColors(name: "TextAccentPositive")
+    public static let textPlaceholder = ThoughtStreamColors(name: "TextPlaceholder")
     public static let textPrimary = ThoughtStreamColors(name: "TextPrimary")
     public static let textSecondary = ThoughtStreamColors(name: "TextSecondary")
   }
