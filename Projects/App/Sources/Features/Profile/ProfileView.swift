@@ -2,7 +2,33 @@ import SwiftUI
 
 struct ProfileView: View {
     var body: some View {
-        Text("ProfileView")
+        List {
+            Section {
+                Text("ProfileView")
+                    .listRowBackground(Color.clear)
+            }
+            .listSectionMargins(.vertical, 0)
+            .listSectionSpacing(32)
+
+            Section {
+                Text("statistic")
+            }
+            
+            Section {
+                Text("achievments")
+            }
+            
+            Section {
+                Text("items")
+            }
+            
+            Section {
+                Text("Log out")
+            }
+        }
+        .listStyle(.insetGrouped)
+        .scrollContentBackground(.hidden)
+        .background(ThoughtStreamAsset.Colors.bgPrimary.swiftUIColor)
     }
 }
 
@@ -10,7 +36,7 @@ struct ProfileView: View {
     NavigationStack {
         ProfileView()
             .navigationTitle("Profile")
-            .navigationBarTitleDisplayMode(.large)
+            .navigationBarTitleDisplayMode(.inline)
     }
 }
 

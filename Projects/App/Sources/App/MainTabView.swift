@@ -33,7 +33,7 @@ struct MainTabView: View {
             NavigationStack {
                 ProfileView()
                     .navigationTitle("Profile")
-                    .navigationBarTitleDisplayMode(.large)
+                    .navigationBarTitleDisplayMode(.inline)
             }
             .tabItem {
                 Label("Profile", systemImage: "person.crop.circle.fill")
