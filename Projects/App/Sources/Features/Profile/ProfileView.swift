@@ -23,7 +23,7 @@ struct ProfileView: View {
                         .font(FontSize.headline.font())
                         .foregroundColor(.asset.textPrimary)
                     
-                    HStack(spacing: 16) {
+                    HStack(alignment: .top, spacing: 16) {
                         AchievementBadgeView(
                             title: "First Course",
                             image: ThoughtStreamAsset.Assets.achievementCourse.swiftUIImage,
@@ -130,10 +130,10 @@ struct ProfileView: View {
     
     var statisticCompleted: some View {
         VStack(alignment: .leading, spacing: 4) {
-            Text("Total Learning Time")
+            Text("Courses Completed")
                 .font(FontSize.caption.font())
                 .foregroundColor(.asset.textSecondary)
-            Text("128h")
+            Text("54")
                 .font(FontSize.headline.font())
                 .foregroundColor(.asset.textPrimary)
         }

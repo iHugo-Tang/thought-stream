@@ -37,7 +37,6 @@ struct HomeView: View {
 
                 ContentArea
             }
-            .padding(.horizontal, 24)
         }
         .coordinateSpace(name: "scroll")
         .background(Color.asset.bgPrimary)
