@@ -8,7 +8,7 @@ struct KnowledgeRow: View {
             HStack {
                 Text(item.title)
                     .font(FontSize.body.font())
-                    .foregroundColor(ThoughtStreamAsset.Colors.textPrimary.swiftUIColor)
+                    .foregroundColor(.asset.textPrimary)
                 Spacer()
                 
                 Image(systemName: item.isSelected ? "star.fill" : "star")
@@ -17,22 +17,22 @@ struct KnowledgeRow: View {
                     .frame(width: 24, height: 24)
                     .foregroundColor(
                         item.isSelected
-                        ? ThoughtStreamAsset.Colors.textAccentInteractive.swiftUIColor
-                        : ThoughtStreamAsset.Colors.iconPrimary.swiftUIColor
+                        ? .asset.textAccentInteractive
+                        : .asset.iconPrimary
                     )
             }
             
             HStack {
                 Text(item.desc)
                     .font(FontSize.caption.font())
-                    .foregroundColor(ThoughtStreamAsset.Colors.textSecondary.swiftUIColor)
+                    .foregroundColor(.asset.textSecondary)
                     
                 Spacer()
                 
                 
                 Text(item.createdAt.formatted(date: .abbreviated, time: .omitted))
                     .font(FontSize.caption.font())
-                    .foregroundColor(ThoughtStreamAsset.Colors.textSecondary.swiftUIColor)
+                    .foregroundColor(.asset.textSecondary)
                     .frame(width: 90, alignment: .trailing)
             }
 
@@ -49,15 +49,15 @@ struct KnowledgeRow: View {
 
 #Preview {
     ZStack {
-        ThoughtStreamAsset.Colors.bgPrimary.swiftUIColor.edgesIgnoringSafeArea(.all)
+        Color.asset.bgPrimary.edgesIgnoringSafeArea(.all)
         KnowledgeRow(
             item: KnowledgeItem(
                 title: "Idiom: Break the ice",
                 desc: "To initiate a conversation in a social setting to make people feel more comfortable.",
                 tags: [
-                    ("English", ThoughtStreamAsset.Colors.tagGreen.swiftUIColor),
-                    ("Idiom", ThoughtStreamAsset.Colors.tagPurple.swiftUIColor),
-                    ("Conversation", ThoughtStreamAsset.Colors.tagOrange.swiftUIColor)
+                    ("English", .asset.tagGreen),
+                    ("Idiom", .asset.tagPurple),
+                    ("Conversation", .asset.tagOrange)
                 ],
                 createdAt: Date(),
                 isSelected: true

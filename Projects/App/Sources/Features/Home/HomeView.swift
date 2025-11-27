@@ -40,7 +40,7 @@ struct HomeView: View {
             .padding(.horizontal, 24)
         }
         .coordinateSpace(name: "scroll")
-        .background(ThoughtStreamAsset.Colors.bgPrimary.swiftUIColor)
+        .background(Color.asset.bgPrimary)
         .toolbar {
             ToolbarItem(placement: .principal) {
                 Text("Good morning, Alex!")

@@ -40,8 +40,8 @@ struct IconRoundButton: View {
             .padding(.vertical, 12)
             .background(
                 isActive
-                ? ThoughtStreamAsset.Colors.btnPrimary.swiftUIColor
-                : ThoughtStreamAsset.Colors.btnTertiary.swiftUIColor
+                ? Color.asset.btnPrimary
+                : Color.asset.btnTertiary
             )
             .clipShape(Capsule())
         }

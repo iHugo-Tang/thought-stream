@@ -1,46 +1,42 @@
-// swiftlint:disable:this file_name
 // swiftlint:disable all
 // swift-format-ignore-file
 // swiftformat:disable all
 // Generated using tuist — https://github.com/tuist/tuist
 
 
-
 #if os(macOS)
-#if hasFeature(InternalImportsByDefault)
-public import AppKit
-#else
-import AppKit
+  import AppKit
+#elseif os(iOS)
+  import UIKit
+#elseif os(tvOS) || os(watchOS)
+  import UIKit
 #endif
-#else
-#if hasFeature(InternalImportsByDefault)
-public import UIKit
-#else
-import UIKit
-#endif
-#endif
-
 #if canImport(SwiftUI)
-#if hasFeature(InternalImportsByDefault)
-public import SwiftUI
-#else
-import SwiftUI
-#endif
+  import SwiftUI
 #endif
 
 // MARK: - Asset Catalogs
 
 public enum ThoughtStreamAsset: Sendable {
   public enum Assets {
-  public static let accentColor = ThoughtStreamColors(name: "AccentColor")
+    public static let accentColor = ThoughtStreamColors(name: "AccentColor")
+    public static let achievementCourse = ThoughtStreamImages(name: "AchievementCourse")
+    public static let achievementGrammar = ThoughtStreamImages(name: "AchievementGrammar")
+    public static let achievementLocker = ThoughtStreamImages(name: "AchievementLocker")
+    public static let achievementStreak = ThoughtStreamImages(name: "AchievementStreak")
+    public static let avatarPlaceholder = ThoughtStreamImages(name: "AvatarPlaceholder")
   }
   public enum Colors {
-  public static let bgPrimary = ThoughtStreamColors(name: "BgPrimary")
+    public static let bgPrimary = ThoughtStreamColors(name: "BgPrimary")
     public static let bgSecondary = ThoughtStreamColors(name: "BgSecondary")
     public static let btnPrimary = ThoughtStreamColors(name: "BtnPrimary")
     public static let btnSecondary = ThoughtStreamColors(name: "BtnSecondary")
     public static let btnTertiary = ThoughtStreamColors(name: "BtnTertiary")
+    public static let btnWarn = ThoughtStreamColors(name: "BtnWarn")
+    public static let iconBgPrimary = ThoughtStreamColors(name: "IconBgPrimary")
+    public static let iconBgSecondary = ThoughtStreamColors(name: "IconBgSecondary")
     public static let iconPrimary = ThoughtStreamColors(name: "IconPrimary")
+    public static let seperator1 = ThoughtStreamColors(name: "Seperator1")
     public static let tagGreen = ThoughtStreamColors(name: "TagGreen")
     public static let tagOrange = ThoughtStreamColors(name: "TagOrange")
     public static let tagPurple = ThoughtStreamColors(name: "TagPurple")
@@ -51,7 +47,7 @@ public enum ThoughtStreamAsset: Sendable {
     public static let textSecondary = ThoughtStreamColors(name: "TextSecondary")
   }
   public enum PreviewAssets {
-  public static let placeholder = ThoughtStreamImages(name: "placeholder")
+    public static let placeholder = ThoughtStreamImages(name: "placeholder")
   }
 }
 
@@ -162,5 +158,34 @@ public extension SwiftUI.Image {
 }
 #endif
 
-// swiftformat:enable all
-// swiftlint:enable all
+// MARK: - Custom Color Accessor
+
+extension Color {
+    static var asset: AssetColors {
+        AssetColors()
+    }
+
+    struct AssetColors {
+        var accentColor: Color { ThoughtStreamAsset.Assets.accentColor.swiftUIColor }
+        var bgPrimary: Color { ThoughtStreamAsset.Colors.bgPrimary.swiftUIColor }
+        var bgSecondary: Color { ThoughtStreamAsset.Colors.bgSecondary.swiftUIColor }
+        var btnPrimary: Color { ThoughtStreamAsset.Colors.btnPrimary.swiftUIColor }
+        var btnSecondary: Color { ThoughtStreamAsset.Colors.btnSecondary.swiftUIColor }
+        var btnTertiary: Color { ThoughtStreamAsset.Colors.btnTertiary.swiftUIColor }
+        var btnWarn: Color { ThoughtStreamAsset.Colors.btnWarn.swiftUIColor }
+        var iconBgPrimary: Color { ThoughtStreamAsset.Colors.iconBgPrimary.swiftUIColor }
+        var iconBgSecondary: Color { ThoughtStreamAsset.Colors.iconBgSecondary.swiftUIColor }
+        var iconPrimary: Color { ThoughtStreamAsset.Colors.iconPrimary.swiftUIColor }
+        var seperator1: Color { ThoughtStreamAsset.Colors.seperator1.swiftUIColor }
+        var tagGreen: Color { ThoughtStreamAsset.Colors.tagGreen.swiftUIColor }
+        var tagOrange: Color { ThoughtStreamAsset.Colors.tagOrange.swiftUIColor }
+        var tagPurple: Color { ThoughtStreamAsset.Colors.tagPurple.swiftUIColor }
+        var textAccentInteractive: Color { ThoughtStreamAsset.Colors.textAccentInteractive.swiftUIColor }
+        var textAccentPositive: Color { ThoughtStreamAsset.Colors.textAccentPositive.swiftUIColor }
+        var textPlaceholder: Color { ThoughtStreamAsset.Colors.textPlaceholder.swiftUIColor }
+        var textPrimary: Color { ThoughtStreamAsset.Colors.textPrimary.swiftUIColor }
+        var textSecondary: Color { ThoughtStreamAsset.Colors.textSecondary.swiftUIColor }
+    }
+}
+
+

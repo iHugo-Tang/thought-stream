@@ -13,13 +13,13 @@ struct ThoughtTopicView: View {
             
             Text(title)
                 .font(FontSize.headline.font())
-                .foregroundColor(ThoughtStreamAsset.Colors.textPrimary.swiftUIColor)
+                .foregroundColor(.asset.textPrimary)
             Text(source)
                 .font(FontSize.bodyEmphasis.font())
-                .foregroundColor(ThoughtStreamAsset.Colors.textSecondary.swiftUIColor)
+                .foregroundColor(.asset.textSecondary)
             Text(subtitle)
                 .font(FontSize.caption.font())
-                .foregroundColor(ThoughtStreamAsset.Colors.textSecondary.swiftUIColor)
+                .foregroundColor(.asset.textSecondary)
             HStack {
                 LargeButton(buttonType: .primary, title: "Share")
                     .frame(width: 120)
@@ -28,7 +28,7 @@ struct ThoughtTopicView: View {
                     Image(systemName: "heart")
                 }
                 .frame(width: 48)
-                .accentColor(ThoughtStreamAsset.Colors.iconPrimary.swiftUIColor)
+                .accentColor(.asset.iconPrimary)
             }
         }
     }
@@ -36,7 +36,7 @@ struct ThoughtTopicView: View {
 
 #Preview {
     ZStack {
-        ThoughtStreamAsset.Colors.bgPrimary.swiftUIColor.edgesIgnoringSafeArea(.all)
+        Color.asset.bgPrimary.edgesIgnoringSafeArea(.all)
         ThoughtTopicView(
             title: "The limits of my language mean the limits of my world.",
             source: "Ludwig Wittgenstein",

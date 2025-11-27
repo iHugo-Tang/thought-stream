@@ -6,14 +6,14 @@ struct SectionTitleLabel: View {
     var body: some View {
         Text(title)
             .font(FontSize.headline.font())
-            .foregroundColor(ThoughtStreamAsset.Colors.textPrimary.swiftUIColor)
+            .foregroundColor(.asset.textPrimary)
             .padding(.bottom, 16)
     }
 }
 
 #Preview {
     ZStack {
-        ThoughtStreamAsset.Colors.bgPrimary.swiftUIColor
+        Color.asset.bgPrimary
         SectionTitleLabel(title: "Thought of the Day")
     }
 }

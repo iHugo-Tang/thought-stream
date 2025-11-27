@@ -5,27 +5,27 @@ struct TrainingView: View {
     
     var body: some View {
         ZStack(alignment: .bottomTrailing) {
-            ThoughtStreamAsset.Colors.bgPrimary.swiftUIColor.ignoresSafeArea()
+            Color.asset.bgPrimary.ignoresSafeArea()
             VStack(spacing: 16) {
                 VStack(alignment: .center, spacing: 8) {
                     Text("The limits of my language \nmean the limits of my world.")
                         .multilineTextAlignment(.center)
                         .font(FontSize.headline.font())
-                        .foregroundColor(ThoughtStreamAsset.Colors.textPrimary.swiftUIColor)
+                        .foregroundColor(.asset.textPrimary)
                     Text("- Ludwig Wittgenstein")
                         .font(FontSize.bodyEmphasis.font())
-                        .foregroundColor(ThoughtStreamAsset.Colors.textSecondary.swiftUIColor)
+                        .foregroundColor(.asset.textSecondary)
                 }
                 
                 TextField(
                     "Enter your answer",
                     text: $text,
-                    prompt: Text("Enter your answer").foregroundColor(ThoughtStreamAsset.Colors.textPlaceholder.swiftUIColor),
+                    prompt: Text("Enter your answer").foregroundColor(.asset.textPlaceholder),
                     axis: .vertical
                 )
                 .frame(maxHeight: .infinity, alignment: .top)
                 .padding()
-                .background(ThoughtStreamAsset.Colors.bgSecondary.swiftUIColor)
+                .background(Color.asset.bgSecondary)
                 .cornerRadius(CornerSize.small)
                 .overlay(alignment: .bottomTrailing) {
                     Button(action: {
@@ -35,7 +35,7 @@ struct TrainingView: View {
                             .font(.system(size: 24, weight: .medium))
                             .foregroundStyle(.white)
                             .frame(width: 56, height: 56)
-                            .background(ThoughtStreamAsset.Colors.btnPrimary.swiftUIColor)
+                            .background(Color.asset.btnPrimary)
                             .clipShape(Circle())
                             .shadow(color: Color.black.opacity(0.15), radius: 8, x: 0, y: 4)
                     }

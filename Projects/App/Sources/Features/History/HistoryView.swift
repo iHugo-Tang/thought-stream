@@ -14,26 +14,26 @@ struct HistoryView: View {
     var body: some View {
         List {
             search
-                .listRowBackground(ThoughtStreamAsset.Colors.bgPrimary.swiftUIColor)
+                .listRowBackground(Color.asset.bgPrimary)
                 .listRowSeparator(.hidden)
             segment
-                .listRowBackground(ThoughtStreamAsset.Colors.bgPrimary.swiftUIColor)
+                .listRowBackground(Color.asset.bgPrimary)
                 .listRowSeparator(.hidden)
             filter
-                .listRowBackground(ThoughtStreamAsset.Colors.bgPrimary.swiftUIColor)
+                .listRowBackground(Color.asset.bgPrimary)
             itemList
-                .listRowBackground(ThoughtStreamAsset.Colors.bgPrimary.swiftUIColor)
+                .listRowBackground(Color.asset.bgPrimary)
         }
         .listStyle(.plain)
         .scrollContentBackground(.hidden)
-        .background(ThoughtStreamAsset.Colors.bgPrimary.swiftUIColor)
+        .background(Color.asset.bgPrimary)
     }
     
     var search: some View {
         TextField("Search", text: $searchText, prompt: Text("Search your knowledge base").foregroundColor(.gray))
-            .foregroundColor(ThoughtStreamAsset.Colors.textPrimary.swiftUIColor)
+            .foregroundColor(.asset.textPrimary)
             .padding()
-            .background(ThoughtStreamAsset.Colors.bgSecondary.swiftUIColor)
+            .background(Color.asset.bgSecondary)
             .cornerRadius(CornerSize.medium)
     }
     
@@ -74,9 +74,9 @@ struct HistoryView: View {
                     title: "Idiom: Break the ice",
                     desc: "To initiate a conversation in a social setting to make people feel more comfortable.",
                     tags: [
-                        ("English", ThoughtStreamAsset.Colors.tagGreen.swiftUIColor),
-                        ("Idiom", ThoughtStreamAsset.Colors.tagPurple.swiftUIColor),
-                        ("Conversation", ThoughtStreamAsset.Colors.tagOrange.swiftUIColor)
+                        ("English", .asset.tagGreen),
+                        ("Idiom", .asset.tagPurple),
+                        ("Conversation", .asset.tagOrange)
                     ],
                     createdAt: Date(),
                     isSelected: true

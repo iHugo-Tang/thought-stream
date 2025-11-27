@@ -40,9 +40,9 @@ struct MainTabView: View {
             }
         }
         .tint(Color("AccentColor"))
-        .background(ThoughtStreamAsset.Colors.bgPrimary.swiftUIColor.ignoresSafeArea())
+        .background(Color.asset.bgPrimary.ignoresSafeArea())
         .toolbarBackground(.visible, for: .tabBar)
-        .toolbarBackground(ThoughtStreamAsset.Colors.bgPrimary.swiftUIColor, for: .tabBar)
+        .toolbarBackground(Color.asset.bgPrimary, for: .tabBar)
     }
 }
 

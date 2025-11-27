@@ -8,6 +8,7 @@ struct LargeButton: View {
     enum Types {
         case primary
         case secondary
+        case destructive
     }
     
     init(buttonType: Types = .primary, title: String, action: @escaping () -> Void = {}) {
@@ -30,6 +31,28 @@ struct LargeButton: View {
 private struct PrimaryCTAButtonStyle: ButtonStyle {
     let buttonType: LargeButton.Types
     
+    var bgColor: Color {
+        switch buttonType {
+            case .primary:
+            return Color.asset.btnPrimary
+        case .secondary:
+            return Color.asset.btnSecondary
+        case .destructive:
+            return Color.asset.btnSecondary
+        }
+    }
+    
+    var textColor: Color {
+        switch buttonType {
+        case .primary:
+            return Color.white
+        case .secondary:
+            return Color.asset.textSecondary
+        case .destructive:
+            return Color.asset.btnWarn
+        }
+    }
+    
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .font(FontSize.button.font())
@@ -39,11 +62,7 @@ private struct PrimaryCTAButtonStyle: ButtonStyle {
             .frame(maxWidth: .infinity)
             .background(
                 RoundedRectangle(cornerRadius: CornerSize.medium, style: .continuous)
-                    .fill(
-                        buttonType == .primary
-                            ? ThoughtStreamAsset.Colors.btnPrimary.swiftUIColor
-                            : ThoughtStreamAsset.Colors.btnSecondary.swiftUIColor
-                    )
+                    .fill(bgColor)
             )
             .contentShape(RoundedRectangle(cornerRadius: CornerSize.medium, style: .continuous))
             .scaleEffect(configuration.isPressed ? 0.98 : 1)
@@ -53,7 +72,7 @@ private struct PrimaryCTAButtonStyle: ButtonStyle {
 
 #Preview {
     ZStack {
-        ThoughtStreamAsset.Colors.bgPrimary.swiftUIColor.ignoresSafeArea()
+        Color.asset.bgPrimary.ignoresSafeArea()
         VStack(spacing: 24) {
             LargeButton(title: "Start a New Record")
                 .padding(.horizontal, 24)
