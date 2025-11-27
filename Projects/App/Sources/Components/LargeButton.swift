@@ -47,7 +47,7 @@ private struct PrimaryCTAButtonStyle: ButtonStyle {
         case .primary:
             return Color.white
         case .secondary:
-            return Color.asset.textSecondary
+            return Color.white
         case .destructive:
             return Color.asset.btnWarn
         }
@@ -56,7 +56,7 @@ private struct PrimaryCTAButtonStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .font(FontSize.button.font())
-            .foregroundStyle(Color.white)
+            .foregroundStyle(textColor)
             .padding(.vertical, 18)
             .padding(.horizontal, 24)
             .frame(maxWidth: .infinity)
@@ -78,6 +78,9 @@ private struct PrimaryCTAButtonStyle: ButtonStyle {
                 .padding(.horizontal, 24)
             
             LargeButton(buttonType: .secondary, title: "Start a New Record")
+                .padding(.horizontal, 24)
+            
+            LargeButton(buttonType: .destructive, title: "Log Out")
                 .padding(.horizontal, 24)
         }
     }
