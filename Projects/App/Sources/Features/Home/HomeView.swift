@@ -73,7 +73,7 @@ struct HomeView: View {
             }
 
             VStack(alignment: .leading, spacing: 16) {
-                SectionTitleLabel(title: "Thought of the Day")
+                sectionTitleLabel(title: "Thought of the Day")
                 ThoughtTopicView(
                     title: "The limits of my language mean the limits of my world.",
                     source: "Ludwig Wittgenstein",
@@ -88,6 +88,12 @@ struct HomeView: View {
         let threshold: CGFloat = 80
         largeHeaderOpacity = min(1, max((threshold + scrollOffset) / threshold, 0))
         compactHeaderOpacity = 1 - largeHeaderOpacity
+    }
+    
+    private func sectionTitleLabel(title: String) -> some View {
+        Text(title)
+            .font(FontSize.headline.font())
+            .foregroundColor(.asset.textPrimary)
     }
 }
 

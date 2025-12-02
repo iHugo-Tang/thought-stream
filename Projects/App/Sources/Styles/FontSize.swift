@@ -35,6 +35,6 @@ enum FontSize {
     static let captionStrong = FontToken(size: 14, weight: .bold)
 
     /// Smallest labels such as tab bar text.
-    static let footnote = FontToken(size: 10, weight: .medium)
+    static let footnote = FontToken(size: 12, weight: .medium)
 }
 

@@ -78,16 +78,16 @@ private struct StatisticsCardPreviewContent: View {
             count: 8,
             change: "-5"
         ),
-        .init(
-            title: "New Ideas Captured",
-            count: 21,
-            change: "+4"
-        ),
-        .init(
-            title: "Sessions Completed",
-            count: 15,
-            change: "+1"
-        )
+//        .init(
+//            title: "New Ideas Captured",
+//            count: 21,
+//            change: "+4"
+//        ),
+//        .init(
+//            title: "Sessions Completed",
+//            count: 15,
+//            change: "+1"
+//        )
     ]
     
     var body: some View {
@@ -101,5 +101,7 @@ private struct StatisticsCardPreviewContent: View {
 }
 
 #Preview() {
-    StatisticsCardPreviewContent()
+    VStack {
+        StatisticsCardPreviewContent()
+    }
 }

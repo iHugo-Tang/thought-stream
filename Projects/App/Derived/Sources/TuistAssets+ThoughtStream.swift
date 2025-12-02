@@ -25,10 +25,13 @@ public enum ThoughtStreamAsset: Sendable {
     public static let achievementLocker = ThoughtStreamImages(name: "AchievementLocker")
     public static let achievementStreak = ThoughtStreamImages(name: "AchievementStreak")
     public static let avatarPlaceholder = ThoughtStreamImages(name: "AvatarPlaceholder")
+    public static let iconThumbUp = ThoughtStreamImages(name: "IconThumbUp")
   }
   public enum Colors {
     public static let bgPrimary = ThoughtStreamColors(name: "BgPrimary")
     public static let bgSecondary = ThoughtStreamColors(name: "BgSecondary")
+    public static let btnBgGreen = ThoughtStreamColors(name: "BtnBgGreen")
+    public static let btnGreen = ThoughtStreamColors(name: "BtnGreen")
     public static let btnPrimary = ThoughtStreamColors(name: "BtnPrimary")
     public static let btnSecondary = ThoughtStreamColors(name: "BtnSecondary")
     public static let btnTertiary = ThoughtStreamColors(name: "BtnTertiary")
@@ -169,6 +172,8 @@ extension Color {
         var accentColor: Color { ThoughtStreamAsset.Assets.accentColor.swiftUIColor }
         var bgPrimary: Color { ThoughtStreamAsset.Colors.bgPrimary.swiftUIColor }
         var bgSecondary: Color { ThoughtStreamAsset.Colors.bgSecondary.swiftUIColor }
+        var btnBgGreen: Color { ThoughtStreamAsset.Colors.btnBgGreen.swiftUIColor }
+        var btnGreen: Color { ThoughtStreamAsset.Colors.btnGreen.swiftUIColor }
         var btnPrimary: Color { ThoughtStreamAsset.Colors.btnPrimary.swiftUIColor }
         var btnSecondary: Color { ThoughtStreamAsset.Colors.btnSecondary.swiftUIColor }
         var btnTertiary: Color { ThoughtStreamAsset.Colors.btnTertiary.swiftUIColor }
