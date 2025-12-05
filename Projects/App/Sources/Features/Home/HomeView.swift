@@ -13,9 +13,11 @@ struct HomeView: View {
             change: "-5"
         ),
     ]
+    
     @State private var largeHeaderOpacity: CGFloat = 1
     @State private var compactHeaderOpacity: CGFloat = 0
     @State private var scrollOffset: CGFloat = 0
+    @State private var showPanel = true
 
     var body: some View {
         ScrollView {
@@ -61,6 +63,32 @@ struct HomeView: View {
             }
         }
         .navigationBarTitleDisplayMode(.inline)
+        .sheet(isPresented: $showPanel) {
+            NavigationStack {
+                List {
+                    IconTitleRoundCell()
+                        .listRowInsets(.vertical, 4)
+                        .listRowSeparator(.hidden)
+                    IconTitleRoundCell()
+                        .listRowInsets(.vertical, 4)
+                        .listRowSeparator(.hidden)
+                    IconTitleRoundCell()
+                        .listRowInsets(.vertical, 4)
+                        .listRowSeparator(.hidden)
+                    IconTitleRoundCell()
+                        .listRowInsets(.vertical, 4)
+                        .listRowSeparator(.hidden)
+                }
+                .navigationTitle("Choose a Practice Mode")
+                .navigationBarTitleDisplayMode(.inline)
+                .listStyle(.plain)
+                .presentationBackground(content: {
+                    Color.asset.sheetBgPrimary
+                })
+                .presentationDetents([.medium, .large])
+            }
+
+        }
     }
 
     private var ContentArea: some View {
@@ -68,7 +96,10 @@ struct HomeView: View {
             StatisticsCardGrid(cards: cards)
 
             VStack(spacing: 16) {
-                LargeButton(title: "Start a New Record")
+                LargeButton(title: "Start a New Record") { 
+                    showPanel.toggle()
+                }
+                
                 LargeButton(buttonType: .secondary, title: "Start Thinking Practice")
             }
 

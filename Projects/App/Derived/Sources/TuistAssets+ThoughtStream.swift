@@ -25,6 +25,7 @@ public enum ThoughtStreamAsset: Sendable {
     public static let achievementLocker = ThoughtStreamImages(name: "AchievementLocker")
     public static let achievementStreak = ThoughtStreamImages(name: "AchievementStreak")
     public static let avatarPlaceholder = ThoughtStreamImages(name: "AvatarPlaceholder")
+    public static let cellArrow = ThoughtStreamImages(name: "CellArrow")
     public static let iconThumbUp = ThoughtStreamImages(name: "IconThumbUp")
   }
   public enum Colors {
@@ -40,6 +41,7 @@ public enum ThoughtStreamAsset: Sendable {
     public static let iconBgSecondary = ThoughtStreamColors(name: "IconBgSecondary")
     public static let iconPrimary = ThoughtStreamColors(name: "IconPrimary")
     public static let seperator1 = ThoughtStreamColors(name: "Seperator1")
+    public static let sheetBgPrimary = ThoughtStreamColors(name: "SheetBgPrimary")
     public static let tagGreen = ThoughtStreamColors(name: "TagGreen")
     public static let tagOrange = ThoughtStreamColors(name: "TagOrange")
     public static let tagPurple = ThoughtStreamColors(name: "TagPurple")
@@ -182,6 +184,7 @@ extension Color {
         var iconBgSecondary: Color { ThoughtStreamAsset.Colors.iconBgSecondary.swiftUIColor }
         var iconPrimary: Color { ThoughtStreamAsset.Colors.iconPrimary.swiftUIColor }
         var seperator1: Color { ThoughtStreamAsset.Colors.seperator1.swiftUIColor }
+        var sheetBgPrimary: Color { ThoughtStreamAsset.Colors.sheetBgPrimary.swiftUIColor }
         var tagGreen: Color { ThoughtStreamAsset.Colors.tagGreen.swiftUIColor }
         var tagOrange: Color { ThoughtStreamAsset.Colors.tagOrange.swiftUIColor }
         var tagPurple: Color { ThoughtStreamAsset.Colors.tagPurple.swiftUIColor }
